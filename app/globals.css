@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Baseline utility configuration, synchronized with tailwind.config.ts.
+ * All token values originate from BRAND_KIT.md (client brand refresh, 2026-09-08).
+ * Keep this file and tailwind.config.ts in step — BRAND_KIT.md is the source of truth.
+ *
+ * Fonts: "Playfair Display" (headings) and "Inter" (body) are loaded via next/font
+ * in app/layout.tsx and exposed as the --font-heading / --font-body CSS variables
+ * consumed by tailwind.config.ts's fontFamily tokens.
+ */
+
+@layer base {
+  :root {
+    /* Brand palette — exact hex from BRAND_KIT.md */
+    --brand-primary: #004b49; /* Deep Teal */
+    --brand-secondary: #e28743; /* Warm Amber */
+    --background: #ffffff; /* Pure White */
+    --foreground: #004b49; /* Deep Teal — primary text */
+    --surface: #f4f6f6; /* Light Gray — cards / layout blocks */
+    --muted: #f4f6f6;
+
+    /* Styling guidelines */
+    --radius: 0.5rem;
+  }
+
+  body {
+    @apply bg-background font-body text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  /* BRAND_KIT.md — Buttons: solid primary colour for primary actions. */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-brand-primary
+      px-5 py-2.5 font-medium text-white transition-colors
+      hover:bg-brand-primary/90 focus-visible:outline-none
+      focus-visible:ring-2 focus-visible:ring-brand-primary
+      focus-visible:ring-offset-2;
+  }
+
+  /* BRAND_KIT.md — Buttons: outlined amber for secondary actions. */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border
+      border-brand-secondary bg-transparent px-5 py-2.5 font-medium
+      text-brand-secondary transition-colors hover:bg-brand-secondary/10
+      focus-visible:outline-none focus-visible:ring-2
+      focus-visible:ring-brand-secondary focus-visible:ring-offset-2;
+  }
+}

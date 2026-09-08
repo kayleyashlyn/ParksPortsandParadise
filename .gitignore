@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+build/
+
+# Production
+dist/
+
+# Environment variables — NEVER commit real secrets, only .env.example
+.env
+.env*.local
+.env.development
+.env.production
+
+# Sanity
+.sanity/
+
+# Vercel
+.vercel
+
+# Testing
+coverage/
+
+# IDE / OS
+.DS_Store
+*.pem
+.vscode/
+.idea/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
