@@ -1,17 +1,18 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Brand design tokens are LIVE as of 2026-09-08 (partial brand-kit delivery).
+ * Brand design tokens are LIVE as of 2026-09-08 (palette updated same day).
  *
  * - The shadcn/ui semantic tokens below read `hsl(var(--*))` from
- *   app/globals.css, where `--primary` / `--secondary` / `--ring` / `--muted`
- *   are now set to the Parks Ports & Paradise palette from BRAND_KIT.md.
+ *   app/globals.css, where `--primary` (Slate Blue), `--secondary` (Sand Gold),
+ *   `--border`/`--input` (Warm Taupe), `--accent` (Blush) and `--ring` are set
+ *   to the Parks Ports & Paradise palette from BRAND_KIT.md.
  * - `colors.brand.*` exposes the exact hex values for cases that need them
  *   directly.
  * - `fontFamily` reads the next/font CSS variables set in app/layout.tsx
  *   (--font-heading = Playfair Display, --font-body = Inter).
  *
- * Still outstanding from the brand kit: logo files, brand photography.
+ * Still outstanding from the brand kit: brand photography / photography direction.
  * BRAND_KIT.md is the source of truth for hex / type / radius values.
  */
 const config: Config = {
@@ -63,9 +64,11 @@ const config: Config = {
         },
         // Exact brand hex from BRAND_KIT.md (use when a raw value is needed).
         brand: {
-          primary: "#004b49", // Deep Teal — primary buttons, hero text, branding
-          secondary: "#e28743", // Warm Amber — accents, highlights, secondary
-          surface: "#f4f6f6", // Light Gray — card backgrounds / layout blocks
+          primary: "#7393b9", // Slate Blue — wordmark, primary buttons, links
+          secondary: "#dfca94", // Sand Gold — accents, highlights, sparkle motif
+          taupe: "#b1a294", // Warm Taupe — borders, dividers, badge outline
+          blush: "#fad8d6", // Blush — soft accent / hover washes
+          surface: "#ffffff", // White — background / surface
         },
       },
       fontFamily: {
