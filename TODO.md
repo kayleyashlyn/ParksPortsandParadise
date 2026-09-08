@@ -65,6 +65,11 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Font `display` strategy** — `app/layout.tsx` uses `swap` for Inter +
       Playfair Display. `next/font` auto-adjusts fallback metrics so CLS is
       small; switch to `optional` if we want zero swap shift. Decide and record.
+- [ ] **Homepage First Load JS ~174 kB** (up from ~103) — `components/sanity-image.tsx`
+      is a client component (custom `next/image` loader can't cross the RSC
+      boundary) and pulls in `@sanity/image-url`. Options: precompute a small set
+      of Sanity URLs server-side and drop the loader, or accept it. Check against
+      the Lighthouse/perf gate.
 
 ## Code quality / correctness
 
@@ -90,3 +95,22 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Nav routes** — `/destinations/*`, `/meet-the-team`, `/plan-your-vacation`,
       `/work-with-us`, `/blog`, `/privacy`, `/terms` are linked but 404 until
       built as their own tasks.
+- [ ] **Homepage sections still missing** (`app/page.tsx`) — real hero (blocked
+      on brand photography), testimonials (no content), Instagram feed (needs
+      embed config), a newsletter section. Hero/section copy needs sign-off.
+      Built so far: destination-family grid + trust bar (CMS-driven).
+- [ ] **Nav hrefs vs CMS slugs** — `lib/site.ts` `PRIMARY_NAV` / `FOOTER_NAV`
+      hardcode `/destinations/theme-parks` etc., but the destination-family grid
+      links to the live CMS slug (currently `theme-parks-disney-world-…`).
+      Reconcile once slugs are finalized — ideally generate the Destinations
+      nav from `getDestinationFamilies()`.
+- [ ] **`/destinations/[slug]` pages** — grid + flyout link here; route not
+      built, and families currently have `locations: []` seeded (schema requires
+      ≥1). Needs locations in Studio before the page is meaningful.
+- [ ] **Trust bar renders text only** (`components/trust-bar.tsx`) — to show
+      `badgeImage` seals, add `badgeImage.asset->metadata.dimensions` to the
+      `accreditationBadge` projection in `lib/sanity.queries.ts` and render with
+      `next/image`.
+- [ ] **Sanity image `alt` text** — `SanityImage` currently uses the sibling
+      `title` / `label`. Replace with real alt text once finalized images land
+      (per decision 2026-09-08).
