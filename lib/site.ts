@@ -51,8 +51,15 @@ export const CONTACT = {
   instagramHandle: "@parksportsandparadise",
 } as const;
 
-/** Utility link — footer only, never primary nav (§11 #4). */
-export const AGENT_PORTAL_URL = "#"; // TODO: real gated portal URL from client.
+/**
+ * Agent Portal — footer utility link only (§11 #4). Interim target is the
+ * embedded Sanity Studio (`/studio`) so the link resolves; set
+ * `NEXT_PUBLIC_AGENT_PORTAL_URL` once the real gated portal exists.
+ * NB: the plan's "Agent Portal" is the travel advisors' external portal — a
+ * different system from the CMS Studio. Revisit before launch.
+ */
+export const AGENT_PORTAL_URL =
+  process.env.NEXT_PUBLIC_AGENT_PORTAL_URL ?? "/studio";
 
 /** Client-confirmed (IMPLEMENTATION_PLAN.md §4 trust bar, §11 #4). */
 export const SELLER_OF_TRAVEL = [

@@ -19,6 +19,12 @@ Wired into `tailwind.config.ts` (`colors.brand.*`, exact hex) and
 does not specify a text colour. Dark-mode variants lighten Slate Blue and keep
 Sand Gold; Blush is dropped to a neutral in dark mode.
 
+**Accessibility note:** the `--primary` / `--ring` tokens use a *deepened* shade
+of Slate Blue (`hsl(213 33% 47%)`, ≈ `#5074a0`) so `text-primary` on white and
+white text on `bg-primary` clear WCAG AA (≈ 4.8:1). The exact client swatch
+`#7393b9` remains available as `colors.brand.primary` for large fills and
+decorative use where contrast rules don't apply.
+
 ## 🔤 Typography
 - **Headings Font:** `Playfair Display` (Serif font family)
 - **Body Font:** `Inter` (Sans-serif font family)

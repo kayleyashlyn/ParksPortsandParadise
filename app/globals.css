@@ -5,7 +5,7 @@
 /*
  * Parks Ports & Paradise design tokens (BRAND_KIT.md, palette updated 2026-09-08).
  * The shadcn/ui semantic variables below are set to the brand palette:
- *   --primary        -> #7393b9 Slate Blue   (also --ring)
+ *   --primary        -> Slate Blue, deepened for AA contrast (also --ring)
  *   --secondary      -> #dfca94 Sand Gold
  *   --border/--input -> #b1a294 Warm Taupe
  *   --accent         -> #fad8d6 Blush (light tint)
@@ -23,7 +23,10 @@
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 213 33% 59%; /* #7393b9 Slate Blue */
+    /* Contrast-tuned deeper shade of Slate Blue (#7393b9): 4.8:1 on white so
+       `text-primary` and white-on-`bg-primary` clear WCAG AA. The exact brand
+       swatch stays available as `colors.brand.primary` in tailwind.config.ts. */
+    --primary: 213 33% 47%; /* ~#5074a0 */
     --primary-foreground: 0 0% 100%;
     --secondary: 43 54% 73%; /* #dfca94 Sand Gold */
     --secondary-foreground: 0 0% 12%;
@@ -35,7 +38,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 29 16% 64%; /* #b1a294 Warm Taupe */
     --input: 29 16% 64%;
-    --ring: 213 33% 59%; /* Slate Blue focus ring */
+    --ring: 213 33% 47%; /* matches --primary */
     --radius: 0.5rem;
 
     /* Exact brand hex, for non-Tailwind consumers */

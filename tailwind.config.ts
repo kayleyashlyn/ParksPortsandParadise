@@ -6,7 +6,9 @@ import type { Config } from "tailwindcss";
  * - The shadcn/ui semantic tokens below read `hsl(var(--*))` from
  *   app/globals.css, where `--primary` (Slate Blue), `--secondary` (Sand Gold),
  *   `--border`/`--input` (Warm Taupe), `--accent` (Blush) and `--ring` are set
- *   to the Parks Ports & Paradise palette from BRAND_KIT.md.
+ *   to the Parks Ports & Paradise palette from BRAND_KIT.md. NB: `--primary` is
+ *   a deepened shade of Slate Blue tuned to clear WCAG AA (4.5:1) on white;
+ *   `colors.brand.primary` below is the exact, un-tuned brand swatch (#7393b9).
  * - `colors.brand.*` exposes the exact hex values for cases that need them
  *   directly.
  * - `fontFamily` reads the next/font CSS variables set in app/layout.tsx
