@@ -4,6 +4,19 @@ Engineering debt and pre-launch hardening. **Not** Phase 2 client scope — that
 lives in `BACKLOG.md`. Items here came out of the 2026-09-08 component audit and
 earlier build work; check them off or move them to a plan/issue as they're done.
 
+## Sanity Studio
+
+- [ ] **Register CORS origins on project `kuk7exxj`** — `/studio` boots but
+      can't reach the dataset until each Studio origin is allow-listed. Run
+      `npx sanity cors add http://localhost:3000 --credentials` (and the Vercel
+      preview + production URLs), or add them at sanity.io/manage → API → CORS.
+      Needs Sanity project access.
+- [ ] **`/studio` renders inside the marketing header/footer** — the Studio SPA
+      is wrapped by `app/layout.tsx`'s `<SiteHeader>` / `<SiteFooter>`. It should
+      be full-bleed. Fix belongs to `ui-agent` (route group: move marketing
+      pages under an `app/(marketing)/` layout, leave `app/studio` on a bare
+      root layout).
+
 ## Pre-launch hardening
 
 - [ ] **Security headers** — `next.config.mjs` sets none. Add a `headers()`
