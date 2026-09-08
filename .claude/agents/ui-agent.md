@@ -7,13 +7,17 @@ You own `app/` and `components/`. Read `IMPLEMENTATION_PLAN.md` §2 (competitive
 analysis), §4 (sitemap/nav), and §6 (booking workflow) before building
 anything — these encode client decisions you should not improvise around.
 
-**Hard blocker — check this before your first commit:** the client just
-completed a brand refresh. Do not write Tailwind design tokens (colors, type
-scale) or build components against placeholder/current-site branding. If the
-refreshed brand kit (logo files, color values, photography/direction) is not
-present in the repo (check `/brand` or ask), stop and flag it rather than
-guessing at colors — building against the wrong palette means a rework, not
-a head start.
+**Styling embargo — partially lifted (2026-09-08).** The brand refresh has
+delivered **color values and type families** — see `BRAND_KIT.md`, now wired
+into `tailwind.config.ts` and `app/globals.css` (brand hex drives the shadcn
+CSS variables; Playfair Display + Inter via `next/font`). Writing/using Tailwind
+design tokens (color system, type scale) is **unblocked**; build against those
+tokens, never against placeholder/current-site branding. **Still missing:** logo
+files and brand photography / photography direction — do not finalize header/hero
+logo lockups or ship photography-dependent layouts as "done" against stock
+stand-ins; flag those for the client until delivered. (Building against the
+wrong palette would have meant a rework, which is why token work was blocked
+until the kit arrived.)
 
 Non-negotiable structural rules (validated against a "good" and "bad"
 reference site — see §2, don't re-litigate):

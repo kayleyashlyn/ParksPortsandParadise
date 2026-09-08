@@ -1,11 +1,18 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Scaffold config only. The color values / type scale below are shadcn/ui's
- * default *placeholder* neutrals driven by the CSS variables in app/globals.css.
- * Real brand design tokens (colors, type scale, spacing) are BLOCKED on
- * delivery of the refreshed brand kit — see CLAUDE.md. Do not treat anything
- * here as the Parks Ports & Paradise brand system yet.
+ * Brand design tokens are LIVE as of 2026-09-08 (partial brand-kit delivery).
+ *
+ * - The shadcn/ui semantic tokens below read `hsl(var(--*))` from
+ *   app/globals.css, where `--primary` / `--secondary` / `--ring` / `--muted`
+ *   are now set to the Parks Ports & Paradise palette from BRAND_KIT.md.
+ * - `colors.brand.*` exposes the exact hex values for cases that need them
+ *   directly.
+ * - `fontFamily` reads the next/font CSS variables set in app/layout.tsx
+ *   (--font-heading = Playfair Display, --font-body = Inter).
+ *
+ * Still outstanding from the brand kit: logo files, brand photography.
+ * BRAND_KIT.md is the source of truth for hex / type / radius values.
  */
 const config: Config = {
   darkMode: ["class"],
@@ -54,6 +61,40 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Exact brand hex from BRAND_KIT.md (use when a raw value is needed).
+        brand: {
+          primary: "#004b49", // Deep Teal — primary buttons, hero text, branding
+          secondary: "#e28743", // Warm Amber — accents, highlights, secondary
+          surface: "#f4f6f6", // Light Gray — card backgrounds / layout blocks
+        },
+      },
+      fontFamily: {
+        // Body — Inter (sans). Headings — Playfair Display (serif).
+        sans: [
+          "var(--font-body)",
+          "Inter",
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif",
+        ],
+        heading: [
+          "var(--font-heading)",
+          '"Playfair Display"',
+          "Georgia",
+          "Cambria",
+          "serif",
+        ],
+        serif: [
+          "var(--font-heading)",
+          '"Playfair Display"',
+          "Georgia",
+          "serif",
+        ],
       },
       borderRadius: {
         lg: "var(--radius)",

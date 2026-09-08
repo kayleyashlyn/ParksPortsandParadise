@@ -3,10 +3,16 @@
 @tailwind utilities;
 
 /*
- * shadcn/ui default "neutral" placeholder tokens.
- * These are NOT the Parks Ports & Paradise brand palette — the real color
- * system is blocked on the refreshed brand kit (see CLAUDE.md). Kept here only
- * so shadcn primitives render during scaffolding.
+ * Parks Ports & Paradise design tokens (BRAND_KIT.md, delivered 2026-09-08).
+ * The shadcn/ui semantic variables below are set to the brand palette:
+ *   --primary   -> #004b49 Deep Teal
+ *   --secondary -> #e28743 Warm Amber
+ *   --muted     -> #f4f6f6 Light Gray
+ *   --ring      -> Deep Teal (focus)
+ * Neutral slots (background/foreground/card/border/…) keep shadcn neutrals for
+ * legibility. Fonts: Playfair Display (headings) + Inter (body) are loaded via
+ * next/font in app/layout.tsx and exposed as --font-heading / --font-body.
+ * Still outstanding from the brand kit: logo files, brand photography.
  */
 @layer base {
   :root {
@@ -16,20 +22,25 @@
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
+    --primary: 178 100% 15%; /* #004b49 Deep Teal */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 26 73% 58%; /* #e28743 Warm Amber */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 180 9% 96%; /* #f4f6f6 Light Gray */
     --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 180 9% 96%;
+    --accent-foreground: 178 100% 15%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --ring: 178 100% 15%; /* Deep Teal focus ring */
     --radius: 0.5rem;
+
+    /* Exact brand hex, for non-Tailwind consumers */
+    --brand-primary: #004b49;
+    --brand-secondary: #e28743;
+    --brand-surface: #f4f6f6;
   }
 
   .dark {
@@ -39,10 +50,10 @@
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    --primary: 174 46% 56%; /* lightened Deep Teal for dark surfaces */
+    --primary-foreground: 178 100% 10%;
+    --secondary: 26 73% 58%; /* Warm Amber */
+    --secondary-foreground: 0 0% 100%;
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
     --accent: 0 0% 14.9%;
@@ -51,7 +62,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --ring: 174 46% 56%;
   }
 }
 
@@ -60,6 +71,14 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-sans text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
   }
 }

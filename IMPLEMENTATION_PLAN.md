@@ -220,7 +220,7 @@ Client flagged that agents get added/removed regularly, and doesn't want to depe
 - Multi-step Vacation Request Form with email notification + GA4 conversion tracking.
 - Blog (basic list + post template) **with full content migration from the current Squarespace blog** (confirmed, §11) — export/re-map existing posts, refresh visuals on any post whose imagery predates the brand refresh (§11 #7) rather than migrating stale branding as-is.
 - Domain/DNS cutover plan: build and QA on a Vercel preview URL first, repoint DNS on a scheduled low-traffic window, target well under the client's one-week downtime tolerance (§11 #1).
-- **Prerequisite, not a task:** refreshed brand kit (logo files, color values, photography/direction) from the client before Tailwind design tokens and UI component work begin — see `CLAUDE.md`.
+- **Prerequisite, not a task:** refreshed brand kit (logo files, color values, photography/direction) from the client before Tailwind design tokens and UI component work begin — see `CLAUDE.md`. **Status (2026-09-08):** colour values + type families delivered (`BRAND_KIT.md`, wired into `tailwind.config.ts` / `app/globals.css`); logo files and brand photography / photography direction still outstanding — see the partial-lift note in `CLAUDE.md`.
 - Legal/footer: Seller of Travel numbers, privacy, terms.
 - SEO basics: JSON-LD, sitemap.xml, metadata — per README.
 
