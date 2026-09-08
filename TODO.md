@@ -92,9 +92,9 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;
       pick concrete `images.unsplash.com` URLs / collections (host is already
       allow-listed in `next.config.mjs`).
-- [ ] **Nav routes** — `/destinations/*`, `/meet-the-team`, `/plan-your-vacation`,
-      `/work-with-us`, `/blog`, `/privacy`, `/terms` are linked but 404 until
-      built as their own tasks.
+- [ ] **Nav routes still 404** — `/destinations/*`, `/plan-your-vacation`,
+      `/work-with-us`, `/blog`, `/privacy`, `/terms`. (`/meet-the-team` built
+      2026-09-08.)
 - [ ] **Homepage sections still missing** (`app/page.tsx`) — real hero (blocked
       on brand photography), testimonials (no content), Instagram feed (needs
       embed config), a newsletter section. Hero/section copy needs sign-off.

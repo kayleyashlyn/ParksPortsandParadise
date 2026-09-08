@@ -154,7 +154,7 @@ export type AgentProfile = {
 };
 
 const activeAgentsQuery = groq`
-  *[_type == "agentProfile" && active == true] | order(order asc, name asc) {
+  *[_type == "agentProfile" && active == true] | order(coalesce(order, 9999) asc, name asc) {
     _id,
     _type,
     name,
