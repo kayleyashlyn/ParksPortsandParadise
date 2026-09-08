@@ -41,6 +41,15 @@ export const locationObject = defineType({
       validation: (rule) => rule.max(60),
     }),
     defineField({
+      name: "blurb",
+      title: "Blurb",
+      type: "text",
+      rows: 2,
+      description:
+        "One or two sentences on what makes this destination distinct (client-requested). Keep it punchy — this is a card, not a page.",
+      validation: (rule) => rule.max(200),
+    }),
+    defineField({
       name: "ctaLabel",
       title: "CTA Label Override",
       type: "string",

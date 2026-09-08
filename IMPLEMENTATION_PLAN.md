@@ -90,8 +90,9 @@ Line as the whole top-level offer, not 100 individual sub-pages):
 3. **All-Inclusive Resorts** — resort/beach destinations outside the theme-park and cruise families.
 
 **Client's UX recommendation, adopted:** each family is **one page, broken out by
-location within that page** (photo + location name + one line, grouped in sections
-or via in-page anchors) — not a sub-page per location. This directly avoids the
+location within that page** (photo + location name + a short line and a 1–2
+sentence blurb, grouped in sections or via in-page anchors) — not a sub-page per
+location. This directly avoids the
 "sub-pages on sub-pages" pattern that made the ET Family Travel nav feel bloated,
 and keeps text minimal per the client's direction. A location within a family links
 straight to the Vacation Request Form (pre-filling that destination where possible),
@@ -151,6 +152,7 @@ Location (object, not a standalone document/route)
  ├─ name                     (e.g., "Walt Disney World")
  ├─ image
  ├─ shortTag                 (a few words max — location line, not paragraph copy)
+ ├─ blurb                    (1–2 sentences on what makes this location distinct — client-requested 2026-09-08; still short, schema max 200 chars)
  └─ ctaOverride               (optional, defaults to "Request a Quote," destination pre-filled)
 ```
 
