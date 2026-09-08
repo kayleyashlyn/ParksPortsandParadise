@@ -9,7 +9,8 @@ Full requirements live in `IMPLEMENTATION_PLAN.md` — read that first for *what
 build. This file is about *how* to build it without losing quality as the codebase grows.
 
 ## Project facts an agent should never re-derive from scratch
-- Stack: Next.js (App Router, TS), Sanity.io, Tailwind + shadcn/ui, React Hook Form + Zod, Vercel.
+- Stack: **Next.js 15.5** (App Router) · **React 19** · **TypeScript** (~5.7, `strict`) · **Sanity.io v3** (embedded Studio at `/studio`) · **Tailwind CSS 3.4 + shadcn/ui** ("new-york") · **React Hook Form + Zod** · deployed on **Vercel**.
+- **Build status (2026-09-08):** `npm run build` is green — 7/7 static pages generated. Routes: `/`, `/_not-found`, `/icon.png`, `/apple-icon.png`, `/studio/[[...tool]]` (plus the generated `/favicon.ico`). `npx tsc --noEmit` is clean. Keep both green before every commit — see "Before committing" below.
 - **Platform decision is final:** migrating off Squarespace (client-confirmed, IMPLEMENTATION_PLAN.md §10). Don't re-litigate or hedge on this.
 - **Styling embargo for `ui-agent` — logo cleared; photography interim (updated 2026-09-08):** colour values, type families, and logo files are delivered and wired (tokens in `tailwind.config.ts` / `app/globals.css`; assets in `public/images/logos/` + the favicon set). **Logo embargo: fully cleared.** For **photography**, `BRAND_KIT.md` now records an *interim* placeholder direction (Unsplash categories for theme parks / cruises / resorts) — enough to unblock the global layout shell and component work, but the client's real brand photography has **not** been delivered. The §4 editorial rule still stands: destination-family location images must depict that specific location, and generic stock must not ship on those grids (`qa-agent` checks this). Swap in real photography before any photo-dependent page is called done.
 - No direct booking/payment on-site — every conversion path ends at the Vacation
@@ -21,6 +22,57 @@ build. This file is about *how* to build it without losing quality as the codeba
   competitive analysis in the implementation plan for why).
 - Itinerary detail pages, direct booking, and CRM API integration are Phase 2 —
   do not build them "while you're in there" even if it looks easy.
+
+## Styling & architecture rules
+
+**Design tokens**
+- `BRAND_KIT.md` is the source of truth for palette, type, radius, and assets.
+  `tailwind.config.ts` and `app/globals.css` mirror it — change them together,
+  never let them drift.
+- Style with the shadcn **semantic tokens** (`bg-primary`, `text-foreground`,
+  `text-muted-foreground`, `border-border`, `bg-secondary`, …). No raw hex in
+  component classes. When a semantic token doesn't fit, reach for
+  `colors.brand.*` (the exact client swatches), not a literal hex.
+- `--primary` / `--ring` are a contrast-tuned deeper Slate Blue;
+  `colors.brand.primary` (`#7393b9`) is the exact swatch, for decorative fills
+  only.
+- Fonts load once via `next/font` in `app/layout.tsx`: `font-heading` =
+  Playfair Display, `font-sans` = Inter. No `@import`, no font-CDN `<link>`.
+
+**Components & structure**
+- Server Components by default. Add `"use client"` only for state / effects /
+  browser APIs, and keep those components small and leaf-ward.
+- Use shadcn/ui primitives from `components/ui/*` (add via the CLI per
+  `components.json`). Don't hand-roll a duplicate of one.
+- Navigation / footer / business-fact config lives in `lib/site.ts`, not inline
+  in components. Confirmed facts (Seller-of-Travel numbers, accreditations,
+  Instagram handle) come from `IMPLEMENTATION_PLAN.md` §4 / §11.
+- Import with the `@/*` path alias.
+- Public runtime config: a `NEXT_PUBLIC_*` env var with a sensible in-code
+  fallback **and** a line in `.env.example`.
+
+**Images**
+- `next/image` only, with explicit `width`/`height` (or `fill`). Local files in
+  `public/`; every remote host must be listed in `next.config.mjs`
+  `images.remotePatterns`.
+- Logo variants: `logo-primary` on light, `logo-white` on dark, `logo-black`
+  one-colour on light, `logo-outline` on mid-tone / coloured.
+
+**Layout & accessibility**
+- No horizontal overflow at any width — verify `scrollWidth === clientWidth`
+  at 390px and ≥1280px. Wide content (tables, code) scrolls inside its own
+  container, never the page.
+- Dark sections: wrap in the `dark` class so tokens resolve to their dark
+  values (see `SiteFooter`) — don't hard-code inverted colours.
+- Interactive text and controls clear **WCAG AA 4.5:1** (this is why `--primary`
+  was deepened). Icon-only controls need an `aria-label` or `sr-only` label;
+  disclosure menus need `aria-expanded` + Escape + outside-click close.
+- Exactly one button-weight CTA visible per view ("Request a Quote"); keep a
+  skip-to-content link in the header.
+
+**Before committing**
+- `npx tsc --noEmit` and `npm run build` both green. Scope each commit to one
+  role / task.
 
 ## Why subagents, and when to use them
 
