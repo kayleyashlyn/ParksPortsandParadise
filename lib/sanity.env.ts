@@ -1,23 +1,13 @@
 /**
- * Centralized Sanity environment access. Values are supplied via env vars
- * (see .env.example). Falls back to a harmless placeholder projectId so the
- * scaffold builds before a real Sanity project is provisioned — replace by
- * setting NEXT_PUBLIC_SANITY_PROJECT_ID in the environment.
+ * Centralized Sanity environment access. Values come from env vars (see
+ * .env.example). `projectId` falls back to a placeholder so the scaffold builds
+ * before a real Sanity project is provisioned — set NEXT_PUBLIC_SANITY_PROJECT_ID
+ * to use live content. TODO.md tracks tightening this (fail loud in prod).
  */
 export const apiVersion =
   process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2026-09-08";
 
-export const dataset = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
-  "Missing environment variable: NEXT_PUBLIC_SANITY_DATASET"
-);
+export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
 export const projectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder";
-
-function assertValue<T>(v: T | undefined, errorMessage: string): T {
-  if (v === undefined) {
-    throw new Error(errorMessage);
-  }
-  return v;
-}

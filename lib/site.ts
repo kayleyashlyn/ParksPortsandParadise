@@ -58,8 +58,12 @@ export const CONTACT = {
  * NB: the plan's "Agent Portal" is the travel advisors' external portal — a
  * different system from the CMS Studio. Revisit before launch.
  */
-export const AGENT_PORTAL_URL =
+const rawAgentPortalUrl =
   process.env.NEXT_PUBLIC_AGENT_PORTAL_URL ?? "/studio";
+// Accept only an internal path or an https URL; otherwise fall back.
+export const AGENT_PORTAL_URL = /^(\/|https:\/\/)/.test(rawAgentPortalUrl)
+  ? rawAgentPortalUrl
+  : "/studio";
 
 /** Client-confirmed (IMPLEMENTATION_PLAN.md §4 trust bar, §11 #4). */
 export const SELLER_OF_TRAVEL = [

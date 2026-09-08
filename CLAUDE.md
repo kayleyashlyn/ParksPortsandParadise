@@ -103,6 +103,7 @@ Recommended subagents (define under `.claude/agents/`):
    the document, not from what an earlier agent said it did.
 4. **Phase-2 items go in `BACKLOG.md`, not into code.** If a subagent notices a
    Phase 2 opportunity mid-task, it should log it there and keep scope to Phase 1.
+   Engineering debt / pre-launch hardening (not client scope) goes in `TODO.md`.
 5. **No schema or nav changes without updating the implementation plan.** The plan
    is the source of truth; code and docs should never silently diverge.
 
