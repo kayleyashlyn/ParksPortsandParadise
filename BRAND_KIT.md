@@ -58,3 +58,20 @@ detail vanishes). It was renamed to `logo-outline.png`, and a true reversed
 per-pixel alpha weighted by source luminance so the dark text/sparkles/dividers
 punch through as transparent knockouts. Confirm against the client's official
 reversed lockup if/when one is supplied.
+
+## 📷 Placeholder Imagery
+Interim art direction for scaffolding and layout **only**, pending the client's
+brand photography. Generic stock **must not** ship on destination-family
+location cards — every location image must depict that specific location
+(IMPLEMENTATION_PLAN.md §4; `sanity/schemaTypes/destinationFamily.ts`; enforced
+by `qa-agent`).
+
+| Category | Source | Direction |
+|---|---|---|
+| Theme Parks | Unsplash — `https://unsplash.com` | Upscale theme park / fantasy castle aesthetic |
+| Cruise Lines | Unsplash — `https://unsplash.com` | Luxury cruise ship / ocean liner deck |
+| Resorts | Unsplash — `https://unsplash.com` | Premium coastal resort / infinity pool |
+
+Before these render in-app: pick concrete image URLs
+(`https://images.unsplash.com/photo-…`) or an Unsplash collection per category,
+and add `images.unsplash.com` to `next.config.mjs` → `images.remotePatterns`.

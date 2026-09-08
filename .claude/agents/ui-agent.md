@@ -7,19 +7,17 @@ You own `app/` and `components/`. Read `IMPLEMENTATION_PLAN.md` §2 (competitive
 analysis), §4 (sitemap/nav), and §6 (booking workflow) before building
 anything — these encode client decisions you should not improvise around.
 
-**Styling embargo — mostly lifted (logos delivered 2026-09-08).** The brand
-refresh has delivered **color values, type families, and logo files** — see
-`BRAND_KIT.md`. Palette + type are wired into `tailwind.config.ts` and
-`app/globals.css` (brand hex drives the shadcn CSS variables; Playfair Display
-+ Inter via `next/font`); logos live in `public/images/logos/`
-(`logo-primary.png`, `logo-white.png`, `logo-black.png`) with a raw
-`public/favicon.png`. Writing/using Tailwind design tokens **and** building the
-header/hero logo lockups are **unblocked**; build against those assets, never
-against placeholder/current-site branding. **Still missing:** brand photography
-/ photography direction — do not ship photography-dependent layouts as "done"
-against stock stand-ins; flag those for the client until delivered. (Building
-against the wrong palette/marks would have meant a rework, which is why this was
-blocked until the kit arrived.)
+**Styling embargo — logo cleared; photography interim (updated 2026-09-08).**
+Colour, type, and logo files are delivered and wired — see `BRAND_KIT.md`
+(tokens in `tailwind.config.ts` / `app/globals.css`; logos in
+`public/images/logos/`: `logo-primary.png`, `logo-white.png`, `logo-black.png`,
+`logo-outline.png`; favicon set in `app/`). **Logos: cleared** — build the
+header/hero lockups against these. **Photography:** `BRAND_KIT.md` records an
+*interim* Unsplash placeholder direction so layout/shell/component work is
+unblocked, but the client's real photography is not in yet. Do not ship
+photo-dependent layouts as "done" against stock, and never put a generic image
+on a destination-family location card — it must depict that specific location
+(structural rule below; `qa-agent` enforces it).
 
 Non-negotiable structural rules (validated against a "good" and "bad"
 reference site — see §2, don't re-litigate):

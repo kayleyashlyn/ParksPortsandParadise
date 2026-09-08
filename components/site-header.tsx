@@ -1,0 +1,248 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ChevronDown, Menu, X } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { PRIMARY_CTA, PRIMARY_NAV } from "@/lib/site";
+
+function navLinkClass(active: boolean) {
+  return cn(
+    "inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-foreground/75 transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+    active && "text-foreground",
+  );
+}
+
+export function SiteHeader() {
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [flyoutOpen, setFlyoutOpen] = useState(false);
+  const [mobileSubOpen, setMobileSubOpen] = useState(false);
+  // Only one nav item has a flyout (ui-agent.md: one flyout max).
+  const flyoutRef = useRef<HTMLLIElement>(null);
+
+  // Close every menu on route change.
+  useEffect(() => {
+    setMobileOpen(false);
+    setFlyoutOpen(false);
+    setMobileSubOpen(false);
+  }, [pathname]);
+
+  // Desktop flyout: dismiss on outside click / Escape.
+  useEffect(() => {
+    if (!flyoutOpen) return;
+    function onPointer(e: MouseEvent) {
+      if (flyoutRef.current && !flyoutRef.current.contains(e.target as Node)) {
+        setFlyoutOpen(false);
+      }
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setFlyoutOpen(false);
+    }
+    document.addEventListener("mousedown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [flyoutOpen]);
+
+  // Lock scroll while the mobile panel is open.
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:shadow focus:ring-2 focus:ring-ring"
+      >
+        Skip to content
+      </a>
+
+      <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-6 px-4 sm:px-6 lg:px-8">
+        <Link
+          href="/"
+          data-analytics-id="site-logo"
+          className="flex shrink-0 items-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <Image
+            src="/images/logos/logo-primary.png"
+            alt="Parks Ports and Paradise"
+            width={96}
+            height={120}
+            priority
+            className="h-11 w-auto"
+          />
+          <span className="sr-only">Parks Ports &amp; Paradise — home</span>
+        </Link>
+
+        <nav aria-label="Primary" className="hidden flex-1 md:block">
+          <ul className="flex items-center justify-center gap-1">
+            {PRIMARY_NAV.map((item) =>
+              item.children ? (
+                <li key={item.href} ref={flyoutRef} className="relative">
+                  <button
+                    type="button"
+                    aria-expanded={flyoutOpen}
+                    aria-controls="destinations-flyout"
+                    onClick={() => setFlyoutOpen((v) => !v)}
+                    className={navLinkClass(pathname.startsWith(item.href))}
+                  >
+                    {item.label}
+                    <ChevronDown
+                      aria-hidden
+                      className={cn(
+                        "h-4 w-4 transition-transform",
+                        flyoutOpen && "rotate-180",
+                      )}
+                    />
+                  </button>
+                  <div
+                    id="destinations-flyout"
+                    hidden={!flyoutOpen}
+                    className="absolute left-1/2 top-full z-50 mt-2 w-80 -translate-x-1/2 rounded-lg border border-border bg-popover p-2 text-popover-foreground shadow-lg"
+                  >
+                    <Link
+                      href={item.href}
+                      className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
+                    >
+                      All destinations
+                    </Link>
+                    <div className="my-1 h-px bg-border" />
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className="block rounded-md px-3 py-2 hover:bg-muted"
+                      >
+                        <span className="block text-sm font-medium">
+                          {child.label}
+                        </span>
+                        {child.description ? (
+                          <span className="mt-0.5 block text-xs text-muted-foreground">
+                            {child.description}
+                          </span>
+                        ) : null}
+                      </Link>
+                    ))}
+                  </div>
+                </li>
+              ) : (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={pathname === item.href ? "page" : undefined}
+                    className={navLinkClass(pathname === item.href)}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ),
+            )}
+          </ul>
+        </nav>
+
+        <div className="ml-auto flex items-center gap-2 md:ml-0">
+          <Button asChild variant="secondary" size="sm" className="sm:h-9 sm:px-4">
+            <Link href={PRIMARY_CTA.href}>{PRIMARY_CTA.label}</Link>
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMobileOpen((v) => !v)}
+          >
+            {mobileOpen ? (
+              <X aria-hidden className="h-5 w-5" />
+            ) : (
+              <Menu aria-hidden className="h-5 w-5" />
+            )}
+          </Button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-nav"
+        hidden={!mobileOpen}
+        className="border-t border-border bg-background md:hidden"
+      >
+        <nav
+          aria-label="Mobile"
+          className="mx-auto max-w-[1400px] px-4 py-4 sm:px-6"
+        >
+          <ul className="flex flex-col gap-1">
+            {PRIMARY_NAV.map((item) =>
+              item.children ? (
+                <li key={item.href}>
+                  <button
+                    type="button"
+                    aria-expanded={mobileSubOpen}
+                    onClick={() => setMobileSubOpen((v) => !v)}
+                    className="flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm font-medium hover:bg-muted"
+                  >
+                    {item.label}
+                    <ChevronDown
+                      aria-hidden
+                      className={cn(
+                        "h-4 w-4 transition-transform",
+                        mobileSubOpen && "rotate-180",
+                      )}
+                    />
+                  </button>
+                  <ul
+                    hidden={!mobileSubOpen}
+                    className="ml-3 border-l border-border pl-3"
+                  >
+                    <li>
+                      <Link
+                        href={item.href}
+                        className="block rounded-md px-3 py-2 text-sm hover:bg-muted"
+                      >
+                        All destinations
+                      </Link>
+                    </li>
+                    {item.children.map((child) => (
+                      <li key={child.href}>
+                        <Link
+                          href={child.href}
+                          className="block rounded-md px-3 py-2 text-sm hover:bg-muted"
+                        >
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ),
+            )}
+          </ul>
+          <Button asChild variant="secondary" className="mt-3 w-full">
+            <Link href={PRIMARY_CTA.href}>{PRIMARY_CTA.label}</Link>
+          </Button>
+        </nav>
+      </div>
+    </header>
+  );
+}
