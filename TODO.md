@@ -16,6 +16,24 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       pages under an `app/(marketing)/` layout, leave `app/studio` on a bare
       root layout).
 
+## Sanity data layer
+
+- [ ] **`production` dataset (`kuk7exxj`) returned 0 published docs** (2026-09-08
+      smoke test of `lib/sanity.queries.ts`). Queries and auth work — the dataset
+      is just empty of published content. Confirm the seeded destination
+      families / accreditation badges / agent profiles were **Published** (not
+      left as drafts) and are in the `production` dataset. Re-run the smoke check
+      once populated.
+- [ ] **Image schemas have no `alt` field** — `heroImage`, `destinationLocation.image`,
+      `accreditationBadge.badgeImage`, `agentProfile.photo` return no alt text, so
+      `lib/sanity.queries.ts` can't project one. Either add an `alt` string field
+      to those image fields (content-schema-agent — needs an IMPLEMENTATION_PLAN
+      update per CLAUDE.md) or have consumers derive alt from the sibling
+      `name` / `title` / `label`.
+- [ ] **Query return types are hand-written, not runtime-validated** — if a GROQ
+      projection in `lib/sanity.queries.ts` drifts from its TS type, nothing
+      catches it. Consider `sanity typegen` or a Zod parse at the fetch boundary.
+
 ## Pre-launch hardening
 
 - [ ] **Security headers** — `next.config.mjs` sets none. Add a `headers()`
