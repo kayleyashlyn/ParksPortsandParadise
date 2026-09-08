@@ -6,11 +6,10 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 
 ## Sanity Studio
 
-- [ ] **Register CORS origins on project `kuk7exxj`** — `/studio` boots but
-      can't reach the dataset until each Studio origin is allow-listed. Run
-      `npx sanity cors add http://localhost:3000 --credentials` (and the Vercel
-      preview + production URLs), or add them at sanity.io/manage → API → CORS.
-      Needs Sanity project access.
+- [x] `http://localhost:3000` registered as a CORS origin on project `kuk7exxj`
+      (done 2026-09-08; `/studio` now reaches the API and shows the login screen).
+- [ ] **Add the remaining Studio origins** to project `kuk7exxj` CORS — the
+      Vercel preview URL(s) and the production domain — before deploy.
 - [ ] **`/studio` renders inside the marketing header/footer** — the Studio SPA
       is wrapped by `app/layout.tsx`'s `<SiteHeader>` / `<SiteFooter>`. It should
       be full-bleed. Fix belongs to `ui-agent` (route group: move marketing
