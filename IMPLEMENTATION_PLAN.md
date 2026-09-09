@@ -209,12 +209,13 @@ persona, §3), a short **single-step** form, and its own API route
 | What type of travel do you plan to book? | textarea | — |
 
 **Résumé:** not a file upload — the page asks applicants to email their résumé to
-`hello@` so the site needs no file-storage integration. (Résumé upload is a
-possible follow-up, tracked in `TODO.md`.) The page also carries a short
-**FAQ** (`<details>` list) covering start-up fee, experience, commission
-structure, E&O insurance, culture, and time-to-first-booking — starter answers
-that defer the specific figures to the interview; the agency confirms the real
-fee / commission / E&O details before launch.
+`hello@` so the site needs no file-storage integration. Email-only is a
+**confirmed client decision** (2026-09-09), not an interim shortcut. The page
+also carries a short **FAQ** (`<details>` list) covering experience, E&O
+insurance, culture, and time-to-first-booking. Per client direction (2026-09-09)
+there is **no visible fee / commission structure** on the page — compensation is
+covered during onboarding, and the FAQ uses "onboarding" (not "interview")
+throughout.
 
 ---
 

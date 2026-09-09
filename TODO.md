@@ -64,6 +64,25 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       `"placeholder"`. Decide: keep for scaffold builds, or throw when
       `NODE_ENV === "production"` and the var is unset so a misconfigured deploy
       fails loud instead of rendering against a bogus project.
+- [x] **`SITE_URL` crashed the build on a blank env var** — fixed 2026-09-09
+      (`fix/site-url-empty-env`). `NEXT_PUBLIC_SITE_URL=""` in Vercel (created
+      while adding other env vars) got past `?? fallback` and crashed
+      `new URL(SITE_URL)` in `app/layout.tsx` — broke every deploy incl.
+      production. `lib/site.ts` now treats empty/blank the same as unset.
+- [ ] **Vercel env vars regressed (2026-09-09) — deploys are RED.** After the
+      `SITE_URL` fix above, the Vercel build fails deeper with
+      `Dataset "production" not found for project ID "placeholder"` — i.e.
+      `NEXT_PUBLIC_SANITY_PROJECT_ID` / `NEXT_PUBLIC_SANITY_DATASET` are missing
+      or blank on Vercel (they were working through PR #13; likely disturbed
+      while adding `NEXT_PUBLIC_GA4_MEASUREMENT_ID` / `RESEND_API_KEY`).
+      **Owner: client — restore in Vercel → Settings → Environment Variables,
+      all environments:**
+      `NEXT_PUBLIC_SANITY_PROJECT_ID=kuk7exxj`,
+      `NEXT_PUBLIC_SANITY_DATASET=production`,
+      `NEXT_PUBLIC_SANITY_API_VERSION=2026-09-08`, and a non-blank
+      `NEXT_PUBLIC_SITE_URL` (Production = the prod domain, Preview = the preview
+      URL). Re-check the whole env list against `.env.example` while in there.
+      The site is CMS-driven — no code change makes it build green without these.
 - [ ] **`AGENT_PORTAL_URL` real target** — `lib/site.ts` currently points the
       footer "Agent Portal" link at `/studio` (the CMS). The plan's Agent Portal
       is the advisors' external portal — a different system. Set
@@ -161,16 +180,14 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       images at proper resolution, and set `publishedAt` to the original date
       (posts with a future `publishedAt` stay hidden). Refresh visuals on posts
       whose imagery predates the brand refresh (IMPLEMENTATION_PLAN §11 #2/#7).
-- [ ] **`/work-with-us` — confirm recruiting specifics + optional résumé upload**
-      (`feat/work-with-us`). Page + single-step application form built
-      (`app/work-with-us/page.tsx`, `components/work-with-us-form.tsx`, API
-      `app/api/work-with-us/route.ts` → shared `lib/notify.ts` → `hello@`).
-      **Before launch:** the FAQ answers on start-up fee, commission structure,
-      and E&O insurance are deliberately non-specific ("confirmed in your
-      interview") — replace with the agency's real figures/policy if they want
-      them public. **Optional follow-up:** résumé file upload (applicants
-      currently email it in) — needs multipart handling in the route +
-      attachment via Resend, or Vercel Blob storage. Not scoped for launch.
+- [x] **`/work-with-us`** — page + single-step application form built and copy
+      finalised per client (2026-09-09): résumé is **email-only** (confirmed, not
+      interim); **no visible fee / commission structure**; FAQ uses "onboarding"
+      not "interview" and covers experience, E&O, culture, time-to-first-booking.
+      (`app/work-with-us/page.tsx`, `components/work-with-us-form.tsx`,
+      `app/api/work-with-us/route.ts` → `lib/notify.ts` → `hello@`.) No open
+      follow-up — E&O answer still says "confirmed during onboarding", which is
+      the intended framing.
 - [ ] **`/privacy` + `/terms` are DRAFT** (`feat/privacy-terms-shells`) —
       starting-point copy in `app/privacy/page.tsx` / `app/terms/page.tsx`, wrapped
       by `components/legal-page.tsx`. A "Draft — pending legal review" notice shows
