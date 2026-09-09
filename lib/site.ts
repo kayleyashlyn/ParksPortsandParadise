@@ -14,21 +14,23 @@ export const PRIMARY_NAV: NavItem[] = [
   {
     label: "Destinations",
     href: "/destinations",
+    // hrefs match the live Sanity `destinationFamily` slugs (parks / ports /
+    // paradise) — keep in sync with the CMS, not with these labels.
     children: [
       {
         label: "Theme Parks",
-        href: "/destinations/theme-parks",
+        href: "/destinations/parks",
         description:
           "Walt Disney World, Disneyland, Universal, SeaWorld, Aulani",
       },
       {
         label: "Cruise Lines",
-        href: "/destinations/cruise-lines",
+        href: "/destinations/ports",
         description: "Disney Cruise Line, Royal Caribbean",
       },
       {
         label: "All-Inclusive Resorts",
-        href: "/destinations/all-inclusive-resorts",
+        href: "/destinations/paradise",
         description: "Beach and resort escapes beyond the parks and ships",
       },
     ],
@@ -85,12 +87,9 @@ export const FOOTER_NAV: FooterColumn[] = [
   {
     heading: "Explore",
     links: [
-      { label: "Theme Parks", href: "/destinations/theme-parks" },
-      { label: "Cruise Lines", href: "/destinations/cruise-lines" },
-      {
-        label: "All-Inclusive Resorts",
-        href: "/destinations/all-inclusive-resorts",
-      },
+      { label: "Theme Parks", href: "/destinations/parks" },
+      { label: "Cruise Lines", href: "/destinations/ports" },
+      { label: "All-Inclusive Resorts", href: "/destinations/paradise" },
       { label: "Trip Inspiration", href: "/blog" },
     ],
   },

@@ -48,6 +48,8 @@ export type DestinationLocation = {
   image: SanityImage;
   /** Optional short location line (schema max 60). */
   shortTag: string | null;
+  /** Optional 1–2 sentence blurb on what makes this location distinct (schema max 200). */
+  blurb: string | null;
   /** Optional CTA label override; falls back to "Request a Quote". */
   ctaLabel: string | null;
 };
@@ -78,6 +80,7 @@ const destinationFamilyProjection = groq`{
     name,
     image,
     shortTag,
+    blurb,
     ctaLabel
   }, [])
 }`;
