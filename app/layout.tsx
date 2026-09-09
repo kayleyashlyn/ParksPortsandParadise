@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
+import { Analytics } from "@/components/analytics";
+import { CookieConsent } from "@/components/cookie-consent";
 import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -9,8 +10,10 @@ import { siteJsonLd } from "@/lib/seo";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-// GA4 (IMPLEMENTATION_PLAN.md §6/§11). Only loads when the ID is set —
-// keep it to Vercel Production so preview/dev traffic stays out of the data.
+// GA4 (IMPLEMENTATION_PLAN.md §6/§11). Loads only when the ID is set (keep it to
+// Vercel Production so preview/dev traffic stays out of the data) *and* the
+// visitor has accepted analytics cookies — see `components/analytics.tsx` +
+// `components/cookie-consent.tsx`.
 const gaId = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID;
 
 // Body — Inter (sans-serif) per BRAND_KIT.md
@@ -75,8 +78,9 @@ export default function RootLayout({
           {children}
         </main>
         <SiteFooter />
+        <CookieConsent />
+        <Analytics gaId={gaId} />
       </body>
-      {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
     </html>
   );
 }

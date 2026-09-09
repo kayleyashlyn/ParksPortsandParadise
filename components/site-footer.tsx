@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Instagram } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { CookieSettingsLink } from "@/components/cookie-settings-link";
 import { NewsletterForm } from "@/components/newsletter-form";
 import {
   ACCREDITATIONS,
@@ -98,6 +99,7 @@ export function SiteFooter() {
             reserved.
           </p>
           <div className="flex items-center gap-4">
+            <CookieSettingsLink />
             <a
               href={CONTACT.instagram}
               target="_blank"

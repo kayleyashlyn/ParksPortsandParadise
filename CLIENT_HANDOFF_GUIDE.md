@@ -173,17 +173,24 @@ Two separate things, often confused:
   container.
 - **It only runs in Production**, and only once the developer sets the Measurement
   ID in Vercel. Preview/dev visits are not counted.
+- **Analytics is opt-in.** Visitors see a small cookie banner; GA4 loads **only**
+  if they press "Accept." Declining, ignoring it, or sending a browser
+  "Global Privacy Control" signal means no analytics loads at all — so your
+  numbers reflect visitors who accepted, not total traffic. Visitors can change
+  their choice any time via the **"Cookie settings"** link in the site footer.
 - **The key number for you:** a **`generate_lead`** event fires each time the
   Vacation Request Form is submitted *and the notification email is confirmed
   sent*. This is your inquiry count. In GA4 Admin it should be marked as a
-  **key event** so it shows up in conversion reports.
+  **key event** so it shows up in conversion reports. (Note: a `generate_lead`
+  only reaches GA4 if that visitor accepted analytics cookies.)
 
 ### Remaining setup
 - [ ] Developer sets `NEXT_PUBLIC_GA4_MEASUREMENT_ID` in Vercel Production.
 - [ ] In GA4 Admin → Events, mark `generate_lead` as a **key event**.
-- [ ] Decide on a cookie-consent banner (the site sets analytics cookies and the
-      audience includes California residents). The Privacy Policy has a
-      placeholder section for this pending the decision.
+- [x] Cookie-consent banner — **built** (opt-in, GPC-aware, "Cookie settings" in
+      the footer to change the choice). The Privacy Policy §6 describes it.
+      Remaining wording to confirm with counsel at legal review: none specific —
+      §6 now reads as final pending the overall legal pass.
 
 ### Reading it
 `analytics.google.com` → **Reports → Realtime** for live activity;
@@ -263,7 +270,7 @@ Keep this line current.
       photos.
 - [ ] Resend: account + API key + verified sending domain (DNS).
 - [ ] GA4: Measurement ID set in Vercel Production; `generate_lead` marked as key
-      event; cookie-consent decision made.
+      event. (Cookie-consent banner is built — opt-in, GPC-aware.)
 - [ ] SnapWidget: account created, widget built, ID entered in Site Settings
       (or feed left disabled for launch).
 - [ ] Legal: `/privacy` + `/terms` reviewed by counsel, placeholders filled,
@@ -281,3 +288,4 @@ Keep this line current.
 | Date | Change |
 |---|---|
 | 2026-09-09 | Guide created. Seeded from current build state: Sanity content models (incl. new per-image Alt text + hidden Search keywords), Vercel hosting, Resend form email, GA4 (`G-31KW1BQLNR`), SnapWidget plan, draft legal pages. |
+| 2026-09-09 | §7 — analytics is now **opt-in** behind a cookie-consent banner (GPC-aware; "Cookie settings" link in the footer). Privacy Policy §6 rewritten from placeholders to final-pending-legal wording. |

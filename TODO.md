@@ -130,17 +130,21 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 
 ## Feature wiring (owned elsewhere, tracked here for visibility)
 
-- [ ] **GA4** — tag wired in `app/layout.tsx` via `@next/third-parties`
-      (`GoogleAnalytics`), gated on `NEXT_PUBLIC_GA4_MEASUREMENT_ID`
-      (`G-31KW1BQLNR`, stream 15748056048). **Remaining:**
+- [ ] **GA4** — tag wired in `app/layout.tsx` via `@next/third-parties`,
+      double-gated on `NEXT_PUBLIC_GA4_MEASUREMENT_ID` (`G-31KW1BQLNR`, stream
+      15748056048) **and** analytics consent (`components/analytics.tsx`).
+      **Remaining:**
       - [ ] Set `NEXT_PUBLIC_GA4_MEASUREMENT_ID` in Vercel **Production** only.
       - [ ] In GA4 Admin, mark `generate_lead` as a **key event**.
-      - [ ] Consent / cookie-banner decision (GA4 sets cookies; audience
-            includes CA residents). The `/privacy` page has a cookies section
-            (§6) but with `[If a consent banner is used:]` / GPC placeholders —
-            finalise the banner wording and GPC handling there once decided.
+      - [x] Consent / cookie banner — **built** (`feat/cookie-consent`).
+            Opt-in: GA loads only after "Accept" in `components/cookie-consent.tsx`;
+            first-party cookie `ppp-analytics-consent`; GPC signal honoured as a
+            silent decline; "Cookie settings" control in the footer re-opens it.
+            `/privacy` §6 rewritten from placeholders. Final wording still rides
+            the overall legal review.
       - The `generate_lead` event itself fires from the Vacation Request Form
-        (`feat/plan-your-vacation` / PR #4) — safe no-op until this tag lands.
+        (`feat/plan-your-vacation` / PR #4) — `window.gtag?.()` is optional-chained,
+        so it's a safe no-op when the visitor declined or the tag isn't loaded.
 - [ ] **Newsletter submit** — `components/newsletter-form.tsx` is presentational;
       needs a real endpoint + GA4 event. Owner: `forms-agent` / `seo-agent`.
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;
