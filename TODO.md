@@ -100,12 +100,17 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Nav routes still 404** — `/work-with-us`, `/blog`, `/privacy`,
       `/terms`. (`/meet-the-team` 2026-09-08; `/destinations` +
       `/destinations/[slug]` + `/plan-your-vacation` 2026-09-09.)
-- [ ] **Vacation Request Form — email provider decision** — `sendNotification()`
-      in `app/api/vacation-request/route.ts` is provider-agnostic and currently
-      a no-op (validates + logs, `delivered: false`). Pick Resend or SendGrid,
-      set `EMAIL_PROVIDER_API_KEY` / `EMAIL_FROM` / `EMAIL_TO`, and wire the
-      send. Until then, valid submissions are logged server-side only. Owner:
-      `forms-agent` + client decision.
+- [x] **Vacation Request Form — email provider** — Resend chosen 2026-09-09;
+      `sendNotification()` in `app/api/vacation-request/route.ts` now calls the
+      Resend SDK. **Still needed before it actually sends:**
+      - [ ] Set `RESEND_API_KEY` (Vercel env, all environments) + `EMAIL_FROM` /
+            `EMAIL_TO` if overriding the defaults.
+      - [ ] Verify a sending domain in Resend for `parksportsandparadise.com`
+            (or a `send.` subdomain) — add its SPF/DKIM (and DMARC) DNS records.
+            These coexist with the existing Google Workspace MX; the Workspace
+            inbox `hello@parksportsandparadise.com` stays the recipient.
+      Until both are done the route validates + logs the submission and returns
+      `{ delivered: false }`.
 - [ ] **Vacation Request Form — GA4 `generate_lead` event** — the form fires
       `window.gtag("event", "generate_lead", …)` on success, but no gtag /
       `NEXT_PUBLIC_GA4_MEASUREMENT_ID` exists yet, so it's a no-op. Owner:

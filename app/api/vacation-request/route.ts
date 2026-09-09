@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 import {
   vacationRequestSchema,
@@ -36,16 +37,20 @@ export async function POST(request: Request) {
     );
   }
 
-  const summary = formatSummary(parsed.data);
-  const { delivered } = await sendNotification(summary, parsed.data.email);
+  const data = parsed.data;
+  const { delivered } = await sendNotification({
+    subject: `New vacation request — ${data.firstName} ${data.lastName}`,
+    text: formatSummary(data),
+    replyTo: data.email,
+  });
 
   if (!delivered) {
     // The submission is valid and captured in the logs — it just wasn't
-    // emailed, because no email provider is wired yet (see TODO.md). Surface
-    // it loudly so it isn't lost during the scaffold phase.
+    // emailed (no RESEND_API_KEY, unverified sending domain, or a Resend
+    // error). Surface it loudly so nothing is lost.
     console.error(
-      "[vacation-request] VALID submission NOT delivered — email provider not configured:\n" +
-        summary,
+      "[vacation-request] VALID submission NOT delivered:\n" +
+        formatSummary(data),
     );
   }
 
@@ -87,32 +92,60 @@ function formatSummary(data: VacationRequestInput): string {
   ].join("\n");
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 /**
- * Send the advisor notification to hello@parksportsandparadise.com.
+ * Send the advisor notification via Resend.
  *
- * TODO(forms-agent): wire the chosen provider (Resend or SendGrid — still an
- * open decision; see .env.example / TODO.md). Kept provider-agnostic on purpose
- * — do NOT npm-install a provider SDK until the client picks one.
+ * - Recipient (`EMAIL_TO`, default hello@parksportsandparadise.com) is a Google
+ *   Workspace inbox monitored by Paige/Ashley — Resend only sends.
+ * - `EMAIL_FROM` must be an address on a domain verified in Resend (SPF/DKIM
+ *   DNS records added alongside the existing Workspace MX — see TODO.md).
+ * - `replyTo` is the traveller's own email so advisors can just hit Reply.
+ *
+ * Without `RESEND_API_KEY` this is a no-op that returns `{ delivered: false }`
+ * (the route still logs the submission), so dev/preview work without a key.
  */
-async function sendNotification(
-  summary: string,
-  replyTo: string,
-): Promise<{ delivered: boolean }> {
-  const apiKey = process.env.EMAIL_PROVIDER_API_KEY;
+async function sendNotification(opts: {
+  subject: string;
+  text: string;
+  replyTo: string;
+}): Promise<{ delivered: boolean }> {
+  const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.EMAIL_TO || "hello@parksportsandparadise.com";
-  const from = process.env.EMAIL_FROM || "noreply@parksportsandparadise.com";
+  const from =
+    process.env.EMAIL_FROM ||
+    "Parks Ports & Paradise <no-reply@parksportsandparadise.com>";
 
   if (!apiKey) {
     return { delivered: false };
   }
 
-  // Placeholder for the real provider call, e.g.:
-  //   await resend.emails.send({ to, from, replyTo, subject, text: summary });
-  void to;
-  void from;
-  void replyTo;
-  console.warn(
-    "[vacation-request] EMAIL_PROVIDER_API_KEY is set but no provider is wired yet.",
-  );
-  return { delivered: false };
+  try {
+    const resend = new Resend(apiKey);
+    const { error } = await resend.emails.send({
+      from,
+      to,
+      replyTo: opts.replyTo,
+      subject: opts.subject,
+      text: opts.text,
+      html: `<pre style="font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;margin:0">${escapeHtml(
+        opts.text,
+      )}</pre>`,
+    });
+
+    if (error) {
+      console.error("[vacation-request] Resend error:", error);
+      return { delivered: false };
+    }
+    return { delivered: true };
+  } catch (err) {
+    console.error("[vacation-request] email send threw:", err);
+    return { delivered: false };
+  }
 }
