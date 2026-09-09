@@ -97,9 +97,26 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;
       pick concrete `images.unsplash.com` URLs / collections (host is already
       allow-listed in `next.config.mjs`).
-- [ ] **Nav routes still 404** — `/plan-your-vacation`, `/work-with-us`,
-      `/blog`, `/privacy`, `/terms`. (`/meet-the-team` built 2026-09-08;
-      `/destinations` + `/destinations/[slug]` built 2026-09-09.)
+- [ ] **Nav routes still 404** — `/work-with-us`, `/blog`, `/privacy`,
+      `/terms`. (`/meet-the-team` 2026-09-08; `/destinations` +
+      `/destinations/[slug]` + `/plan-your-vacation` 2026-09-09.)
+- [ ] **Vacation Request Form — email provider decision** — `sendNotification()`
+      in `app/api/vacation-request/route.ts` is provider-agnostic and currently
+      a no-op (validates + logs, `delivered: false`). Pick Resend or SendGrid,
+      set `EMAIL_PROVIDER_API_KEY` / `EMAIL_FROM` / `EMAIL_TO`, and wire the
+      send. Until then, valid submissions are logged server-side only. Owner:
+      `forms-agent` + client decision.
+- [ ] **Vacation Request Form — GA4 `generate_lead` event** — the form fires
+      `window.gtag("event", "generate_lead", …)` on success, but no gtag /
+      `NEXT_PUBLIC_GA4_MEASUREMENT_ID` exists yet, so it's a no-op. Owner:
+      `seo-agent` (analytics wiring). Per `forms-agent.md` a missing event is a
+      bug, not optional.
+- [ ] **Vacation Request Form — spam hardening** — honeypot field only. Add
+      rate-limiting (and/or a captcha) on `app/api/vacation-request/route.ts`
+      before launch.
+- [ ] **`?destination=` prefill is best-effort** — `matchDestinationOption()`
+      maps a CMS location name to one of the form's fixed options by fuzzy
+      contains; names it can't match just don't pre-fill.
 - [ ] **Homepage sections still missing** (`app/page.tsx`) — real hero (blocked
       on brand photography), testimonials (no content), Instagram feed (needs
       embed config), a newsletter section. Hero/section copy needs sign-off.
