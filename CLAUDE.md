@@ -24,6 +24,12 @@ build. This file is about *how* to build it without losing quality as the codeba
   competitive analysis in the implementation plan for why).
 - Itinerary detail pages, direct booking, and CRM API integration are Phase 2 —
   do not build them "while you're in there" even if it looks easy.
+- **`CLIENT_HANDOFF_GUIDE.md` is a living client-facing deliverable** — a
+  detailed operations guide (every integration, sign-in, troubleshooting step,
+  pre-launch task) for the non-technical client. Any change that adds or alters
+  an integration, an account/credential, an env var, a CMS model, or an
+  editor-facing workflow **must update it in the same PR**, including its Change
+  log. Keep the tone plain-language; the audience is Paige/Ashley, not a dev.
 
 ## Styling & architecture rules
 
@@ -126,3 +132,6 @@ Recommended subagents (define under `.claude/agents/`):
 - Passes `qa-agent` review against the nav/CTA brand constraints above.
 - Lighthouse/perf and basic a11y check before merge (fast pages were a stated
   business goal, not just a tech preference).
+- If the feature touches an integration, credential, env var, CMS model, or
+  editor workflow, `CLIENT_HANDOFF_GUIDE.md` is updated in the same PR (with a
+  Change-log entry).
