@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { sendNotification, summaryLine as line } from "@/lib/notify";
-import {
-  vacationRequestSchema,
-  type VacationRequestInput,
-} from "@/lib/vacationRequestSchema";
+import { workWithUsSchema, type WorkWithUsInput } from "@/lib/workWithUsSchema";
 
 export const runtime = "nodejs";
 
@@ -29,7 +26,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const parsed = vacationRequestSchema.safeParse(body);
+  const parsed = workWithUsSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
       { ok: false, error: "Validation failed", issues: parsed.error.flatten() },
@@ -39,51 +36,37 @@ export async function POST(request: Request) {
 
   const data = parsed.data;
   const { delivered } = await sendNotification({
-    subject: `New vacation request — ${data.firstName} ${data.lastName}`,
+    subject: `New advisor application — ${data.firstName} ${data.lastName}`,
     text: formatSummary(data),
     replyTo: data.email,
   });
 
   if (!delivered) {
-    // The submission is valid and captured in the logs — it just wasn't
-    // emailed (no RESEND_API_KEY, unverified sending domain, or a Resend
-    // error). Surface it loudly so nothing is lost.
+    // Valid submission, captured here — it just wasn't emailed (no
+    // RESEND_API_KEY, unverified domain, or a Resend error). Log it loudly.
     console.error(
-      "[vacation-request] VALID submission NOT delivered:\n" +
-        formatSummary(data),
+      "[work-with-us] VALID submission NOT delivered:\n" + formatSummary(data),
     );
   }
 
   return NextResponse.json({ ok: true, delivered });
 }
 
-function formatSummary(data: VacationRequestInput): string {
+function formatSummary(data: WorkWithUsInput): string {
   return [
-    "New Vacation Request",
+    "New Advisor Application",
     "",
     "CONTACT",
     line("Name", `${data.firstName} ${data.lastName}`),
     line("Email", data.email),
     line("Phone", data.phone),
     "",
-    "DESTINATIONS",
-    data.destinations.join(", "),
+    "CURRENT TRAVEL-AGENT EXPERIENCE",
+    data.experience,
     "",
-    "DATES & BUDGET",
-    line("Check-in", data.checkInDate),
-    line("Check-out", data.checkOutDate),
-    line("Dates flexible", data.datesFlexible),
-    line("Budget", data.budget),
+    "TRAVEL THEY PLAN TO BOOK",
+    data.travelFocus && data.travelFocus.length > 0 ? data.travelFocus : "—",
     "",
-    "TRIP DETAILS",
-    line("Celebrating", data.celebrating),
-    line("Discount eligibility", data.discounts?.join(", ")),
-    line("Priorities", data.priorities?.join(", ")),
-    "",
-    "PARTY",
-    line("Party size", data.partySize),
-    line("Ages under 18", data.agesUnder18),
-    line("Rooms needed", data.roomsNeeded),
-    line("Referral source", data.referral),
+    "Résumé: applicant was asked to email it to the business inbox.",
   ].join("\n");
 }

@@ -209,16 +209,31 @@ Two separate things, often confused:
 
 ---
 
-## 9. The Vacation Request Form — how leads work
+## 9. Forms — how submissions reach you
 
-- It's the **only** contact path on the site — there is deliberately no separate
+Two forms, both emailing the same inbox (`hello@`) through Resend (Section 6):
+
+**Vacation Request Form** (`/plan-your-vacation`) — the traveller lead path.
+
+- It's the **only** customer contact path — there is deliberately no separate
   "Contact Us" form, and no booking or payment happens on the site.
-- It's a 5-step form. On submit, the site: validates the entries, emails you the
-  summary (Section 6), and records a `generate_lead` analytics event (Section 7).
-- **Spam:** a hidden field traps bots; those submissions are silently dropped and
-  never emailed.
-- Every "Request a Quote" button across the site leads here, some pre-filling the
-  destination.
+- 5-step form. On submit: validates, emails you the summary, records a
+  `generate_lead` analytics event (Section 7).
+- Every "Request a Quote" button leads here, some pre-filling the destination.
+
+**Work With Us application** (`/work-with-us`) — the recruiting path.
+
+- Short application form for prospective advisors (name, email, phone,
+  travel-agent experience, what they plan to book). On submit it emails you a
+  summary titled "New advisor application," reply-to the applicant.
+- Applicants are asked to **email their résumé** to `hello@` — the form has no
+  file upload.
+- The page also has a short FAQ. The answers on fees / commission / E&O are
+  intentionally non-specific ("confirmed in your interview") — tell the developer
+  if you want real figures published there.
+
+**Spam:** both forms have a hidden field that traps bots; those submissions are
+silently dropped and never emailed.
 
 ---
 
@@ -272,7 +287,11 @@ Keep this line current.
       intact; done at a low-traffic time.
 - [ ] Security headers added (also required for the SnapWidget embed).
 - [ ] Default social-share (OG) image supplied and set.
-- [ ] `/work-with-us` and `/blog` — decide if in scope for launch (currently 404).
+- [ ] `/work-with-us` — built (recruiting page + application form). Confirm the
+      FAQ answers on start-up fee / commission / E&O, and decide whether to add a
+      résumé upload (applicants currently email it in).
+- [ ] `/blog` — decide if in scope for launch (currently 404; needs a Sanity
+      `post` schema + list/detail pages + migration of existing Squarespace posts).
 
 ---
 
@@ -281,3 +300,4 @@ Keep this line current.
 | Date | Change |
 |---|---|
 | 2026-09-09 | Guide created. Seeded from current build state: Sanity content models (incl. new per-image Alt text + hidden Search keywords), Vercel hosting, Resend form email, GA4 (`G-31KW1BQLNR`), SnapWidget plan, draft legal pages. |
+| 2026-09-09 | §9 — `/work-with-us` recruiting page + application form built (second Resend-backed form → `hello@`; résumé by email, no upload). FAQ fee/commission/E&O answers are non-specific pending agency confirmation. |

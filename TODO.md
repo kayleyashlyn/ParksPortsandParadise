@@ -146,10 +146,20 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;
       pick concrete `images.unsplash.com` URLs / collections (host is already
       allow-listed in `next.config.mjs`).
-- [ ] **Nav routes still 404** — `/work-with-us`, `/blog`. (`/meet-the-team`
-      2026-09-08; `/destinations` + `/destinations/[slug]` +
-      `/plan-your-vacation` 2026-09-09; `/privacy` + `/terms` 2026-09-09 as
-      **draft** shells — see below.)
+- [ ] **Nav routes still 404** — `/blog` only. (`/meet-the-team` 2026-09-08;
+      `/destinations` + `/destinations/[slug]` + `/plan-your-vacation` 2026-09-09;
+      `/privacy` + `/terms` 2026-09-09 as **draft** shells — see below;
+      `/work-with-us` 2026-09-09 — see below.)
+- [ ] **`/work-with-us` — confirm recruiting specifics + optional résumé upload**
+      (`feat/work-with-us`). Page + single-step application form built
+      (`app/work-with-us/page.tsx`, `components/work-with-us-form.tsx`, API
+      `app/api/work-with-us/route.ts` → shared `lib/notify.ts` → `hello@`).
+      **Before launch:** the FAQ answers on start-up fee, commission structure,
+      and E&O insurance are deliberately non-specific ("confirmed in your
+      interview") — replace with the agency's real figures/policy if they want
+      them public. **Optional follow-up:** résumé file upload (applicants
+      currently email it in) — needs multipart handling in the route +
+      attachment via Resend, or Vercel Blob storage. Not scoped for launch.
 - [ ] **`/privacy` + `/terms` are DRAFT** (`feat/privacy-terms-shells`) —
       starting-point copy in `app/privacy/page.tsx` / `app/terms/page.tsx`, wrapped
       by `components/legal-page.tsx`. A "Draft — pending legal review" notice shows
