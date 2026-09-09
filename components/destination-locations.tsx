@@ -24,10 +24,20 @@ export function DestinationLocations({
 }) {
   if (locations.length === 0) return null;
 
+  // Readable in-page anchors, de-duplicated so repeated (or punctuation-only)
+  // location names can't collide on `id` / `aria-labelledby`.
+  const seen = new Map<string, number>();
+  const anchors = locations.map((location) => {
+    const base = slugify(location.name) || location._key;
+    const n = (seen.get(base) ?? 0) + 1;
+    seen.set(base, n);
+    return n === 1 ? base : `${base}-${n}`;
+  });
+
   return (
     <div className="space-y-16">
       {locations.map((location, i) => {
-        const anchor = slugify(location.name);
+        const anchor = anchors[i];
         const ctaLabel = location.ctaLabel?.trim() || PRIMARY_CTA.label;
         const href = `${PRIMARY_CTA.href}?destination=${encodeURIComponent(
           location.name,
@@ -64,12 +74,12 @@ export function DestinationLocations({
                     {location.shortTag}
                   </p>
                 ) : null}
-                <h3
+                <h2
                   id={`${anchor}-heading`}
                   className="mt-1 text-2xl text-foreground sm:text-3xl"
                 >
                   {location.name}
-                </h3>
+                </h2>
                 {location.blurb ? (
                   <p className="mt-3 max-w-prose text-pretty text-muted-foreground">
                     {location.blurb}

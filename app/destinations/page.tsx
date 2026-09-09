@@ -36,6 +36,7 @@ export default async function DestinationsPage() {
               <li key={family._id}>
                 <DestinationFamilyCard
                   family={family}
+                  headingLevel="h2"
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 />
               </li>

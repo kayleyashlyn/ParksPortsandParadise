@@ -12,10 +12,15 @@ import type { DestinationFamily } from "@/lib/sanity.queries";
 export function DestinationFamilyCard({
   family,
   sizes,
+  headingLevel = "h3",
 }: {
   family: DestinationFamily;
   sizes: string;
+  /** `h3` under the homepage grid's `h2`; `h2` on the standalone `/destinations` index. */
+  headingLevel?: "h2" | "h3";
 }) {
+  const Heading = headingLevel;
+
   return (
     <Link
       href={`/destinations/${family.slug}`}
@@ -31,9 +36,9 @@ export function DestinationFamilyCard({
         />
       </div>
       <div className="p-5">
-        <h3 className="text-xl text-foreground">{family.title}</h3>
+        <Heading className="text-xl text-foreground">{family.title}</Heading>
         {family.shortDescription ? (
-          <p className="mt-1 line-clamp-3 text-sm text-muted-foreground">
+          <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
             {family.shortDescription}
           </p>
         ) : null}
