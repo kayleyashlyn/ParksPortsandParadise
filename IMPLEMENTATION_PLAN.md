@@ -193,6 +193,29 @@ Held in reserve for Phase 2 (flagged, not built now): day-by-day timeline, inter
 
 Build this as a **multi-step form** (React Hook Form + Zod), not one long single-page form — matches the "custom multi-step inquiry form" already scoped in the README and reduces abandonment vs. the wall-of-fields pattern.
 
+### Work With Us — recruiting application form (from client's existing page)
+
+Distinct from the inquiry funnel above: different audience (the "Prospective Agent"
+persona, §3), a short **single-step** form, and its own API route
+(`/api/work-with-us` → same Resend notification helper, `lib/notify.ts`, to
+`hello@parksportsandparadise.com`). Schema: `lib/workWithUsSchema.ts`.
+
+| Field | Type | Required |
+|---|---|---|
+| First Name / Last Name | text | ✅ |
+| Email | email | ✅ |
+| Phone | tel | — |
+| Currently a travel agent? How long / which company? | textarea | ✅ |
+| What type of travel do you plan to book? | textarea | — |
+
+**Résumé:** not a file upload — the page asks applicants to email their résumé to
+`hello@` so the site needs no file-storage integration. (Résumé upload is a
+possible follow-up, tracked in `TODO.md`.) The page also carries a short
+**FAQ** (`<details>` list) covering start-up fee, experience, commission
+structure, E&O insurance, culture, and time-to-first-booking — starter answers
+that defer the specific figures to the interview; the agency confirms the real
+fee / commission / E&O details before launch.
+
 ---
 
 ## 7. CMS Expectations

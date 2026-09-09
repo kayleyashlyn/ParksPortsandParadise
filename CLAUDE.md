@@ -10,7 +10,7 @@ build. This file is about *how* to build it without losing quality as the codeba
 
 ## Project facts an agent should never re-derive from scratch
 - Stack: **Next.js 15.5** (App Router) · **React 19** · **TypeScript** (~5.7, `strict`) · **Sanity.io v3** (embedded Studio at `/studio`) · **Tailwind CSS 3.4 + shadcn/ui** ("new-york") · **React Hook Form + Zod** · deployed on **Vercel**.
-- **Build status (2026-09-09, PRs #4 + #5 merged):** `npm run build` + `npx tsc --noEmit` green. Routes: `/` · `/destinations` · `/destinations/[slug]` (SSG: parks/ports/paradise) · `/meet-the-team` · `/plan-your-vacation` (dynamic — multi-step RHF + Zod form, reads `?destination=`) · `/api/vacation-request` (POST — Zod-validated, Resend) · `/studio/[[...tool]]` · icon/favicon routes. GA4 loads in the root layout via `@next/third-parties`. Deps added: `resend`, `@next/third-parties`. Still 404: `/work-with-us`, `/blog`, `/privacy`, `/terms`. Keep build + tsc green before every commit — see "Before committing" below.
+- **Build status (2026-09-09, PRs #4–#10 merged):** `npm run build` + `npx tsc --noEmit` green. Routes: `/` · `/destinations` · `/destinations/[slug]` (SSG: parks/ports/paradise) · `/meet-the-team` · `/plan-your-vacation` (dynamic — multi-step RHF + Zod form, reads `?destination=`) · `/work-with-us` (+ `/api/work-with-us` — recruiting application form) · `/privacy` · `/terms` (draft — `LEGAL_DRAFT` in `lib/legal.ts`) · `/api/vacation-request` · `/sitemap.xml` · `/robots.txt` · `/studio/[[...tool]]` · icon/favicon routes. GA4 loads in the root layout via `@next/third-parties`, env-gated. Form API routes share `lib/notify.ts`. Deps: `resend`, `@next/third-parties`, `@tailwindcss/typography`. Still 404: `/blog`. Keep build + tsc green before every commit — see "Before committing" below.
 - **SEO base is in place (2026-09-09, `feat/seo-phase-1`).** `app/layout.tsx` has `metadataBase` + default OG/Twitter/robots + `title.template`, driven by `SITE_URL` (`lib/site.ts`, env `NEXT_PUBLIC_SITE_URL`, fallback the prod domain). Per-page metadata goes through `pageMetadata()` in `lib/seo.ts` (callers pass a bare title + description + path). JSON-LD via `components/json-ld.tsx`: site-wide `TravelAgency` + `WebSite` in the root layout, `ItemList`/`TouristAttraction` + `BreadcrumbList` on `/destinations/[slug]`. `app/sitemap.ts` (static routes + live `destinationFamily` slugs) and `app/robots.ts` added — `/sitemap.xml`, `/robots.txt` live. No default `og:image` asset yet (design TODO); destination pages derive one from the family `heroImage`.
 - **Email + analytics are wired but env-gated — the no-ops are deliberate, not bugs.** Vacation Request Form notifications go through Resend (`app/api/vacation-request/route.ts`); GA4 loads via `@next/third-parties` (`app/layout.tsx`). Both stay inert until the client sets `RESEND_API_KEY` (+ a Resend-verified sending domain) and `NEXT_PUBLIC_GA4_MEASUREMENT_ID` — see `TODO.md`. The form fires the GA4 `generate_lead` conversion **only when the API reports the email was delivered**, so a broken Resend can't inflate conversions. Don't "fix" these to always send / always fire, and don't add a second GA script.
 - **Platform decision is final:** migrating off Squarespace (client-confirmed, IMPLEMENTATION_PLAN.md §10). Don't re-litigate or hedge on this.
@@ -52,12 +52,18 @@ build. This file is about *how* to build it without losing quality as the codeba
   browser APIs, and keep those components small and leaf-ward.
 - Use shadcn/ui primitives from `components/ui/*` (add via the CLI per
   `components.json`). Don't hand-roll a duplicate of one.
-- **Forms:** shadcn `Input` / `Label` + native `<select>` / checkbox / radio —
-  no extra Radix deps. Multi-step forms validate per step via RHF `trigger()`,
-  re-validate everything on submit. `lib/vacationRequestSchema.ts` is the single
-  source of truth for the Vacation Request Form's fields *and* option lists (the
-  UI maps over the exported `*_OPTIONS`) — keep it field-for-field with
-  IMPLEMENTATION_PLAN.md §6 (`forms-agent`).
+- **Forms:** shadcn `Input` / `Label` + native `<select>` / checkbox / radio /
+  `<textarea>` — no extra Radix deps. Multi-step forms validate per step via RHF
+  `trigger()`, re-validate everything on submit. A `lib/*Schema.ts` Zod module is
+  the single source of truth for each form's fields (and option lists — the UI
+  maps over the exported `*_OPTIONS`): `vacationRequestSchema.ts` (plan §6),
+  `workWithUsSchema.ts` (plan §6, recruiting form). Keep them field-for-field
+  with the plan (`forms-agent`).
+- **Form API routes** share `lib/notify.ts` (`sendNotification()` — one Resend
+  call, env-gated no-op without `RESEND_API_KEY`; `summaryLine()` helper). Each
+  route: JSON parse → honeypot (`company` field → silent 200) → Zod `safeParse`
+  (400 on fail) → `sendNotification` → `{ ok, delivered }`; `runtime = "nodejs"`.
+  Don't re-implement the Resend send per route.
 - Navigation / footer / business-fact config lives in `lib/site.ts`, not inline
   in components. Confirmed facts (Seller-of-Travel numbers, accreditations,
   Instagram handle) come from `IMPLEMENTATION_PLAN.md` §4 / §11.
