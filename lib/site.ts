@@ -19,10 +19,15 @@ export const SITE_DESCRIPTION =
  * URLs, `sitemap.xml`, and `robots.txt`. Vercel sets `NEXT_PUBLIC_SITE_URL`
  * per environment (preview deploys get their own preview URL); the fallback is
  * the production domain.
+ *
+ * Guard against an **empty or blank** env var, not just an unset one: `??` only
+ * catches `undefined`/`null`, so a `NEXT_PUBLIC_SITE_URL=""` in Vercel would
+ * otherwise yield `""` and crash `new URL(SITE_URL)` in `app/layout.tsx`
+ * (`metadataBase`) — which breaks the whole build.
  */
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://parksportsandparadise.com"
-).replace(/\/+$/, "");
+const DEFAULT_SITE_URL = "https://parksportsandparadise.com";
+export const SITE_URL = ((process.env.NEXT_PUBLIC_SITE_URL || "").trim() ||
+  DEFAULT_SITE_URL).replace(/\/+$/, "");
 
 export type NavChild = { label: string; href: string; description?: string };
 export type NavItem = { label: string; href: string; children?: NavChild[] };

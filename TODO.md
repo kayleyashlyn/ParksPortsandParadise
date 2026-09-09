@@ -64,6 +64,25 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       `"placeholder"`. Decide: keep for scaffold builds, or throw when
       `NODE_ENV === "production"` and the var is unset so a misconfigured deploy
       fails loud instead of rendering against a bogus project.
+- [x] **`SITE_URL` crashed the build on a blank env var** — fixed 2026-09-09
+      (`fix/site-url-empty-env`). `NEXT_PUBLIC_SITE_URL=""` in Vercel (created
+      while adding other env vars) got past `?? fallback` and crashed
+      `new URL(SITE_URL)` in `app/layout.tsx` — broke every deploy incl.
+      production. `lib/site.ts` now treats empty/blank the same as unset.
+- [ ] **Vercel env vars regressed (2026-09-09) — deploys are RED.** After the
+      `SITE_URL` fix above, the Vercel build fails deeper with
+      `Dataset "production" not found for project ID "placeholder"` — i.e.
+      `NEXT_PUBLIC_SANITY_PROJECT_ID` / `NEXT_PUBLIC_SANITY_DATASET` are missing
+      or blank on Vercel (they were working through PR #13; likely disturbed
+      while adding `NEXT_PUBLIC_GA4_MEASUREMENT_ID` / `RESEND_API_KEY`).
+      **Owner: client — restore in Vercel → Settings → Environment Variables,
+      all environments:**
+      `NEXT_PUBLIC_SANITY_PROJECT_ID=kuk7exxj`,
+      `NEXT_PUBLIC_SANITY_DATASET=production`,
+      `NEXT_PUBLIC_SANITY_API_VERSION=2026-09-08`, and a non-blank
+      `NEXT_PUBLIC_SITE_URL` (Production = the prod domain, Preview = the preview
+      URL). Re-check the whole env list against `.env.example` while in there.
+      The site is CMS-driven — no code change makes it build green without these.
 - [ ] **`AGENT_PORTAL_URL` real target** — `lib/site.ts` currently points the
       footer "Agent Portal" link at `/studio` (the CMS). The plan's Agent Portal
       is the advisors' external portal — a different system. Set
