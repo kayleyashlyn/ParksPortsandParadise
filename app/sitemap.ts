@@ -8,10 +8,10 @@ import { SITE_URL } from "@/lib/site";
 export const revalidate = 3600;
 
 /**
- * `/sitemap.xml` — the four built Phase 1 routes plus every published
+ * `/sitemap.xml` — the built Phase 1 routes plus every published
  * `destinationFamily` slug. Routes that currently 404 (`/work-with-us`,
- * `/blog`, `/privacy`, `/terms`) are intentionally left out until they exist;
- * `/studio` and API routes are excluded by design.
+ * `/blog`) are intentionally left out until they exist; `/studio` and API
+ * routes are excluded by design.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
@@ -40,6 +40,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}/privacy`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${SITE_URL}/terms`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.3,
     },
   ];
 
