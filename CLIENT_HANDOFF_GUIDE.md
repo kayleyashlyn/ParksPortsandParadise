@@ -299,6 +299,10 @@ Keep this line current.
       fails to load after a future change, check the browser console for a
       "Content Security Policy" error and send it to your developer.
 - [ ] Default social-share (OG) image supplied and set.
+- [ ] Favicon — supply a transparent square PNG/SVG of just the gold sparkle
+      mark (the full seal is unreadable at tab size). Also: a horizontal logo
+      lockup (mark + wordmark) would improve the site header — right now the
+      header falls back to a text wordmark on mobile.
 - [x] `/work-with-us` — built; copy finalised (email-only résumé, no fee info,
       "onboarding" terminology).
 - [ ] `/blog` — **in scope for launch.** Pages + "Blog Post" model built. Still

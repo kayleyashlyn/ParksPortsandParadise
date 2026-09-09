@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   type FieldPath,
@@ -70,6 +71,7 @@ export function VacationRequestForm({
 }: {
   destinationParam?: string;
 }) {
+  const router = useRouter();
   const [stepIndex, setStepIndex] = React.useState(0);
   // `min` on the date inputs — today's date, but resolved AFTER mount so the
   // server-rendered HTML (no `min`) and the first client render agree. A
@@ -127,6 +129,13 @@ export function VacationRequestForm({
   }
 
   function goBack() {
+    if (stepIndex === 0) {
+      // Leave the form. Prefer real browser-back; fall back to home when the
+      // form was opened directly (no history to go back to).
+      if (window.history.length > 1) router.back();
+      else router.push("/");
+      return;
+    }
     clearErrors();
     setStepIndex((i) => Math.max(i - 1, 0));
   }
@@ -408,14 +417,12 @@ export function VacationRequestForm({
       )}
 
       <div className="mt-8 flex items-center justify-between gap-3">
-        {stepIndex > 0 ? (
-          <Button type="button" variant="ghost" onClick={goBack}>
-            <ChevronLeft className="h-4 w-4" />
-            Back
-          </Button>
-        ) : (
-          <span aria-hidden />
-        )}
+        {/* Back is always present. Within the form it just changes step —
+            your answers are kept. On step 1 it leaves the form. */}
+        <Button type="button" variant="outline" onClick={goBack}>
+          <ChevronLeft className="h-4 w-4" />
+          Back
+        </Button>
 
         {isLast ? (
           <Button

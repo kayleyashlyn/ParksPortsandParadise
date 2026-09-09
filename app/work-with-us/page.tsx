@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Check } from "lucide-react";
 
 import { FaqList } from "@/components/faq-list";
 import { WorkWithUsForm } from "@/components/work-with-us-form";
@@ -23,7 +24,7 @@ export default function WorkWithUsPage() {
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <header className="max-w-2xl">
         <p className="text-sm font-medium uppercase tracking-wider text-primary">
-          Careers
+          Join the team
         </p>
         <h1 className="mt-2 text-balance text-4xl sm:text-5xl">
           Become a Parks Ports &amp; Paradise advisor
@@ -40,18 +41,19 @@ export default function WorkWithUsPage() {
         <h2 id="why-heading" className="text-2xl">
           Why advisors join us
         </h2>
-        <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+        <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
           {[
             "Onboarding, training, and ongoing mentorship — no one is left to figure it out alone.",
             "Established relationships with cruise lines, resorts, and theme-park partners.",
             "You keep your clients and your book of business.",
             "A supportive, low-drama team that shares supplier knowledge freely.",
           ].map((point) => (
-            <li
-              key={point}
-              className="rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground"
-            >
-              {point}
+            <li key={point} className="flex gap-2.5">
+              <Check
+                aria-hidden
+                className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+              />
+              <span>{point}</span>
             </li>
           ))}
         </ul>
