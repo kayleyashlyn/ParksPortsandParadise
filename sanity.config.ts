@@ -33,6 +33,11 @@ export default defineConfig({
         S.list()
           .title("Content")
           .items([
+            // Day-to-day content first, singleton settings below the divider.
+            ...S.documentTypeListItems().filter(
+              (item) => !SINGLETON_TYPES.has(item.getId() ?? ""),
+            ),
+            S.divider(),
             S.listItem()
               .title("Site Settings")
               .id("siteSettings")
@@ -41,10 +46,6 @@ export default defineConfig({
                   .schemaType("siteSettings")
                   .documentId("siteSettings"),
               ),
-            S.divider(),
-            ...S.documentTypeListItems().filter(
-              (item) => !SINGLETON_TYPES.has(item.getId() ?? ""),
-            ),
           ]),
     }),
   ],

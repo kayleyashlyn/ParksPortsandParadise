@@ -44,7 +44,9 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Security headers** — `next.config.mjs` sets none. Add a `headers()`
       block (CSP / `frame-ancestors`, `Referrer-Policy`, `X-Content-Type-Options`,
       HSTS) before go-live. Owner: deploy config. **CSP must allow the SnapWidget
-      Instagram embed:** `frame-src https://snapwidget.com`.
+      Instagram embed:** `frame-src https://snapwidget.com`. Also evaluate an
+      `iframe sandbox` allowlist on `components/instagram-feed.tsx` against what
+      SnapWidget actually needs (likely `allow-scripts allow-popups`).
 - [ ] **`lib/sanity.env.ts` silent placeholder** — `projectId` falls back to
       `"placeholder"`. Decide: keep for scaffold builds, or throw when
       `NODE_ENV === "production"` and the var is unset so a misconfigured deploy

@@ -30,9 +30,12 @@ export const siteSettings = defineType({
       description:
         'From snapwidget.com after you create the widget for @parksportsandparadise — just the code after "embed/" in the embed URL (e.g. "1a2b3c4d5e"), not the whole snippet.',
       validation: (rule) =>
-        rule
-          .regex(/^[a-z0-9]+$/i, { name: "widget id" })
-          .warning("Should be only the ID (letters and numbers)."),
+        rule.custom((value) => {
+          if (!value) return true; // optional — feed just stays hidden
+          return /^[A-Za-z0-9]{6,24}$/.test(value)
+            ? true
+            : "Paste only the widget ID (6–24 letters/numbers) from the SnapWidget embed URL — not the whole <iframe> snippet or a URL.";
+        }),
     }),
   ],
   preview: {

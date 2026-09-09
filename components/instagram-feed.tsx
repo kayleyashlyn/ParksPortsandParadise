@@ -35,9 +35,9 @@ export function InstagramFeed({ settings }: { settings: SiteSettings | null }) {
       <div className="mt-8 overflow-hidden rounded-lg border border-border bg-muted">
         <iframe
           title={`Instagram feed for ${CONTACT.instagramHandle}`}
-          src={`https://snapwidget.com/embed/${widgetId}`}
+          src={`https://snapwidget.com/embed/${encodeURIComponent(widgetId)}`}
           loading="lazy"
-          scrolling="no"
+          referrerPolicy="strict-origin-when-cross-origin"
           className="block h-[340px] w-full border-0 sm:h-[380px] lg:h-[420px]"
         />
       </div>
