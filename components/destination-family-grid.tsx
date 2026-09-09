@@ -1,16 +1,10 @@
-import Link from "next/link";
-
-import { SanityImage } from "@/components/sanity-image";
+import { DestinationFamilyCard } from "@/components/destination-family-card";
 import type { DestinationFamily } from "@/lib/sanity.queries";
 
 /**
  * Homepage curated destination-family grid (IMPLEMENTATION_PLAN.md §4 / §9).
- * Server Component — data is fetched by the page and passed in. Whole card is
- * one link (no competing CTA); links use the live CMS slug.
- *
- * TODO(ui-agent): `lib/site.ts` PRIMARY_NAV / FOOTER_NAV still hardcode
- * `/destinations/theme-parks` etc.; reconcile those with the CMS slugs (or
- * generate the nav from `getDestinationFamilies()`) once slugs are finalized.
+ * Server Component — data is fetched by the page and passed in. Each card is a
+ * single link (no competing CTA); links use the live CMS slug.
  */
 export function DestinationFamilyGrid({
   families,
@@ -35,28 +29,10 @@ export function DestinationFamilyGrid({
       <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {families.map((family) => (
           <li key={family._id}>
-            <Link
-              href={`/destinations/${family.slug}`}
-              className="group block overflow-hidden rounded-lg border border-border bg-card transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                <SanityImage
-                  image={family.heroImage}
-                  alt={family.title}
-                  aspect={4 / 3}
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl text-foreground">{family.title}</h3>
-                {family.shortDescription ? (
-                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                    {family.shortDescription}
-                  </p>
-                ) : null}
-              </div>
-            </Link>
+            <DestinationFamilyCard
+              family={family}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            />
           </li>
         ))}
       </ul>

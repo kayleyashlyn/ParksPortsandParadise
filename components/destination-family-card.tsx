@@ -1,0 +1,43 @@
+import Link from "next/link";
+
+import { SanityImage } from "@/components/sanity-image";
+import type { DestinationFamily } from "@/lib/sanity.queries";
+
+/**
+ * One destination-family card — hero image + title + short description, the
+ * whole card a single link to that family's page (no competing CTA, per the
+ * one-dominant-CTA brand rule). Used by the homepage grid and the
+ * `/destinations` index. Href uses the live CMS slug.
+ */
+export function DestinationFamilyCard({
+  family,
+  sizes,
+}: {
+  family: DestinationFamily;
+  sizes: string;
+}) {
+  return (
+    <Link
+      href={`/destinations/${family.slug}`}
+      className="group block overflow-hidden rounded-lg border border-border bg-card transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+        <SanityImage
+          image={family.heroImage}
+          alt={family.title}
+          aspect={4 / 3}
+          sizes={sizes}
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+      <div className="p-5">
+        <h3 className="text-xl text-foreground">{family.title}</h3>
+        {family.shortDescription ? (
+          <p className="mt-1 line-clamp-3 text-sm text-muted-foreground">
+            {family.shortDescription}
+          </p>
+        ) : null}
+      </div>
+    </Link>
+  );
+}
