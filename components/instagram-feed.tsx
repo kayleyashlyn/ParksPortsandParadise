@@ -18,28 +18,33 @@ export function InstagramFeed({ settings }: { settings: SiteSettings | null }) {
       aria-labelledby="instagram-heading"
       className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:px-8"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h2 id="instagram-heading" className="text-3xl sm:text-4xl">
-          Follow along
-        </h2>
-        <a
-          href={CONTACT.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-sm text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          {CONTACT.instagramHandle}
-        </a>
-      </div>
+      {/* The SnapWidget grid stretches to fill its container, so it's capped on
+          larger screens — full-width on mobile (where it reads well), centered
+          and bounded above that. */}
+      <div className="mx-auto max-w-xl">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <h2 id="instagram-heading" className="text-2xl sm:text-3xl">
+            Follow along
+          </h2>
+          <a
+            href={CONTACT.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-sm text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {CONTACT.instagramHandle}
+          </a>
+        </div>
 
-      <div className="mt-8 overflow-hidden rounded-lg border border-border bg-muted">
-        <iframe
-          title={`Instagram feed for ${CONTACT.instagramHandle}`}
-          src={`https://snapwidget.com/embed/${encodeURIComponent(widgetId)}`}
-          loading="lazy"
-          referrerPolicy="strict-origin-when-cross-origin"
-          className="block h-[340px] w-full border-0 sm:h-[380px] lg:h-[420px]"
-        />
+        <div className="mt-6 overflow-hidden rounded-lg border border-border bg-muted">
+          <iframe
+            title={`Instagram feed for ${CONTACT.instagramHandle}`}
+            src={`https://snapwidget.com/embed/${encodeURIComponent(widgetId)}`}
+            loading="lazy"
+            referrerPolicy="strict-origin-when-cross-origin"
+            className="block aspect-square w-full border-0"
+          />
+        </div>
       </div>
     </section>
   );
