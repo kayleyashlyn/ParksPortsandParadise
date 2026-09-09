@@ -192,7 +192,7 @@ Build this as a **multi-step form** (React Hook Form + Zod), not one long single
 
 - Editor: Ashley, self-described "basic, easy to manage" comfort level → Sanity Studio schema should be **kept intentionally small** for Phase 1 (destination cards, homepage featured content, team/agent bios, blog posts, Instagram feed toggle). Avoid deeply nested or overly flexible page-builder schemas that would overwhelm a non-technical editor.
 - Only two access levels needed: **Admin** and generic content editor — no complex role matrix required.
-- Instagram feed: pull via oEmbed/Instagram Basic Display or a lightweight third-party embed (e.g., SnapWidget/EmbedSocial) rather than building custom Instagram Graph API integration — cheaper to maintain given no dedicated dev on staff after launch.
+- Instagram feed: pull via oEmbed/Instagram Basic Display or a lightweight third-party embed (e.g., SnapWidget/EmbedSocial) rather than building custom Instagram Graph API integration — cheaper to maintain given no dedicated dev on staff after launch. **Decided 2026-09-09: SnapWidget.** Config lives on a `siteSettings` **singleton** document (added to `sanity/schemaTypes/`, pinned as one editable doc via `sanity.config.ts` structure): `instagramFeedEnabled` (boolean) + `instagramWidgetId` (string). The homepage section renders only when the toggle is on and an ID is set. Keep `siteSettings` flat — it's the home for future cross-site toggles, not a page-builder.
 
 ### "Meet the Team" — must be a self-service collection, not a hardcoded page
 Client flagged that agents get added/removed regularly, and doesn't want to depend on developer time for that. This is built as an `agentProfile` document type (see `sanity/schemaTypes/agentProfile.ts`) — adding an agent is "create a document with a name, photo, title, and short bio"; removing one is either deleting the document or toggling `active` off (preferred, so a departed agent's profile isn't lost if they return, and history isn't destroyed). The team page itself queries all `active` agents and renders the grid automatically — the page template is never edited for routine roster changes, only the schema/template if the *shape* of an agent profile changes. Same self-service pattern applies to destination families and accreditation badges (§5, §2) — none of Phase 1's recurring content should require touching code to update.
@@ -281,9 +281,10 @@ One thing that's now resolved rather than open: **stay on Squarespace vs. migrat
    FL # ST46356, CA # 2173719-70, plus CLIA, IATAN, TL Network Member, and
    Universal Orlando Authorized Retailer — full badge list, no longer open.
 5. ~~Instagram account handle + embed tool preference~~ **Resolved:** handle is
-   `@parksportsandparadise`. Embed tool (SnapWidget/EmbedSocial vs. native) still
-   TBD at build time — low-stakes, implementation detail rather than a client
-   decision.
+   `@parksportsandparadise`. Embed tool decided 2026-09-09: **SnapWidget** (the
+   lightweight third-party embed from §7). Wired as a lazy-loaded iframe in
+   `components/instagram-feed.tsx`, toggled + configured via the `siteSettings`
+   singleton (see §7).
 6. ~~Confirm transactional email sender identity~~ **Resolved:** general contact
    is intentionally **not** a separate page/form — it's funneled entirely through
    the Vacation Request Form, per client. Business inbox for form notifications

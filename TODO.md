@@ -43,7 +43,8 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 
 - [ ] **Security headers** — `next.config.mjs` sets none. Add a `headers()`
       block (CSP / `frame-ancestors`, `Referrer-Policy`, `X-Content-Type-Options`,
-      HSTS) before go-live. Owner: deploy config.
+      HSTS) before go-live. Owner: deploy config. **CSP must allow the SnapWidget
+      Instagram embed:** `frame-src https://snapwidget.com`.
 - [ ] **`lib/sanity.env.ts` silent placeholder** — `projectId` falls back to
       `"placeholder"`. Decide: keep for scaffold builds, or throw when
       `NODE_ENV === "production"` and the var is unset so a misconfigured deploy
@@ -133,9 +134,17 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       maps a CMS location name to one of the form's fixed options by fuzzy
       contains; names it can't match just don't pre-fill.
 - [ ] **Homepage sections still missing** (`app/page.tsx`) — real hero (blocked
-      on brand photography), testimonials (no content), Instagram feed (needs
-      embed config), a newsletter section. Hero/section copy needs sign-off.
-      Built so far: destination-family grid + trust bar (CMS-driven).
+      on brand photography), testimonials (no content), a newsletter section.
+      Hero/section copy needs sign-off. Built: destination-family grid + trust
+      bar + Instagram feed (all CMS-driven).
+- [ ] **Instagram feed — SnapWidget setup** — component + `siteSettings` schema
+      shipped (2026-09-09); the section renders only once the client:
+      - [ ] creates a SnapWidget widget for `@parksportsandparadise` (business
+            account, not personal) — free tier has a small watermark; Pro
+            (~$5/mo) removes it,
+      - [ ] pastes the widget ID into **Site Settings → SnapWidget widget ID**
+            in Studio and toggles **Show the Instagram feed on the homepage** on.
+      Also: CSP `frame-src https://snapwidget.com` (see Pre-launch hardening).
 - [x] **Nav hrefs vs CMS slugs** — reconciled 2026-09-09: `lib/site.ts`
       `PRIMARY_NAV` / `FOOTER_NAV` now hardcode the live slugs
       `/destinations/parks` · `/ports` · `/paradise` (comment in the file flags

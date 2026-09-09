@@ -1,11 +1,13 @@
 import Link from "next/link";
 
 import { DestinationFamilyGrid } from "@/components/destination-family-grid";
+import { InstagramFeed } from "@/components/instagram-feed";
 import { TrustBar } from "@/components/trust-bar";
 import { Button } from "@/components/ui/button";
 import {
   getAccreditationBadges,
   getDestinationFamilies,
+  getSiteSettings,
 } from "@/lib/sanity.queries";
 import { PRIMARY_CTA } from "@/lib/site";
 
@@ -13,9 +15,10 @@ import { PRIMARY_CTA } from "@/lib/site";
 export const revalidate = 60;
 
 export default async function Home() {
-  const [families, badges] = await Promise.all([
+  const [families, badges, settings] = await Promise.all([
     getDestinationFamilies(),
     getAccreditationBadges(),
+    getSiteSettings(),
   ]);
 
   return (
@@ -45,10 +48,11 @@ export default async function Home() {
 
       <TrustBar badges={badges} />
       <DestinationFamilyGrid families={families} />
+      <InstagramFeed settings={settings} />
 
       {/*
-        TODO(ui-agent): testimonials (needs content), Instagram feed (needs embed
-        config, IMPLEMENTATION_PLAN.md §7), newsletter section — per §9.
+        TODO(ui-agent): testimonials (needs content) and a newsletter section —
+        per IMPLEMENTATION_PLAN.md §9.
       */}
     </>
   );

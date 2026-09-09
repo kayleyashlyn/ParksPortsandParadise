@@ -16,16 +16,49 @@ import { dataset, projectId } from "./lib/sanity.env";
  * - projectId / dataset are read from NEXT_PUBLIC_SANITY_* via ./lib/sanity.env,
  *   never hardcoded.
  * - Only structureTool is loaded — that is what renders the document list and
- *   editor so the three content types are visible and creatable. No Vision or
- *   other tooling (kept minimal).
+ *   editor. `Site Settings` is pinned as a singleton (one fixed document); every
+ *   other type keeps the default create-many list. No Vision or other tooling.
  */
+const SINGLETON_TYPES = new Set(["siteSettings"]);
+
 export default defineConfig({
   name: "default",
   title: "Parks Ports & Paradise",
   projectId,
   dataset,
   basePath: "/studio",
-  plugins: [structureTool()],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title("Content")
+          .items([
+            S.listItem()
+              .title("Site Settings")
+              .id("siteSettings")
+              .child(
+                S.document()
+                  .schemaType("siteSettings")
+                  .documentId("siteSettings"),
+              ),
+            S.divider(),
+            ...S.documentTypeListItems().filter(
+              (item) => !SINGLETON_TYPES.has(item.getId() ?? ""),
+            ),
+          ]),
+    }),
+  ],
+  // Hide "create" / "duplicate" / "delete" for the singleton.
+  document: {
+    actions: (input, context) =>
+      SINGLETON_TYPES.has(context.schemaType)
+        ? input.filter(
+            ({ action }) =>
+              action &&
+              ["publish", "discardChanges", "restore"].includes(action),
+          )
+        : input,
+  },
   schema: {
     types: schemaTypes,
   },
