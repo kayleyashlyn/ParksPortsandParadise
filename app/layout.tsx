@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
+
+// GA4 (IMPLEMENTATION_PLAN.md §6/§11). Only loads when the ID is set —
+// keep it to Vercel Production so preview/dev traffic stays out of the data.
+const gaId = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID;
 
 // Body — Inter (sans-serif) per BRAND_KIT.md
 const inter = Inter({
@@ -37,6 +42,7 @@ export default function RootLayout({
         </main>
         <SiteFooter />
       </body>
+      {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
     </html>
   );
 }
