@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import type { PortableTextBlock } from "@portabletext/react";
 
 import { client } from "./sanity.client";
 
@@ -200,4 +201,70 @@ const siteSettingsQuery = groq`
 /** The single Site Settings document, or `null` if it hasn't been created yet. */
 export function getSiteSettings(): Promise<SiteSettings | null> {
   return client.fetch<SiteSettings | null>(siteSettingsQuery);
+}
+
+/* ------------------------------------------------------------------ */
+/* post (blog)                                                         */
+/* ------------------------------------------------------------------ */
+
+/** A blog post as shown on the `/blog` index — no `body`. */
+export type PostListItem = {
+  _id: string;
+  title: string;
+  slug: string;
+  /** ISO string; posts with `publishedAt` in the future are filtered out. */
+  publishedAt: string;
+  excerpt: string | null;
+  author: string | null;
+  mainImage: SanityImage | null;
+};
+
+/** A full blog post for `/blog/[slug]`. */
+export type Post = PostListItem & {
+  _updatedAt: string;
+  /** Portable Text; images inside carry a nested `alt` (see `SanityImage`). */
+  body: PortableTextBlock[] | null;
+};
+
+// Shared field list (the inside of the `{ ... }`), composed into both queries.
+const postListFields = groq`
+  _id,
+  title,
+  "slug": slug.current,
+  publishedAt,
+  excerpt,
+  author,
+  mainImage
+`;
+
+// Only published posts: a real `publishedAt` that is not in the future.
+const publishedFilter = groq`_type == "post" && defined(publishedAt) && publishedAt <= now()`;
+
+const postsQuery = groq`
+  *[${publishedFilter}] | order(publishedAt desc) { ${postListFields} }
+`;
+
+const postBySlugQuery = groq`
+  *[${publishedFilter} && slug.current == $slug][0]{
+    ${postListFields},
+    _updatedAt,
+    body
+  }
+`;
+
+const postSlugsQuery = groq`*[${publishedFilter}].slug.current`;
+
+/** All published posts, newest first. */
+export function getPosts(): Promise<PostListItem[]> {
+  return client.fetch<PostListItem[]>(postsQuery);
+}
+
+/** A single published post by slug, or `null`. */
+export function getPostBySlug(slug: string): Promise<Post | null> {
+  return client.fetch<Post | null>(postBySlugQuery, { slug });
+}
+
+/** Published post slugs — for `generateStaticParams`. */
+export function getPostSlugs(): Promise<string[]> {
+  return client.fetch<string[]>(postSlugsQuery);
 }

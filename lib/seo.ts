@@ -121,6 +121,39 @@ export function breadcrumbJsonLd(
   };
 }
 
+type BlogPostingJsonLdInput = {
+  title: string;
+  description?: string | null;
+  /** Root-relative path, e.g. `"/blog/my-post"`. */
+  path: string;
+  datePublished: string;
+  dateModified?: string;
+  /** Byline; falls back to the agency as an Organization author. */
+  author?: string | null;
+  /** Absolute image URL, already resolved via `urlForImage()`. */
+  image?: string | null;
+};
+
+/** `BlogPosting` for a single post page. Only real CMS values are used. */
+export function blogPostingJsonLd(
+  input: BlogPostingJsonLdInput,
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: input.title,
+    ...(input.description ? { description: input.description } : {}),
+    datePublished: input.datePublished,
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
+    ...(input.image ? { image: [input.image] } : {}),
+    author: input.author
+      ? { "@type": "Person", name: input.author }
+      : { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
+    mainEntityOfPage: `${SITE_URL}${input.path}`,
+  };
+}
+
 type DestinationFamilyJsonLdInput = {
   name: string;
   description?: string | null;

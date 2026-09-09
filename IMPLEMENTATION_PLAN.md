@@ -228,6 +228,21 @@ throughout.
 ### "Meet the Team" — must be a self-service collection, not a hardcoded page
 Client flagged that agents get added/removed regularly, and doesn't want to depend on developer time for that. This is built as an `agentProfile` document type (see `sanity/schemaTypes/agentProfile.ts`) — adding an agent is "create a document with a name, photo, title, and short bio"; removing one is either deleting the document or toggling `active` off (preferred, so a departed agent's profile isn't lost if they return, and history isn't destroyed). The team page itself queries all `active` agents and renders the grid automatically — the page template is never edited for routine roster changes, only the schema/template if the *shape* of an agent profile changes. Same self-service pattern applies to destination families and accreditation badges (§5, §2) — none of Phase 1's recurring content should require touching code to update.
 
+### Blog / Trip Inspiration — in launch scope (client-confirmed 2026-09-09)
+
+`post` document type (`sanity/schemaTypes/post.ts`), kept flat: `title`, `slug`,
+`publishedAt` (datetime — the post is hidden until this time, so migrated posts
+get back-dated and future posts schedule themselves), `excerpt`, `author`
+(optional byline), `mainImage` (optional, inline `alt`), `body` (Portable Text —
+headings/lists/quote/links + inline images with `alt`). No categories, tags, or
+related-posts machinery in Phase 1. Routes: `/blog` (index, newest first) and
+`/blog/[slug]` (`generateStaticParams` + ISR, `BlogPosting` JSON-LD, `prose`
+body via `@portabletext/react`). Nav already carried "Blog / Trip Inspiration".
+**Content migration** of the existing Squarespace posts is a hand task for the
+client (export → recreate as `post` docs, re-upload images at proper resolution,
+back-date `publishedAt`); refresh visuals on posts whose imagery predates the
+brand refresh rather than migrating stale branding as-is (§11 #2/#7).
+
 ---
 
 ## 8. Integration Matrix
