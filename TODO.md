@@ -154,16 +154,14 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       `/destinations` + `/destinations/[slug]` + `/plan-your-vacation` 2026-09-09;
       `/privacy` + `/terms` 2026-09-09 as **draft** shells — see below;
       `/work-with-us` 2026-09-09 — see below.)
-- [ ] **`/work-with-us` — confirm recruiting specifics + optional résumé upload**
-      (`feat/work-with-us`). Page + single-step application form built
-      (`app/work-with-us/page.tsx`, `components/work-with-us-form.tsx`, API
-      `app/api/work-with-us/route.ts` → shared `lib/notify.ts` → `hello@`).
-      **Before launch:** the FAQ answers on start-up fee, commission structure,
-      and E&O insurance are deliberately non-specific ("confirmed in your
-      interview") — replace with the agency's real figures/policy if they want
-      them public. **Optional follow-up:** résumé file upload (applicants
-      currently email it in) — needs multipart handling in the route +
-      attachment via Resend, or Vercel Blob storage. Not scoped for launch.
+- [x] **`/work-with-us`** — page + single-step application form built and copy
+      finalised per client (2026-09-09): résumé is **email-only** (confirmed, not
+      interim); **no visible fee / commission structure**; FAQ uses "onboarding"
+      not "interview" and covers experience, E&O, culture, time-to-first-booking.
+      (`app/work-with-us/page.tsx`, `components/work-with-us-form.tsx`,
+      `app/api/work-with-us/route.ts` → `lib/notify.ts` → `hello@`.) No open
+      follow-up — E&O answer still says "confirmed during onboarding", which is
+      the intended framing.
 - [ ] **`/privacy` + `/terms` are DRAFT** (`feat/privacy-terms-shells`) —
       starting-point copy in `app/privacy/page.tsx` / `app/terms/page.tsx`, wrapped
       by `components/legal-page.tsx`. A "Draft — pending legal review" notice shows
