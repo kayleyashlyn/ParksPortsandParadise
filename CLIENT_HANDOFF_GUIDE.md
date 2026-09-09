@@ -294,7 +294,9 @@ Keep this line current.
       draft banner removed.
 - [ ] Domain: website DNS pointed at Vercel; email (MX/SPF/DKIM/DMARC) left
       intact; done at a low-traffic time.
-- [ ] Security headers added (also required for the SnapWidget embed).
+- [ ] Security headers — baseline set is live; the Content-Security-Policy is in
+      "report-only" mode and needs one pass on the deployed site (logged-in
+      Studio, a form submit, the Instagram section) before it's switched on.
 - [ ] Default social-share (OG) image supplied and set.
 - [x] `/work-with-us` — built; copy finalised (email-only résumé, no fee info,
       "onboarding" terminology).
@@ -313,3 +315,4 @@ Keep this line current.
 | 2026-09-09 | §7 — analytics is now **opt-in** behind a cookie-consent banner (GPC-aware; "Cookie settings" link in the footer). Privacy Policy §6 rewritten from placeholders to final-pending-legal wording. |
 | 2026-09-09 | §9 — `/work-with-us` recruiting page + application form built (second Resend-backed form → `hello@`; résumé by email, no upload). Copy finalised per client: no fee/commission info on the page, "onboarding" terminology. |
 | 2026-09-09 | §3 — added the **Blog Post** content model + `/blog` + `/blog/[slug]` pages. Migration of the existing Squarespace posts is a client content task. |
+| 2026-09-09 | Security headers added in `next.config.mjs` (HSTS, nosniff, frame options, Referrer-Policy, Permissions-Policy). CSP is report-only pending a check against the deployed Studio / forms / Instagram embed, then it gets enforced. |
