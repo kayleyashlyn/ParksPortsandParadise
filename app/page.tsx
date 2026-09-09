@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { DestinationFamilyGrid } from "@/components/destination-family-grid";
@@ -9,10 +10,17 @@ import {
   getDestinationFamilies,
   getSiteSettings,
 } from "@/lib/sanity.queries";
-import { PRIMARY_CTA } from "@/lib/site";
+import { pageMetadata } from "@/lib/seo";
+import { PRIMARY_CTA, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 
 // ISR — re-pull CMS content at most once a minute.
 export const revalidate = 60;
+
+export const metadata: Metadata = pageMetadata({
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  path: "/",
+});
 
 export default async function Home() {
   const [families, badges, settings] = await Promise.all([

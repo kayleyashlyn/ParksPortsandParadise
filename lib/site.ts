@@ -6,6 +6,24 @@
  * a footer utility link, never primary nav.
  */
 
+/**
+ * Canonical site identity — used for `<title>`, metadata descriptions, and
+ * JSON-LD. Keep in step with `app/layout.tsx` and `BRAND_KIT.md`.
+ */
+export const SITE_NAME = "Parks Ports & Paradise";
+export const SITE_DESCRIPTION =
+  "Family vacation planning for theme parks, cruises, and all-inclusive resorts. Tell us about your trip and our advisors build a custom quote — free.";
+
+/**
+ * Canonical site origin (no trailing slash). Drives `metadataBase`, canonical
+ * URLs, `sitemap.xml`, and `robots.txt`. Vercel sets `NEXT_PUBLIC_SITE_URL`
+ * per environment (preview deploys get their own preview URL); the fallback is
+ * the production domain.
+ */
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://parksportsandparadise.com"
+).replace(/\/+$/, "");
+
 export type NavChild = { label: string; href: string; description?: string };
 export type NavItem = { label: string; href: string; children?: NavChild[] };
 

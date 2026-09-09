@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 
 import { VacationRequestForm } from "@/components/vacation-request-form";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Plan Your Vacation | Parks Ports & Paradise",
+export const metadata: Metadata = pageMetadata({
+  title: "Plan Your Vacation",
   description:
     "Tell us about your trip — destinations, dates, budget, and who's coming — and a Parks Ports & Paradise advisor will build a custom quote. Free, no obligation.",
-};
+  path: "/plan-your-vacation",
+});
 
 export default async function PlanYourVacationPage({
   searchParams,

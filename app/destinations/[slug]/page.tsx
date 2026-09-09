@@ -4,13 +4,25 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { DestinationLocations } from "@/components/destination-locations";
+import { JsonLd } from "@/components/json-ld";
 import { SanityImage } from "@/components/sanity-image";
 import { Button } from "@/components/ui/button";
+import { urlForImage } from "@/lib/sanity.image";
 import {
   getDestinationFamilies,
   getDestinationFamilyBySlug,
 } from "@/lib/sanity.queries";
+import {
+  breadcrumbJsonLd,
+  destinationFamilyJsonLd,
+  pageMetadata,
+} from "@/lib/seo";
 import { PRIMARY_CTA } from "@/lib/site";
+
+/** 1200×630 crop of a Sanity image for OpenGraph / structured data. */
+function ogCrop(image: Parameters<typeof urlForImage>[0]): string {
+  return urlForImage(image).width(1200).height(630).fit("crop").url();
+}
 
 // ISR — re-pull CMS content at most once a minute (matches the homepage).
 export const revalidate = 60;
@@ -30,15 +42,17 @@ export async function generateMetadata({
   const family = await getDestinationFamilyBySlug(slug);
 
   if (!family) {
-    return { title: "Destination not found | Parks Ports & Paradise" };
+    return { title: "Destination not found" };
   }
 
-  return {
-    title: `${family.title} | Parks Ports & Paradise`,
+  return pageMetadata({
+    title: family.title,
     description:
       family.shortDescription ??
       `${family.title} trips planned by Parks Ports & Paradise advisors — tell us about your trip for a free quote.`,
-  };
+    path: `/destinations/${family.slug}`,
+    ogImage: family.heroImage ? ogCrop(family.heroImage) : undefined,
+  });
 }
 
 export default async function DestinationFamilyPage({
@@ -51,8 +65,28 @@ export default async function DestinationFamilyPage({
 
   if (!family) notFound();
 
+  const itemListLd = destinationFamilyJsonLd({
+    name: family.title,
+    description: family.shortDescription,
+    path: `/destinations/${family.slug}`,
+    locations: family.locations.map((location) => ({
+      name: location.name,
+      description: location.blurb,
+      image: location.image ? ogCrop(location.image) : null,
+    })),
+  });
+
+  const breadcrumbLd = breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Destinations", path: "/destinations" },
+    { name: family.title, path: `/destinations/${family.slug}` },
+  ]);
+
   return (
     <article>
+      <JsonLd data={breadcrumbLd} />
+      {itemListLd ? <JsonLd data={itemListLd} /> : null}
+
       {/* Hero — CMS-supplied family photography */}
       <header className="relative isolate overflow-hidden bg-muted">
         <div className="absolute inset-0 -z-10">
