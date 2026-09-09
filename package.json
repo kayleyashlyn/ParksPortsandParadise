@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@next/third-parties": "^15.5.25",
+    "@portabletext/react": "^3.2.4",
     "@radix-ui/react-slot": "^1.1.1",
     "@sanity/client": "^6.24.1",
     "@sanity/image-url": "^1.1.0",

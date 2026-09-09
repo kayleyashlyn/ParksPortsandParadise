@@ -73,6 +73,7 @@ page builder (that was a conscious decision so the site can't drift off-brand).
 | **Destination Family** | The three destination pages: Theme Parks, Cruise Lines, All-Inclusive Resorts | Each has a hero image, short description, display order, and a list of **Locations** shown as sections on that one page. Locations never become their own pages. |
 | **Location** (inside a Destination Family) | One entry on a destination page — name, image, blurb, optional button label | **Search keywords** field is **not shown on the page** — it feeds behind-the-scenes SEO data only. |
 | **Agent** | The "Meet the Team" grid | Set **Active** off (don't delete) when someone leaves — keeps their history. Display order optional. |
+| **Blog Post** | The `/blog` ("Trip Inspiration") index and each post page | Title, slug, **Published at** (the post is hidden until this date — back-date migrated posts, or set a future date to schedule), excerpt, optional byline, optional main image, and a rich-text body. The index stays on an "empty" message until at least one post is published. |
 | **Accreditation Badge** | The trust bar (Seller of Travel numbers, CLIA, IATAN, etc.) | Text-only unless you upload official logo art. |
 | **Site Settings** (single document) | Site-wide toggles — currently the Instagram feed on/off + SnapWidget ID | There is only ever **one** of these; you can't create or delete it. |
 
@@ -297,8 +298,10 @@ Keep this line current.
 - [ ] `/work-with-us` — built (recruiting page + application form). Confirm the
       FAQ answers on start-up fee / commission / E&O, and decide whether to add a
       résumé upload (applicants currently email it in).
-- [ ] `/blog` — decide if in scope for launch (currently 404; needs a Sanity
-      `post` schema + list/detail pages + migration of existing Squarespace posts).
+- [ ] `/blog` — **in scope for launch.** Pages + "Blog Post" model built. Still
+      needs: the existing Squarespace posts recreated in Studio (back-date each
+      one's **Published at**) and at least one published before launch, or hide
+      "Blog" from the nav for day one.
 
 ---
 
@@ -309,3 +312,4 @@ Keep this line current.
 | 2026-09-09 | Guide created. Seeded from current build state: Sanity content models (incl. new per-image Alt text + hidden Search keywords), Vercel hosting, Resend form email, GA4 (`G-31KW1BQLNR`), SnapWidget plan, draft legal pages. |
 | 2026-09-09 | §7 — analytics is now **opt-in** behind a cookie-consent banner (GPC-aware; "Cookie settings" link in the footer). Privacy Policy §6 rewritten from placeholders to final-pending-legal wording. |
 | 2026-09-09 | §9 — `/work-with-us` recruiting page + application form built (second Resend-backed form → `hello@`; résumé by email, no upload). FAQ fee/commission/E&O answers are non-specific pending agency confirmation. |
+| 2026-09-09 | §3 — added the **Blog Post** content model + `/blog` + `/blog/[slug]` pages. Migration of the existing Squarespace posts is a client content task. |

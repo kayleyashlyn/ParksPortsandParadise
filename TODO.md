@@ -150,10 +150,17 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;
       pick concrete `images.unsplash.com` URLs / collections (host is already
       allow-listed in `next.config.mjs`).
-- [ ] **Nav routes still 404** — `/blog` only. (`/meet-the-team` 2026-09-08;
-      `/destinations` + `/destinations/[slug]` + `/plan-your-vacation` 2026-09-09;
-      `/privacy` + `/terms` 2026-09-09 as **draft** shells — see below;
-      `/work-with-us` 2026-09-09 — see below.)
+- [x] **Nav routes** — all built as of 2026-09-09. (`/meet-the-team`
+      2026-09-08; `/destinations` + `/destinations/[slug]` + `/plan-your-vacation`
+      2026-09-09; `/privacy` + `/terms` 2026-09-09 as **draft** shells;
+      `/work-with-us` 2026-09-09; `/blog` + `/blog/[slug]` 2026-09-09.)
+- [ ] **Blog — migrate the Squarespace posts.** `post` schema + `/blog` +
+      `/blog/[slug]` shipped (`feat/blog`). The index shows an empty state until
+      there's at least one **published** post. Client content task: export the
+      existing Squarespace blog, recreate each as a `post` in Studio, re-upload
+      images at proper resolution, and set `publishedAt` to the original date
+      (posts with a future `publishedAt` stay hidden). Refresh visuals on posts
+      whose imagery predates the brand refresh (IMPLEMENTATION_PLAN §11 #2/#7).
 - [ ] **`/work-with-us` — confirm recruiting specifics + optional résumé upload**
       (`feat/work-with-us`). Page + single-step application form built
       (`app/work-with-us/page.tsx`, `components/work-with-us-form.tsx`, API

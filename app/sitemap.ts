@@ -1,17 +1,16 @@
 import type { MetadataRoute } from "next";
 
-import { getDestinationFamilies } from "@/lib/sanity.queries";
+import { getDestinationFamilies, getPosts } from "@/lib/sanity.queries";
 import { SITE_URL } from "@/lib/site";
 
-// Re-generate at most hourly so newly published destination families show up
-// without a redeploy (matches the pages' ISR intent).
+// Re-generate at most hourly so newly published content shows up without a
+// redeploy (matches the pages' ISR intent).
 export const revalidate = 3600;
 
 /**
  * `/sitemap.xml` — the built Phase 1 routes plus every published
- * `destinationFamily` slug. Routes that currently 404 (`/work-with-us`,
- * `/blog`) are intentionally left out until they exist; `/studio` and API
- * routes are excluded by design.
+ * `destinationFamily` slug and blog `post` slug. `/studio` and API routes are
+ * excluded by design.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
@@ -42,6 +41,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${SITE_URL}/work-with-us`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${SITE_URL}/blog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
       url: `${SITE_URL}/privacy`,
       lastModified: now,
       changeFrequency: "yearly",
@@ -55,20 +66,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  let familyRoutes: MetadataRoute.Sitemap = [];
+  let cmsRoutes: MetadataRoute.Sitemap = [];
   try {
-    const families = await getDestinationFamilies();
-    familyRoutes = families.map((family) => ({
-      url: `${SITE_URL}/destinations/${family.slug}`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    }));
+    const [families, posts] = await Promise.all([
+      getDestinationFamilies(),
+      getPosts(),
+    ]);
+    cmsRoutes = [
+      ...families.map((family) => ({
+        url: `${SITE_URL}/destinations/${family.slug}`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      })),
+      ...posts.map((post) => ({
+        url: `${SITE_URL}/blog/${post.slug}`,
+        lastModified: new Date(post.publishedAt),
+        changeFrequency: "yearly" as const,
+        priority: 0.5,
+      })),
+    ];
   } catch {
     // CMS unreachable at build/revalidate time — still emit the static routes
     // rather than failing the whole sitemap.
-    familyRoutes = [];
+    cmsRoutes = [];
   }
 
-  return [...staticRoutes, ...familyRoutes];
+  return [...staticRoutes, ...cmsRoutes];
 }
