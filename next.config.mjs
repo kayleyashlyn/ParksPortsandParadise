@@ -4,8 +4,9 @@
  * Content-Security-Policy — shipped as **Report-Only** for now.
  *
  * It cannot be verified against the deployed site + embedded Sanity Studio +
- * SnapWidget from here, so it only logs violations (browser console /
- * `report-to`) rather than blocking. Once the deployed site is confirmed clean —
+ * SnapWidget from here, so it only logs violations (browser console — no
+ * `report-to` endpoint is wired) rather than blocking. Once the deployed site
+ * is confirmed clean —
  * check `/`, the vacation form, the homepage Instagram section, and `/studio`
  * (login, editing, image upload) — rename the header key from
  * `Content-Security-Policy-Report-Only` to `Content-Security-Policy` to enforce.
@@ -45,13 +46,14 @@ const csp = [
 /*
  * Baseline security headers — enforced on every route. These are all safe with
  * the current stack (no cross-origin framing, no camera/mic/geo use).
- * HSTS carries `preload`: the domain and its subdomains must be HTTPS-only
- * before submitting to the preload list — drop `preload` if that's not certain.
+ * HSTS deliberately omits `preload` — that's a near-permanent commitment
+ * (apex + every subdomain HTTPS-only, slow to reverse). Add `; preload` and
+ * submit to hstspreload.org only once the client confirms that's wanted.
  */
 const securityHeaders = [
   {
     key: "Strict-Transport-Security",
-    value: "max-age=63072000; includeSubDomains; preload",
+    value: "max-age=63072000; includeSubDomains",
   },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },

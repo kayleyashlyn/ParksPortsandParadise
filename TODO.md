@@ -55,10 +55,12 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 ## Pre-launch hardening
 
 - [~] **Security headers** — added in `next.config.mjs` `headers()`
-      (`feat/security-headers`). **Enforced now:** HSTS (`preload` — drop it if
-      the domain + subdomains aren't all HTTPS-only), `X-Content-Type-Options`,
-      `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`, `Permissions-Policy`,
-      `X-DNS-Prefetch-Control`. **CSP ships as `Content-Security-Policy-Report-Only`**
+      (`feat/security-headers`). **Enforced now:** HSTS
+      (`max-age=63072000; includeSubDomains` — no `preload`; add it only if the
+      client wants the apex + every subdomain locked to HTTPS near-permanently),
+      `X-Content-Type-Options`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`,
+      `Permissions-Policy`, `X-DNS-Prefetch-Control`.
+      **CSP ships as `Content-Security-Policy-Report-Only`**
       — verified locally on `/`, `/plan-your-vacation`, `/studio` (only fix
       needed vs. the first draft: allow `*.sanity-cdn.com` for the Studio
       bridge). Still to do:
