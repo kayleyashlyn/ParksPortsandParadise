@@ -65,14 +65,20 @@ const STEPS: {
   },
 ];
 
-const today = new Date().toISOString().slice(0, 10);
-
 export function VacationRequestForm({
   destinationParam,
 }: {
   destinationParam?: string;
 }) {
   const [stepIndex, setStepIndex] = React.useState(0);
+  // `min` on the date inputs — today's date, but resolved AFTER mount so the
+  // server-rendered HTML (no `min`) and the first client render agree. A
+  // module-scope `new Date()` freezes at server-process start and mismatches
+  // the client on hydration; it's also just a UX hint (Zod is the real guard).
+  const [today, setToday] = React.useState<string | undefined>(undefined);
+  React.useEffect(() => {
+    setToday(new Date().toISOString().slice(0, 10));
+  }, []);
   const [status, setStatus] = React.useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
