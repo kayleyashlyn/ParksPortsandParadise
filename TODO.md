@@ -123,8 +123,9 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       - [ ] Set `NEXT_PUBLIC_GA4_MEASUREMENT_ID` in Vercel **Production** only.
       - [ ] In GA4 Admin, mark `generate_lead` as a **key event**.
       - [ ] Consent / cookie-banner decision (GA4 sets cookies; audience
-            includes CA residents). `/privacy` page still needs a cookies
-            section.
+            includes CA residents). The `/privacy` page has a cookies section
+            (§6) but with `[If a consent banner is used:]` / GPC placeholders —
+            finalise the banner wording and GPC handling there once decided.
       - The `generate_lead` event itself fires from the Vacation Request Form
         (`feat/plan-your-vacation` / PR #4) — safe no-op until this tag lands.
 - [ ] **Newsletter submit** — `components/newsletter-form.tsx` is presentational;
@@ -132,9 +133,19 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;
       pick concrete `images.unsplash.com` URLs / collections (host is already
       allow-listed in `next.config.mjs`).
-- [ ] **Nav routes still 404** — `/work-with-us`, `/blog`, `/privacy`,
-      `/terms`. (`/meet-the-team` 2026-09-08; `/destinations` +
-      `/destinations/[slug]` + `/plan-your-vacation` 2026-09-09.)
+- [ ] **Nav routes still 404** — `/work-with-us`, `/blog`. (`/meet-the-team`
+      2026-09-08; `/destinations` + `/destinations/[slug]` +
+      `/plan-your-vacation` 2026-09-09; `/privacy` + `/terms` 2026-09-09 as
+      **draft** shells — see below.)
+- [ ] **`/privacy` + `/terms` are DRAFT** (`feat/privacy-terms-shells`) —
+      starting-point copy in `app/privacy/page.tsx` / `app/terms/page.tsx`, wrapped
+      by `components/legal-page.tsx`. A "Draft — pending legal review" notice shows
+      while `LEGAL_DRAFT` is `true` in `lib/legal.ts`. Before launch: a
+      travel-industry / privacy attorney fills every `[BRACKETED]` value (legal
+      entity name, mailing address, phone, effective + last-updated dates,
+      retention periods, governing-law state/county, Terms §5 fee option A/B,
+      consent-banner wording, GPC handling) and reviews both; then set the two
+      dates in `lib/legal.ts` and flip `LEGAL_DRAFT` to `false`.
 - [x] **Vacation Request Form — email provider** — Resend chosen 2026-09-09;
       `sendNotification()` in `app/api/vacation-request/route.ts` now calls the
       Resend SDK. **Still needed before it actually sends:**
