@@ -29,8 +29,9 @@ import {
 
 declare global {
   interface Window {
+    // `dataLayer` is declared globally by @next/third-parties (GA4 tag lives in
+    // app/layout.tsx); only `gtag` needs augmenting here.
     gtag?: (...args: unknown[]) => void;
-    dataLayer?: unknown[];
   }
 }
 
