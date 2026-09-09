@@ -36,7 +36,6 @@ export const CELEBRATING_OPTIONS = [
   "Anniversary",
   "Honeymoon",
   "Other",
-  "None",
 ] as const;
 
 export const DISCOUNT_OPTIONS = [

@@ -138,14 +138,19 @@ export function VacationRequestForm({
         body: JSON.stringify(values),
       });
       if (!res.ok) throw new Error(String(res.status));
-      // GA4 conversion event. `gtag` is injected by seo-agent's analytics
-      // setup; until then these are safe no-ops. A missing event is a bug
-      // (forms-agent.md) — the call site lives here on purpose.
-      window.gtag?.("event", "generate_lead", {
-        form_id: "vacation_request",
-        currency: "USD",
-      });
-      window.dataLayer?.push({ event: "vacation_request_submitted" });
+      const result = (await res.json().catch(() => ({}))) as {
+        delivered?: boolean;
+      };
+      // GA4 conversion event — only once the advisor notification actually
+      // reached the inbox. Until Resend is configured the route returns
+      // `delivered: false` (submission is logged server-side but nobody has it
+      // yet), so we don't count it as a lead. `gtag` is injected by seo-agent;
+      // until then this is a safe no-op. The call site lives here per
+      // forms-agent.md.
+      if (result.delivered !== false) {
+        window.gtag?.("event", "generate_lead", { form_id: "vacation_request" });
+        window.dataLayer?.push({ event: "vacation_request_submitted" });
+      }
       setStatus("success");
     } catch {
       setStatus("error");
@@ -203,17 +208,23 @@ export function VacationRequestForm({
         </div>
       </div>
 
-      <div className="mt-8 space-y-6">
+      <p className="mt-4 text-xs text-muted-foreground">
+        Fields marked <span className="text-destructive">*</span> are required.
+      </p>
+
+      <div className="mt-6 space-y-6">
         {step.id === "contact" && (
           <div className="grid gap-6 sm:grid-cols-2">
             <TextField
               label="First name"
+              required
               autoComplete="given-name"
               error={errors.firstName?.message}
               {...register("firstName")}
             />
             <TextField
               label="Last name"
+              required
               autoComplete="family-name"
               error={errors.lastName?.message}
               {...register("lastName")}
@@ -221,6 +232,7 @@ export function VacationRequestForm({
             <TextField
               label="Email"
               type="email"
+              required
               autoComplete="email"
               error={errors.email?.message}
               {...register("email")}
@@ -228,6 +240,7 @@ export function VacationRequestForm({
             <TextField
               label="Phone"
               type="tel"
+              required
               autoComplete="tel"
               error={errors.phone?.message}
               {...register("phone")}
@@ -240,6 +253,7 @@ export function VacationRequestForm({
             type="checkbox"
             legend="Where are you wanting to visit?"
             description="Choose one or more."
+            required
             options={DESTINATION_OPTIONS}
             field={register("destinations")}
             error={errors.destinations?.message}
@@ -270,6 +284,7 @@ export function VacationRequestForm({
             <OptionGroup
               type="radio"
               legend="Are your dates flexible?"
+              required
               options={DATES_FLEXIBLE_OPTIONS}
               field={register("datesFlexible")}
               error={errors.datesFlexible?.message}
@@ -277,6 +292,7 @@ export function VacationRequestForm({
             <OptionGroup
               type="radio"
               legend="Budget (excluding flights)"
+              required
               options={BUDGET_OPTIONS}
               field={register("budget")}
               error={errors.budget?.message}
@@ -322,6 +338,7 @@ export function VacationRequestForm({
             <div className="grid gap-6 sm:grid-cols-2">
               <TextField
                 label="Party size"
+                required
                 inputMode="numeric"
                 placeholder="e.g. 2 adults, 2 kids"
                 error={errors.partySize?.message}
@@ -353,18 +370,18 @@ export function VacationRequestForm({
         )}
       </div>
 
-      {/* Honeypot — visually hidden, off the tab order, ignored by real users. */}
-      <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
-        <label>
-          Company
-          <input
-            type="text"
-            tabIndex={-1}
-            autoComplete="off"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-          />
-        </label>
+      {/* Honeypot — off-screen and not tabbable; real people leave it blank,
+          bots tend to fill it. No aria-hidden (it wraps a focusable input). */}
+      <div className="absolute left-[-9999px] h-px w-px overflow-hidden">
+        <label htmlFor="pp-company">Company (leave this blank)</label>
+        <input
+          id="pp-company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
       </div>
 
       {status === "error" && (
@@ -421,16 +438,29 @@ export function VacationRequestForm({
 
 /* ------------------------------------------------------------------ */
 
+function RequiredMark() {
+  return (
+    <>
+      {" "}
+      <span aria-hidden className="text-destructive">
+        *
+      </span>
+    </>
+  );
+}
+
 function TextField({
   label,
   error,
   hint,
+  required,
   className,
   ...props
 }: React.ComponentProps<"input"> & {
   label: string;
   error?: string;
   hint?: string;
+  required?: boolean;
 }) {
   const id = props.id ?? props.name;
   const describedBy = error
@@ -441,9 +471,13 @@ function TextField({
 
   return (
     <div>
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id}>
+        {label}
+        {required ? <RequiredMark /> : null}
+      </Label>
       <Input
         id={id}
+        aria-required={required || undefined}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
         className={cn("mt-1.5", className)}
@@ -470,6 +504,7 @@ function OptionGroup({
   options,
   field,
   error,
+  required,
   columns = false,
 }: {
   legend: string;
@@ -478,20 +513,28 @@ function OptionGroup({
   options: readonly string[];
   field: UseFormRegisterReturn;
   error?: string;
+  required?: boolean;
   columns?: boolean;
 }) {
+  const descId = description ? `${field.name}-desc` : undefined;
+  const errorId = error ? `${field.name}-error` : undefined;
+
   return (
-    <fieldset>
-      <legend className="text-sm font-medium">{legend}</legend>
+    <fieldset
+      aria-required={required || undefined}
+      aria-invalid={error ? true : undefined}
+      aria-describedby={[descId, errorId].filter(Boolean).join(" ") || undefined}
+    >
+      <legend className="text-sm font-medium">
+        {legend}
+        {required ? <RequiredMark /> : null}
+      </legend>
       {description ? (
-        <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+        <p id={descId} className="mt-1 text-xs text-muted-foreground">
+          {description}
+        </p>
       ) : null}
-      <div
-        className={cn(
-          "mt-2 grid gap-2",
-          columns && "sm:grid-cols-2",
-        )}
-      >
+      <div className={cn("mt-2 grid gap-2", columns && "sm:grid-cols-2")}>
         {options.map((option) => (
           <label
             key={option}
@@ -508,7 +551,9 @@ function OptionGroup({
         ))}
       </div>
       {error ? (
-        <p className="mt-1.5 text-xs text-destructive">{error}</p>
+        <p id={errorId} className="mt-1.5 text-xs text-destructive">
+          {error}
+        </p>
       ) : null}
     </fieldset>
   );
