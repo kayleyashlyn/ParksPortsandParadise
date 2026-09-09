@@ -54,28 +54,28 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 
 ## Pre-launch hardening
 
-- [~] **Security headers** — added in `next.config.mjs` `headers()`
-      (`feat/security-headers`). **Enforced now:** HSTS
-      (`max-age=63072000; includeSubDomains` — no `preload`; add it only if the
-      client wants the apex + every subdomain locked to HTTPS near-permanently),
-      `X-Content-Type-Options`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`,
-      `Permissions-Policy`, `X-DNS-Prefetch-Control`.
-      **CSP ships as `Content-Security-Policy-Report-Only`**
-      — verified locally on `/`, `/plan-your-vacation`, `/studio` (only fix
-      needed vs. the first draft: allow `*.sanity-cdn.com` for the Studio
-      bridge). Still to do:
-      - [ ] On the deployed site, exercise **logged-in `/studio`** (edit, image
-            upload, realtime), the **vacation form submit**, and the **homepage
-            Instagram section**; watch for `-Report-Only` violations and widen
-            the allowlist as needed.
-      - [ ] Then flip the header key `Content-Security-Policy-Report-Only` →
-            `Content-Security-Policy` to enforce.
-      - [ ] Optional later: nonce middleware to drop `'unsafe-inline'` /
-            `'unsafe-eval'` from `script-src` on the marketing routes (would need
-            `/studio` split onto its own header block — Studio needs both).
+- [x] **Security headers** — `next.config.mjs` `headers()`, all **enforced**.
+      Baseline (every route): HSTS (`max-age=63072000; includeSubDomains` — no
+      `preload`; add only if the client wants the apex + every subdomain locked
+      to HTTPS near-permanently), `X-Content-Type-Options`,
+      `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`, `Permissions-Policy`,
+      `X-DNS-Prefetch-Control`.
+      **CSP is enforced**, split two ways: a strict `marketingCsp` on every route
+      except `/studio/*` (no `'unsafe-eval'` in prod — `next dev` adds it back for
+      HMR; no `blob:`; tight `connect-src`/`frame-src`) and a looser `studioCsp`
+      on `/studio/*` (`'unsafe-eval'`, `blob:`, `wss://*.sanity.io`,
+      `*.sanity-cdn.com`, `lh3.googleusercontent.com`). Verified: prod build has
+      no `eval` outside the Studio chunks; deployed site had no CSP violations
+      (the WebSocket error there was a Sanity **CORS** issue, not CSP). Rollback:
+      swap a `Content-Security-Policy` key to `-Report-Only`.
+      - [ ] Watch prod after this ships — logged-in Studio edit/upload/realtime,
+            a form submit, the Instagram section — for any `Refused to …` CSP
+            errors; widen the relevant allowlist if one appears.
+      - [ ] Optional later: nonce middleware to drop `'unsafe-inline'` from the
+            marketing `script-src`.
       - Not doing: `iframe sandbox` on `components/instagram-feed.tsx` — SnapWidget
             needs `allow-scripts allow-same-origin` which together defeat the
-            sandbox; `frame-src https://snapwidget.com` in the CSP is the control.
+            sandbox; `frame-src https://snapwidget.com` is the control.
 - [ ] **`lib/sanity.env.ts` silent placeholder** — `projectId` falls back to
       `"placeholder"`. Decide: keep for scaffold builds, or throw when
       `NODE_ENV === "production"` and the var is unset so a misconfigured deploy
