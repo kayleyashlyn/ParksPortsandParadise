@@ -54,12 +54,26 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 
 ## Pre-launch hardening
 
-- [ ] **Security headers** — `next.config.mjs` sets none. Add a `headers()`
-      block (CSP / `frame-ancestors`, `Referrer-Policy`, `X-Content-Type-Options`,
-      HSTS) before go-live. Owner: deploy config. **CSP must allow the SnapWidget
-      Instagram embed:** `frame-src https://snapwidget.com`. Also evaluate an
-      `iframe sandbox` allowlist on `components/instagram-feed.tsx` against what
-      SnapWidget actually needs (likely `allow-scripts allow-popups`).
+- [~] **Security headers** — added in `next.config.mjs` `headers()`
+      (`feat/security-headers`). **Enforced now:** HSTS (`preload` — drop it if
+      the domain + subdomains aren't all HTTPS-only), `X-Content-Type-Options`,
+      `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`, `Permissions-Policy`,
+      `X-DNS-Prefetch-Control`. **CSP ships as `Content-Security-Policy-Report-Only`**
+      — verified locally on `/`, `/plan-your-vacation`, `/studio` (only fix
+      needed vs. the first draft: allow `*.sanity-cdn.com` for the Studio
+      bridge). Still to do:
+      - [ ] On the deployed site, exercise **logged-in `/studio`** (edit, image
+            upload, realtime), the **vacation form submit**, and the **homepage
+            Instagram section**; watch for `-Report-Only` violations and widen
+            the allowlist as needed.
+      - [ ] Then flip the header key `Content-Security-Policy-Report-Only` →
+            `Content-Security-Policy` to enforce.
+      - [ ] Optional later: nonce middleware to drop `'unsafe-inline'` /
+            `'unsafe-eval'` from `script-src` on the marketing routes (would need
+            `/studio` split onto its own header block — Studio needs both).
+      - Not doing: `iframe sandbox` on `components/instagram-feed.tsx` — SnapWidget
+            needs `allow-scripts allow-same-origin` which together defeat the
+            sandbox; `frame-src https://snapwidget.com` in the CSP is the control.
 - [ ] **`lib/sanity.env.ts` silent placeholder** — `projectId` falls back to
       `"placeholder"`. Decide: keep for scaffold builds, or throw when
       `NODE_ENV === "production"` and the var is unset so a misconfigured deploy
