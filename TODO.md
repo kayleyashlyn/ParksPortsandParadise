@@ -55,8 +55,30 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       footer "Agent Portal" link at `/studio` (the CMS). The plan's Agent Portal
       is the advisors' external portal — a different system. Set
       `NEXT_PUBLIC_AGENT_PORTAL_URL` to the real gated URL.
-- [ ] **`metadataBase` + OG/Twitter metadata** — absent in `app/layout.tsx`;
-      Next will warn once OG images exist. Owner: `seo-agent`.
+- [x] **`metadataBase` + OG/Twitter metadata** — done 2026-09-09 (`feat/seo-phase-1`).
+      `app/layout.tsx` sets `metadataBase` from `SITE_URL` (`lib/site.ts`,
+      env `NEXT_PUBLIC_SITE_URL`), default OpenGraph/Twitter/robots, and a
+      `title.template`. Per-page metadata routes through `pageMetadata()`
+      (`lib/seo.ts`). Site-wide `TravelAgency` + `WebSite` JSON-LD in the root
+      layout; `ItemList`/`TouristAttraction` + `BreadcrumbList` on
+      `/destinations/[slug]`. `app/sitemap.ts` + `app/robots.ts` added.
+- [ ] **Default OG image asset** — no site-wide `og:image`. Inner pages other
+      than destination families (home, Meet the Team, Plan Your Vacation) ship
+      with no OG image, so social cards fall back to a bare link. `seo-agent`
+      deliberately did **not** commit a placeholder. Owner: design — supply a
+      1200×630 branded share image; then set it as the default in
+      `app/layout.tsx` `openGraph.images` (+ `twitter.images`).
+- [ ] **`content-schema-agent`: optional SEO fields on `destinationFamily`** —
+      metadata currently reuses `shortDescription` for `<meta description>` /
+      `og:description` and crops `heroImage` to 1200×630 for `og:image`. That's
+      workable. A dedicated `seoDescription` (≤160 chars, plain) and/or
+      `ogImage` field would let the editor tune search/social copy independently
+      of on-page hero copy. Not blocking; needs an IMPLEMENTATION_PLAN update
+      per CLAUDE.md if added.
+- [ ] **Real `lastModified` in `app/sitemap.ts`** — every entry currently uses
+      build/revalidate time. Project `_updatedAt` into `getDestinationFamilies()`
+      (touches the hand-written type in `lib/sanity.queries.ts`) to emit true
+      per-family timestamps.
 
 ## Performance
 

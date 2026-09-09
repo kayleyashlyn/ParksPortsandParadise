@@ -4,16 +4,18 @@ import Link from "next/link";
 import { DestinationFamilyCard } from "@/components/destination-family-card";
 import { Button } from "@/components/ui/button";
 import { getDestinationFamilies } from "@/lib/sanity.queries";
+import { pageMetadata } from "@/lib/seo";
 import { PRIMARY_CTA } from "@/lib/site";
 
 // ISR — re-pull CMS content at most once a minute (matches the homepage).
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Destinations | Parks Ports & Paradise",
+export const metadata: Metadata = pageMetadata({
+  title: "Destinations",
   description:
     "Theme parks, cruises, and all-inclusive resorts — the three ways we get families away. Pick a direction and our advisors build the trip around you.",
-};
+  path: "/destinations",
+});
 
 export default async function DestinationsPage() {
   const families = await getDestinationFamilies();

@@ -4,15 +4,17 @@ import Link from "next/link";
 import { TeamGrid } from "@/components/team-grid";
 import { Button } from "@/components/ui/button";
 import { getActiveAgents } from "@/lib/sanity.queries";
+import { pageMetadata } from "@/lib/seo";
 import { PRIMARY_CTA } from "@/lib/site";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Meet the Team | Parks Ports & Paradise",
+export const metadata: Metadata = pageMetadata({
+  title: "Meet the Team",
   description:
     "The advisors behind Parks Ports & Paradise — the people who plan your theme park, cruise, and all-inclusive trips.",
-};
+  path: "/meet-the-team",
+});
 
 export default async function MeetTheTeamPage() {
   const agents = await getActiveAgents();
