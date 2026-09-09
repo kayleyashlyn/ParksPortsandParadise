@@ -29,12 +29,15 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       families / accreditation badges / agent profiles were **Published** (not
       left as drafts) and are in the `production` dataset. Re-run the smoke check
       once populated.
-- [ ] **Image schemas have no `alt` field** — `heroImage`, `destinationLocation.image`,
-      `accreditationBadge.badgeImage`, `agentProfile.photo` return no alt text, so
-      `lib/sanity.queries.ts` can't project one. Either add an `alt` string field
-      to those image fields (content-schema-agent — needs an IMPLEMENTATION_PLAN
-      update per CLAUDE.md) or have consumers derive alt from the sibling
-      `name` / `title` / `label`.
+- [x] **Image schemas have no `alt` field** — DONE (branch `feat/image-alt-and-keywords`).
+      Added an inline `alt` string field to `heroImage`, `destinationLocation.image`,
+      `accreditationBadge.badgeImage`, and `agentProfile.photo`. Warning-level
+      (`.required().warning()`) on all but `badgeImage` (plain optional) so the ~15
+      already-seeded images don't become invalid. `SanityImage` projections are bare
+      objects so `alt` flows through automatically; the `SanityImage` type gained
+      `alt?: string | null` and every `<SanityImage>` call site now passes
+      `image.alt ?? <sibling label>`. **Editors still need to fill alt on existing
+      images** (Studio shows the warning until they do).
 - [ ] **Query return types are hand-written, not runtime-validated** — if a GROQ
       projection in `lib/sanity.queries.ts` drifts from its TS type, nothing
       catches it. Consider `sanity typegen` or a Zod parse at the fetch boundary.
@@ -187,6 +190,11 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       `badgeImage` seals, add `badgeImage.asset->metadata.dimensions` to the
       `accreditationBadge` projection in `lib/sanity.queries.ts` and render with
       `next/image`.
-- [ ] **Sanity image `alt` text** — `SanityImage` currently uses the sibling
-      `title` / `label`. Replace with real alt text once finalized images land
-      (per decision 2026-09-08).
+- [x] **Sanity image `alt` text** — DONE. Per-image `alt` field added to all four
+      image schemas; call sites fall back to the sibling label only when `alt` is
+      blank. Editors need to backfill `alt` on the already-seeded images.
+- [ ] **`shortTag` → `searchKeywords` re-entry** — `shortTag` (previously a visible
+      uppercase eyebrow on destination locations) was renamed to `searchKeywords`,
+      a hidden field fed into the `/destinations/[slug]` JSON-LD (`keywords` on each
+      `TouristAttraction`). The 2 locations that had `shortTag` values lost them in
+      the rename — re-enter them as comma-separated search terms in `searchKeywords`.

@@ -143,18 +143,25 @@ types — no per-location documents/routes:
 Destination Family (Sanity document)     ← powers one page + one nav flyout item
  ├─ title                   (e.g., "Disney Parks")
  ├─ slug
- ├─ heroImage
+ ├─ heroImage               (+ inline `alt` string — warning-level, falls back to title on the frontend)
  ├─ shortDescription         (1–2 sentences, brand-voice copy, kept minimal per client direction)
  ├─ order                    (controls nav/homepage ordering — Disney Parks, Cruise Lines, All-Inclusive)
  └─ locations[]              (array of Location objects, see below — rendered as sections/anchors on the SAME page)
 
 Location (object, not a standalone document/route)
  ├─ name                     (e.g., "Walt Disney World")
- ├─ image
- ├─ shortTag                 (a few words max — location line, not paragraph copy)
+ ├─ image                    (+ inline `alt` string — warning-level, falls back to name on the frontend)
+ ├─ searchKeywords           (NOT rendered — comma-separated SEO terms, fed into the page's JSON-LD `keywords`; was a visible `shortTag` eyebrow before 2026-09-09, repurposed per client direction that the terms are SEO triggers, not user-facing copy)
  ├─ blurb                    (1–2 sentences on what makes this location distinct — client-requested 2026-09-08; still short, schema max 200 chars)
  └─ ctaOverride               (optional, defaults to "Request a Quote," destination pre-filled)
 ```
+
+All four image fields (`destinationFamily.heroImage`, `destinationLocation.image`,
+`agentProfile.photo`, `accreditationBadge.badgeImage`) carry an inline `alt` string
+(added 2026-09-09). It is warning-level, not required, so the images seeded before
+this change stay valid; frontend `<SanityImage>` call sites fall back to the sibling
+label (`name` / `title`) when `alt` is blank. `badgeImage.alt` is a plain optional
+string (the trust bar renders text only today).
 
 Held in reserve for Phase 2 (flagged, not built now): day-by-day timeline, interactive map pins, included/excluded checklists, difficulty rating, packing lists, photo/video galleries, price tiers, downloadable PDF, and standalone per-location pages/routes if the client later wants each location to have its own URL — these were offered as prompt options in discovery but marked "not in scope."
 

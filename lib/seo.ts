@@ -131,6 +131,8 @@ type DestinationFamilyJsonLdInput = {
     description?: string | null;
     /** Absolute image URL, already resolved via `urlForImage()`. */
     image?: string | null;
+    /** Comma-separated search terms from the CMS `searchKeywords` field; not shown on the page. */
+    keywords?: string | null;
   }[];
 };
 
@@ -161,6 +163,9 @@ export function destinationFamilyJsonLd(
         name: location.name,
         ...(location.description ? { description: location.description } : {}),
         ...(location.image ? { image: location.image } : {}),
+        ...(location.keywords?.trim()
+          ? { keywords: location.keywords.trim() }
+          : {}),
       },
     })),
   };

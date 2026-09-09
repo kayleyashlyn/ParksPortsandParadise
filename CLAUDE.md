@@ -63,6 +63,11 @@ build. This file is about *how* to build it without losing quality as the codeba
 - `next/image` only, with explicit `width`/`height` (or `fill`). Local files in
   `public/`; every remote host must be listed in `next.config.mjs`
   `images.remotePatterns`.
+- Every Sanity image field has an inline `alt` string (warning-level, not
+  required — pre-existing seeded images stay valid). `<SanityImage>` call sites
+  pass `image.alt ?? <sibling label>`; never drop the fallback.
+- `destinationLocation.searchKeywords` is SEO-only — it feeds the
+  `/destinations/[slug]` JSON-LD (`keywords`) and must never render on the page.
 - Logo variants: `logo-primary` on light, `logo-white` on dark, `logo-black`
   one-colour on light, `logo-outline` on mid-tone / coloured.
 

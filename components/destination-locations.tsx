@@ -61,7 +61,7 @@ export function DestinationLocations({
               >
                 <SanityImage
                   image={location.image}
-                  alt={location.name}
+                  alt={location.image.alt ?? location.name}
                   aspect={4 / 3}
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -69,14 +69,9 @@ export function DestinationLocations({
               </div>
 
               <div>
-                {location.shortTag ? (
-                  <p className="text-xs font-medium uppercase tracking-wider text-primary">
-                    {location.shortTag}
-                  </p>
-                ) : null}
                 <h2
                   id={`${anchor}-heading`}
-                  className="mt-1 text-2xl text-foreground sm:text-3xl"
+                  className="text-2xl text-foreground sm:text-3xl"
                 >
                   {location.name}
                 </h2>

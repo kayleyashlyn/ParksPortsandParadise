@@ -29,6 +29,19 @@ export const agentProfile = defineType({
       type: "image",
       options: { hotspot: true },
       validation: (rule) => rule.required(),
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "string",
+          description:
+            'Describe the photo (e.g. "Ashley Mackay, headshot"). Falls back to the agent name if blank.',
+          validation: (rule) =>
+            rule
+              .required()
+              .warning("Add alt text — important for accessibility and SEO."),
+        }),
+      ],
     }),
     defineField({
       name: "title",

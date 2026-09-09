@@ -27,15 +27,16 @@ import { client } from "./sanity.client";
  * assignable to `@sanity/image-url`'s `SanityImageSource`, so it can be passed
  * straight to `urlForImage()`.
  *
- * NOTE: the image schemas define no `alt` field, so none is returned here.
- * Consumers must source alt text elsewhere (the sibling `name` / `title` /
- * `label`) until an `alt` field is added to the schema. Logged in TODO.md.
+ * `alt` comes from the per-image `alt` field on every image schema. It's a
+ * warning-level (not required) field, so consumers must still fall back to a
+ * sibling label (`name` / `title`) when it's absent.
  */
 export type SanityImage = {
   _type: "image";
   asset: { _ref: string; _type: "reference" };
   hotspot?: { x: number; y: number; height: number; width: number };
   crop?: { top: number; bottom: number; left: number; right: number };
+  alt?: string | null;
 };
 
 /* ------------------------------------------------------------------ */
@@ -46,8 +47,8 @@ export type DestinationLocation = {
   _key: string;
   name: string;
   image: SanityImage;
-  /** Optional short location line (schema max 60). */
-  shortTag: string | null;
+  /** Not rendered — comma-separated search terms, fed into the page's JSON-LD. */
+  searchKeywords: string | null;
   /** Optional 1–2 sentence blurb on what makes this location distinct (schema max 200). */
   blurb: string | null;
   /** Optional CTA label override; falls back to "Request a Quote". */
@@ -79,7 +80,7 @@ const destinationFamilyProjection = groq`{
     _key,
     name,
     image,
-    shortTag,
+    searchKeywords,
     blurb,
     ctaLabel
   }, [])

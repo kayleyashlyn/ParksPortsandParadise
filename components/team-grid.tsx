@@ -19,7 +19,7 @@ export function TeamGrid({ agents }: { agents: AgentProfile[] }) {
           <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted">
             <SanityImage
               image={agent.photo}
-              alt={agent.name}
+              alt={agent.photo.alt ?? agent.name}
               aspect={4 / 5}
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               className="object-cover"

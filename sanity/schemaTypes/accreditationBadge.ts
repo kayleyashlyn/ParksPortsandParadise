@@ -38,6 +38,15 @@ export const accreditationBadge = defineType({
       title: "Badge Image / Logo",
       type: "image",
       description: "Optional — leave blank to render as text-only (e.g. a registration number).",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "string",
+          description:
+            "Describe the logo (e.g. \"CLIA logo\"). Falls back to the badge label if blank.",
+        }),
+      ],
     }),
     defineField({
       name: "order",
