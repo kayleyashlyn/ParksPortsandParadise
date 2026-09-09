@@ -29,7 +29,7 @@ export function DestinationFamilyCard({
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <SanityImage
           image={family.heroImage}
-          alt={family.title}
+          alt={family.heroImage.alt ?? family.title}
           aspect={4 / 3}
           sizes={sizes}
           className="object-cover transition-transform duration-300 group-hover:scale-105"

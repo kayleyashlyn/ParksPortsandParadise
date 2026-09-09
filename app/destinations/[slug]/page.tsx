@@ -73,6 +73,7 @@ export default async function DestinationFamilyPage({
       name: location.name,
       description: location.blurb,
       image: location.image ? ogCrop(location.image) : null,
+      keywords: location.searchKeywords,
     })),
   });
 
@@ -92,7 +93,7 @@ export default async function DestinationFamilyPage({
         <div className="absolute inset-0 -z-10">
           <SanityImage
             image={family.heroImage}
-            alt={family.title}
+            alt={family.heroImage.alt ?? family.title}
             aspect={16 / 9}
             sizes="100vw"
             priority

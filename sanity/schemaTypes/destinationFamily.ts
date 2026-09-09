@@ -32,13 +32,27 @@ export const locationObject = defineType({
       description:
         "Must depict THIS specific location — no generic/stock stand-ins used just to fill a grid slot (client editorial rule; qa-agent checks this before publish).",
       validation: (rule) => rule.required(),
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "string",
+          description:
+            'Describe the image for screen readers and search engines (e.g. "Cinderella Castle at Walt Disney World at dusk"). Falls back to the location name if blank.',
+          validation: (rule) =>
+            rule
+              .required()
+              .warning("Add alt text — important for accessibility and SEO."),
+        }),
+      ],
     }),
     defineField({
-      name: "shortTag",
-      title: "Short Tag",
+      name: "searchKeywords",
+      title: "Search keywords",
       type: "string",
-      description: "A few words, not a paragraph — e.g. \"Orlando, FL\" or \"7-night sailings.\"",
-      validation: (rule) => rule.max(60),
+      description:
+        'Not shown on the page. Comma-separated search terms for this location (e.g. "WDW, Disney World, Orlando FL, theme park vacation") — used in the page\'s structured data.',
+      validation: (rule) => rule.max(120),
     }),
     defineField({
       name: "blurb",
@@ -57,7 +71,7 @@ export const locationObject = defineType({
     }),
   ],
   preview: {
-    select: { title: "name", media: "image", subtitle: "shortTag" },
+    select: { title: "name", media: "image", subtitle: "blurb" },
   },
 });
 
@@ -86,6 +100,19 @@ export const destinationFamily = defineType({
       type: "image",
       options: { hotspot: true },
       validation: (rule) => rule.required(),
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "string",
+          description:
+            "Describe the image for screen readers and search engines. Falls back to the family title if blank.",
+          validation: (rule) =>
+            rule
+              .required()
+              .warning("Add alt text — important for accessibility and SEO."),
+        }),
+      ],
     }),
     defineField({
       name: "shortDescription",
