@@ -10,7 +10,8 @@ build. This file is about *how* to build it without losing quality as the codeba
 
 ## Project facts an agent should never re-derive from scratch
 - Stack: **Next.js 15.5** (App Router) · **React 19** · **TypeScript** (~5.7, `strict`) · **Sanity.io v3** (embedded Studio at `/studio`) · **Tailwind CSS 3.4 + shadcn/ui** ("new-york") · **React Hook Form + Zod** · deployed on **Vercel**.
-- **Build status (2026-09-09):** `npm run build` + `npx tsc --noEmit` green. Routes: `/` · `/destinations` · `/destinations/[slug]` (SSG: parks/ports/paradise) · `/meet-the-team` · `/plan-your-vacation` (dynamic — reads `?destination=`) · `/api/vacation-request` (POST) · `/studio/[[...tool]]` · icon/favicon routes. Keep both green before every commit — see "Before committing" below.
+- **Build status (2026-09-09, PRs #4 + #5 merged):** `npm run build` + `npx tsc --noEmit` green. Routes: `/` · `/destinations` · `/destinations/[slug]` (SSG: parks/ports/paradise) · `/meet-the-team` · `/plan-your-vacation` (dynamic — multi-step RHF + Zod form, reads `?destination=`) · `/api/vacation-request` (POST — Zod-validated, Resend) · `/studio/[[...tool]]` · icon/favicon routes. GA4 loads in the root layout via `@next/third-parties`. Deps added: `resend`, `@next/third-parties`. Still 404: `/work-with-us`, `/blog`, `/privacy`, `/terms`. Keep build + tsc green before every commit — see "Before committing" below.
+- **Email + analytics are wired but env-gated — the no-ops are deliberate, not bugs.** Vacation Request Form notifications go through Resend (`app/api/vacation-request/route.ts`); GA4 loads via `@next/third-parties` (`app/layout.tsx`). Both stay inert until the client sets `RESEND_API_KEY` (+ a Resend-verified sending domain) and `NEXT_PUBLIC_GA4_MEASUREMENT_ID` — see `TODO.md`. The form fires the GA4 `generate_lead` conversion **only when the API reports the email was delivered**, so a broken Resend can't inflate conversions. Don't "fix" these to always send / always fire, and don't add a second GA script.
 - **Platform decision is final:** migrating off Squarespace (client-confirmed, IMPLEMENTATION_PLAN.md §10). Don't re-litigate or hedge on this.
 - **Styling embargo for `ui-agent` — logo cleared; photography interim (updated 2026-09-08):** colour values, type families, and logo files are delivered and wired (tokens in `tailwind.config.ts` / `app/globals.css`; assets in `public/images/logos/` + the favicon set). **Logo embargo: fully cleared.** For **photography**, `BRAND_KIT.md` now records an *interim* placeholder direction (Unsplash categories for theme parks / cruises / resorts) — enough to unblock the global layout shell and component work, but the client's real brand photography has **not** been delivered. The §4 editorial rule still stands: destination-family location images must depict that specific location, and generic stock must not ship on those grids (`qa-agent` checks this). Swap in real photography before any photo-dependent page is called done.
 - No direct booking/payment on-site — every conversion path ends at the Vacation
@@ -44,6 +45,12 @@ build. This file is about *how* to build it without losing quality as the codeba
   browser APIs, and keep those components small and leaf-ward.
 - Use shadcn/ui primitives from `components/ui/*` (add via the CLI per
   `components.json`). Don't hand-roll a duplicate of one.
+- **Forms:** shadcn `Input` / `Label` + native `<select>` / checkbox / radio —
+  no extra Radix deps. Multi-step forms validate per step via RHF `trigger()`,
+  re-validate everything on submit. `lib/vacationRequestSchema.ts` is the single
+  source of truth for the Vacation Request Form's fields *and* option lists (the
+  UI maps over the exported `*_OPTIONS`) — keep it field-for-field with
+  IMPLEMENTATION_PLAN.md §6 (`forms-agent`).
 - Navigation / footer / business-fact config lives in `lib/site.ts`, not inline
   in components. Confirmed facts (Seller-of-Travel numbers, accreditations,
   Instagram handle) come from `IMPLEMENTATION_PLAN.md` §4 / §11.
