@@ -234,10 +234,11 @@ Two forms, both emailing the same inbox (`hello@`) through Resend (Section 6):
   travel-agent experience, what they plan to book). On submit it emails you a
   summary titled "New advisor application," reply-to the applicant.
 - Applicants are asked to **email their résumé** to `hello@` — the form has no
-  file upload.
-- The page also has a short FAQ. The answers on fees / commission / E&O are
-  intentionally non-specific ("confirmed in your interview") — tell the developer
-  if you want real figures published there.
+  file upload (confirmed client decision).
+- The page has a short FAQ (experience, E&O, culture, time to first booking).
+  Per your direction there is **no fee or commission information** on the page —
+  compensation is covered during onboarding. The FAQ uses "onboarding," not
+  "interview."
 
 **Spam:** both forms have a hidden field that traps bots; those submissions are
 silently dropped and never emailed.
@@ -294,11 +295,11 @@ Keep this line current.
       intact; done at a low-traffic time.
 - [ ] Security headers added (also required for the SnapWidget embed).
 - [ ] Default social-share (OG) image supplied and set.
-- [ ] `/work-with-us` — built (recruiting page + application form). Confirm the
-      FAQ answers on start-up fee / commission / E&O, and decide whether to add a
-      résumé upload (applicants currently email it in).
-- [ ] `/blog` — decide if in scope for launch (currently 404; needs a Sanity
-      `post` schema + list/detail pages + migration of existing Squarespace posts).
+- [x] `/work-with-us` — built; copy finalised (email-only résumé, no fee info,
+      "onboarding" terminology).
+- [ ] `/blog` — **in scope for launch** (client decision 2026-09-09). Pages +
+      "Blog Post" model are on a separate branch, not merged yet; then the
+      existing Squarespace posts need recreating in Studio.
 
 ---
 
@@ -308,4 +309,4 @@ Keep this line current.
 |---|---|
 | 2026-09-09 | Guide created. Seeded from current build state: Sanity content models (incl. new per-image Alt text + hidden Search keywords), Vercel hosting, Resend form email, GA4 (`G-31KW1BQLNR`), SnapWidget plan, draft legal pages. |
 | 2026-09-09 | §7 — analytics is now **opt-in** behind a cookie-consent banner (GPC-aware; "Cookie settings" link in the footer). Privacy Policy §6 rewritten from placeholders to final-pending-legal wording. |
-| 2026-09-09 | §9 — `/work-with-us` recruiting page + application form built (second Resend-backed form → `hello@`; résumé by email, no upload). FAQ fee/commission/E&O answers are non-specific pending agency confirmation. |
+| 2026-09-09 | §9 — `/work-with-us` recruiting page + application form built (second Resend-backed form → `hello@`; résumé by email, no upload). Copy finalised per client: no fee/commission info on the page, "onboarding" terminology. |

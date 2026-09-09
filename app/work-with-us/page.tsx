@@ -84,23 +84,15 @@ export default function WorkWithUsPage() {
           Frequently asked questions
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Starting-point answers — the specifics on fees, commission splits, and
-          coverage are confirmed with you directly during your interview.
+          Starting-point answers — anything specific to your situation is covered
+          during onboarding.
         </p>
         <div className="mt-6">
           <FaqList
             items={[
               {
-                q: "Do you have a start-up fee?",
-                a: "We go over any onboarding or membership costs with you during your interview, before you commit to anything.",
-              },
-              {
                 q: "Do you require experience?",
                 a: "No. We work with seasoned advisors bringing an existing book of business and with newer agents who are serious about building one. Training and mentorship are part of onboarding either way.",
-              },
-              {
-                q: "What is the commission structure?",
-                a: "Commission splits depend on your experience and booking volume. We walk through the specific tiers with you directly — nothing about your pay is hidden or one-size-fits-all.",
               },
               {
                 q: "Do you provide Errors and Omissions (E&O) insurance?",
