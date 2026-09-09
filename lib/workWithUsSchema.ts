@@ -6,9 +6,9 @@ import { z } from "zod";
  * advisors, not travellers) and a much shorter, single-step form.
  *
  * Fields mirror the agency's current intake, minus the résumé file upload —
- * applicants are asked to email their résumé to hello@ instead, so the site
- * needs no file-storage integration. (Résumé upload is a possible follow-up —
- * see TODO.md.)
+ * applicants email their résumé to hello@ instead, so the site needs no
+ * file-storage integration. Email-only is a confirmed client decision
+ * (2026-09-09), not an interim shortcut.
  *
  * This schema is the single source of truth for the form's fields; keep it in
  * step with `components/work-with-us-form.tsx` and the plan.

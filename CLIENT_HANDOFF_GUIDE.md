@@ -298,8 +298,8 @@ Keep this line current.
 - [x] `/work-with-us` — built; copy finalised (email-only résumé, no fee info,
       "onboarding" terminology).
 - [ ] `/blog` — **in scope for launch** (client decision 2026-09-09). Pages +
-      Sanity `post` schema built; still needs the existing Squarespace posts
-      migrated in (content task) and at least one published post before launch.
+      "Blog Post" model are on a separate branch, not merged yet; then the
+      existing Squarespace posts need recreating in Studio.
 
 ---
 
