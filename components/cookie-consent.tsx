@@ -38,8 +38,15 @@ export function CookieConsent() {
   if (!open) return null;
 
   const choose = (value: "granted" | "denied") => {
+    const prev = readConsentCookie();
     writeConsentCookie(value);
     setOpen(false);
+    // Turning analytics off after it was on: reload so the already-injected
+    // gtag script is torn down now, not just on the next navigation. (React
+    // unmounting <GoogleAnalytics> doesn't unload the script it added.)
+    if (prev === "granted" && value === "denied") {
+      window.location.reload();
+    }
   };
 
   return (
@@ -61,9 +68,12 @@ export function CookieConsent() {
           .
         </p>
         <div className="flex shrink-0 gap-2">
+          {/* Kept lighter than the site's one dominant CTA ("Request a Quote",
+              which is `variant="secondary"`): Accept is `outline`, Decline is
+              `ghost`. */}
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             size="sm"
             onClick={() => choose("denied")}
           >
@@ -71,7 +81,7 @@ export function CookieConsent() {
           </Button>
           <Button
             type="button"
-            variant="secondary"
+            variant="outline"
             size="sm"
             onClick={() => choose("granted")}
           >
