@@ -64,6 +64,14 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       `"placeholder"`. Decide: keep for scaffold builds, or throw when
       `NODE_ENV === "production"` and the var is unset so a misconfigured deploy
       fails loud instead of rendering against a bogus project.
+- [x] **`SITE_URL` crashed the build on a blank env var** — fixed 2026-09-09
+      (`fix/site-url-empty-env`). `NEXT_PUBLIC_SITE_URL=""` in Vercel (created
+      while adding other env vars) got past `?? fallback` and crashed
+      `new URL(SITE_URL)` in `app/layout.tsx` — broke every deploy incl.
+      production. `lib/site.ts` now treats empty/blank the same as unset.
+      **Still do:** delete or set the blank `NEXT_PUBLIC_SITE_URL` in Vercel
+      (Production = the prod domain, Preview = the preview URL) so preview
+      canonicals don't fall back to the prod domain.
 - [ ] **`AGENT_PORTAL_URL` real target** — `lib/site.ts` currently points the
       footer "Agent Portal" link at `/studio` (the CMS). The plan's Agent Portal
       is the advisors' external portal — a different system. Set
