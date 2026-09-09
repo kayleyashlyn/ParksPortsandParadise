@@ -93,22 +93,19 @@ const nextConfig = {
   reactStrictMode: true,
   async headers() {
     return [
+      // Baseline headers on EVERY path — no gaps, whatever the CSP routing does.
+      { source: "/:path*", headers: baselineHeaders },
+      // `/studio` and `/studio/*` get the looser Studio CSP.
       {
-        // Studio route — the looser policy. Listed first so it wins for /studio*.
         source: "/studio/:path*",
-        headers: [
-          ...baselineHeaders,
-          { key: "Content-Security-Policy", value: studioCsp },
-        ],
+        headers: [{ key: "Content-Security-Policy", value: studioCsp }],
       },
+      // Everything else gets the strict marketing CSP. The lookahead is anchored
+      // to a path boundary (`/` or end) so only `/studio` itself and `/studio/*`
+      // are excluded — not `/studio-guide`, `/studios`, etc.
       {
-        // Everything else — the strict marketing policy. Negative lookahead
-        // keeps `/studio*` on the entry above.
-        source: "/((?!studio).*)",
-        headers: [
-          ...baselineHeaders,
-          { key: "Content-Security-Policy", value: marketingCsp },
-        ],
+        source: "/((?!studio(?:/|$)).*)",
+        headers: [{ key: "Content-Security-Policy", value: marketingCsp }],
       },
     ];
   },
