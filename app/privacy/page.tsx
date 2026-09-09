@@ -183,18 +183,20 @@ export default function PrivacyPolicyPage() {
       <ul>
         <li>
           <strong>Essential functions</strong> &mdash; needed for the Site to
-          work.
+          work. This includes a small cookie that remembers your analytics choice
+          below.
         </li>
         <li>
           <strong>Analytics</strong> &mdash; Google Analytics 4, to measure usage
-          and inquiry conversion.
+          and inquiry conversion. These cookies are <strong>off by default</strong>.
         </li>
       </ul>
       <p>
-        <strong>[If a consent banner is used:]</strong> When you first visit, you
-        can accept or decline non-essential (analytics) cookies, and you can
-        change your choice at any time via{" "}
-        <strong>[the &ldquo;Cookie settings&rdquo; link in the footer]</strong>.
+        Analytics is <strong>opt-in</strong>. When you first visit, a banner asks
+        whether to turn on analytics cookies; nothing analytics-related loads
+        unless you choose &ldquo;Accept.&rdquo; You can change your choice at any
+        time using the <strong>&ldquo;Cookie settings&rdquo;</strong> link in the
+        Site footer.
       </p>
       <p>
         You can also opt out of Google Analytics across all sites using
@@ -210,8 +212,10 @@ export default function PrivacyPolicyPage() {
         features may not work as well if you do.
       </p>
       <p>
-        We <strong>[do / do not]</strong> respond to Global Privacy Control (GPC)
-        signals <strong>[describe]</strong>.
+        <strong>Global Privacy Control (GPC).</strong> If your browser sends a GPC
+        signal, we treat it as a request to decline analytics cookies: analytics
+        stays off and we do not show the consent banner. You can still turn
+        analytics on manually via &ldquo;Cookie settings&rdquo; if you want to.
       </p>
 
       <h2>7. How long we keep your information</h2>
