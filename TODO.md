@@ -18,9 +18,14 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 
 ## Sanity data layer
 
-- [ ] **`production` dataset (`kuk7exxj`) returned 0 published docs** (2026-09-08
-      smoke test of `lib/sanity.queries.ts`). Queries and auth work — the dataset
-      is just empty of published content. Confirm the seeded destination
+- [x] **`production` dataset (`kuk7exxj`) had 0 published docs** on the 2026-09-08
+      smoke test — resolved: 3 `destinationFamily` docs are now published
+      (`parks` / `ports` / `paradise`), plus accreditation badges. **Still open:**
+      no `destinationFamily.locations[]` are populated yet, so the
+      `/destinations/[slug]` pages render their "guide coming soon" empty state.
+      Add locations in Studio (image per §4 editorial rule + `blurb`) to make the
+      family pages meaningful.
+- [ ] ~~(original)~~ Confirm the seeded destination
       families / accreditation badges / agent profiles were **Published** (not
       left as drafts) and are in the `production` dataset. Re-run the smoke check
       once populated.
@@ -92,21 +97,27 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;
       pick concrete `images.unsplash.com` URLs / collections (host is already
       allow-listed in `next.config.mjs`).
-- [ ] **Nav routes still 404** — `/destinations/*`, `/plan-your-vacation`,
-      `/work-with-us`, `/blog`, `/privacy`, `/terms`. (`/meet-the-team` built
-      2026-09-08.)
+- [ ] **Nav routes still 404** — `/plan-your-vacation`, `/work-with-us`,
+      `/blog`, `/privacy`, `/terms`. (`/meet-the-team` built 2026-09-08;
+      `/destinations` + `/destinations/[slug]` built 2026-09-09.)
 - [ ] **Homepage sections still missing** (`app/page.tsx`) — real hero (blocked
       on brand photography), testimonials (no content), Instagram feed (needs
       embed config), a newsletter section. Hero/section copy needs sign-off.
       Built so far: destination-family grid + trust bar (CMS-driven).
-- [ ] **Nav hrefs vs CMS slugs** — `lib/site.ts` `PRIMARY_NAV` / `FOOTER_NAV`
-      hardcode `/destinations/theme-parks` etc., but the destination-family grid
-      links to the live CMS slug (currently `theme-parks-disney-world-…`).
-      Reconcile once slugs are finalized — ideally generate the Destinations
-      nav from `getDestinationFamilies()`.
-- [ ] **`/destinations/[slug]` pages** — grid + flyout link here; route not
-      built, and families currently have `locations: []` seeded (schema requires
-      ≥1). Needs locations in Studio before the page is meaningful.
+- [x] **Nav hrefs vs CMS slugs** — reconciled 2026-09-09: `lib/site.ts`
+      `PRIMARY_NAV` / `FOOTER_NAV` now hardcode the live slugs
+      `/destinations/parks` · `/ports` · `/paradise` (comment in the file flags
+      "keep in sync with the CMS"). Follow-up if slugs churn: generate the
+      Destinations nav from `getDestinationFamilies()` — but the header is a
+      client component, so that needs the nav data passed in from a Server
+      Component parent.
+- [x] **`/destinations/[slug]` pages** — built 2026-09-09 (`generateStaticParams`
+      + ISR `revalidate=60`, `notFound()` on unknown slug, CMS-driven hero +
+      metadata). Locations render as on-page sections (`DestinationLocations`),
+      each a single link to `/plan-your-vacation?destination=<name>`.
+      **Still open:** no `locations[]` in Studio yet, so all three currently show
+      the "guide coming soon" empty state. `?destination=` prefill needs the
+      Vacation Request Form to read the query param (owner: `forms-agent`).
 - [ ] **Trust bar renders text only** (`components/trust-bar.tsx`) — to show
       `badgeImage` seals, add `badgeImage.asset->metadata.dimensions` to the
       `accreditationBadge` projection in `lib/sanity.queries.ts` and render with
