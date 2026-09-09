@@ -4,6 +4,16 @@ Engineering debt and pre-launch hardening. **Not** Phase 2 client scope — that
 lives in `BACKLOG.md`. Items here came out of the 2026-09-08 component audit and
 earlier build work; check them off or move them to a plan/issue as they're done.
 
+## Client deliverables
+
+- [ ] **`CLIENT_HANDOFF_GUIDE.md` — keep current.** Living plain-language ops
+      guide for the client (integrations, sign-ins, troubleshooting, pre-launch
+      checklist). Created 2026-09-09. Per `CLAUDE.md` (Definition of done), every
+      PR that touches an integration / credential / env var / CMS model / editor
+      workflow updates it + its Change log. Final pass before handoff: fill the
+      `[TBD]` login-owner and developer-contact fields, confirm every section's
+      status marker, walk it through with Paige/Ashley.
+
 ## Sanity Studio
 
 - [x] `http://localhost:3000` registered as a CORS origin on project `kuk7exxj`
