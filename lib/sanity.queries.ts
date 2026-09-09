@@ -178,3 +178,25 @@ const activeAgentsQuery = groq`
 export function getActiveAgents(): Promise<AgentProfile[]> {
   return client.fetch<AgentProfile[]>(activeAgentsQuery);
 }
+
+/* ------------------------------------------------------------------ */
+/* siteSettings (singleton)                                            */
+/* ------------------------------------------------------------------ */
+
+export type SiteSettings = {
+  instagramFeedEnabled: boolean;
+  /** SnapWidget widget ID for the homepage feed; null until the editor sets it. */
+  instagramWidgetId: string | null;
+};
+
+const siteSettingsQuery = groq`
+  *[_id == "siteSettings"][0]{
+    "instagramFeedEnabled": coalesce(instagramFeedEnabled, false),
+    instagramWidgetId
+  }
+`;
+
+/** The single Site Settings document, or `null` if it hasn't been created yet. */
+export function getSiteSettings(): Promise<SiteSettings | null> {
+  return client.fetch<SiteSettings | null>(siteSettingsQuery);
+}

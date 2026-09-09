@@ -1,6 +1,7 @@
 import { destinationFamily, locationObject } from "./destinationFamily";
 import { accreditationBadge } from "./accreditationBadge";
 import { agentProfile } from "./agentProfile";
+import { siteSettings } from "./siteSettings";
 
 /**
  * Registered with Sanity Studio's schema config (sanity.config.ts):
@@ -16,4 +17,5 @@ export const schemaTypes = [
   locationObject,
   accreditationBadge,
   agentProfile,
+  siteSettings,
 ];
