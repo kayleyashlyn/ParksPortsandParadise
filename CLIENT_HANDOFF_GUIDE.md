@@ -120,18 +120,28 @@ text is better. Please backfill alt text on the images already loaded.
 
 ## 5. Domain & DNS — the Squarespace cutover ⬜
 
-At launch the domain `parksportsandparadise.com` moves from pointing at Squarespace
-to pointing at Vercel. Key facts so email is not disrupted:
+**Approach (client decision, 2026-09-10): the launch is a fresh start on Vercel.**
+The domain and its DNS management move to Vercel at cutover. We are **not** editing
+the current Squarespace/Google DNS in the run-up — any new records (e.g. Resend
+email verification) wait and get added in Vercel's DNS panel after the move.
 
-- Only the **website** records change (an `A` record and/or `CNAME` that Vercel
-  provides). 
-- The **email (MX) records stay exactly as they are** — `hello@` keeps flowing to
-  Google Workspace. Do not remove MX, SPF, DKIM, or DMARC records during the
-  website cutover.
-- Plan for a short window where the site may be intermittent as DNS propagates
-  (minutes to a few hours). Schedule it for a low-traffic time.
-- Detailed step list to be written when the cutover is scheduled and we know the
-  registrar. `[TBD]`
+Current state (2026-09-10): DNS zone is at Google Domains / Squarespace
+(nameservers `ns-cloud-b*.googledomains.com`); the live site is still Squarespace
+(`198.49.23.144`); email is Google Workspace; Vercel has no domain attached yet.
+
+Cutover sequence (detailed steps to be written when it's scheduled):
+
+1. Add `parksportsandparadise.com` to the Vercel project; point the domain's
+   nameservers (or an `A` / `CNAME`) at Vercel per Vercel's instructions.
+2. **Re-create the Google Workspace email records in Vercel DNS first** — MX,
+   SPF, DKIM, DMARC — so `hello@` keeps flowing without a gap. Email is the
+   thing most likely to break in a nameserver move; do it before/with the
+   website switch, not after.
+3. Add Resend's sending-domain records (SPF/DKIM/DMARC for the verified domain
+   or `send.` subdomain) in Vercel DNS, then click **Verify** in Resend.
+4. Set the Vercel env vars (`RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_TO`).
+5. Plan for a short window where the site/email may be intermittent as DNS
+   propagates (minutes to a few hours). Schedule it for a low-traffic time.
 
 ---
 
@@ -150,7 +160,10 @@ Two separate things, often confused:
 - [ ] Create a Resend account; generate an API key; developer adds it to Vercel
       (Production).
 - [ ] Verify a sending domain in Resend (likely `send.parksportsandparadise.com`)
-      — this adds a few DNS records **alongside** the existing Google records.
+      — this adds a few DNS records. **Deferred until the Vercel cutover** (see
+      §5): the records go in Vercel's DNS panel once the domain is on Vercel,
+      not in the current Squarespace/Google zone. The SPF/DKIM/DMARC values from
+      Resend are in hand; nothing to do with them until then.
       Until this is done, the form still works and still validates, it just
       doesn't send the notification.
 - [ ] Decide the "from" address (default proposed: `no-reply@parksportsandparadise.com`).
@@ -328,3 +341,4 @@ Keep this line current.
 | 2026-09-09 | UI polish from client review (header wordmark on mobile, form Back button on every step, smaller Instagram section, no card-image zoom on touch). Added a pre-launch item: supply a transparent sparkle favicon + a horizontal logo lockup asset. |
 | 2026-09-09 | Work With Us reframed as a low-key "Get in touch" contact form per client — dropped the "Apply" heading and all résumé asks; submit button now "Send message"; notification subject "New Work With Us message — {name}". |
 | 2026-09-09 | Homepage hero is now CMS-driven — set a hero **image** (and an optional short **video**) under Site Settings → Homepage hero. Plain text headline until an image is set. Video auto-plays muted on desktop only. |
+| 2026-09-10 | §5 — cutover approach confirmed: **fresh start on Vercel**, DNS management moves to Vercel at launch, current Squarespace/Google DNS left untouched until then. Documented the cutover sequence (email records first). §6 — Resend sending-domain DNS records are **deferred to the cutover** and added in Vercel's DNS panel; values are in hand. |
