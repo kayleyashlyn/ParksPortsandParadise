@@ -235,6 +235,19 @@ earlier build work; check them off or move them to a plan/issue as they're done.
             (or a `send.` subdomain) — add its SPF/DKIM (and DMARC) DNS records.
             These coexist with the existing Google Workspace MX; the Workspace
             inbox `hello@parksportsandparadise.com` stays the recipient.
+            **CIRCLE BACK AFTER CUTOVER — do not touch the current DNS.** As of
+            2026-09-10 the zone is at Google Domains / Squarespace, the live site
+            is still Squarespace (`198.49.23.144`), and Vercel has 0 domains
+            attached. Client's decision: the launch is a **fresh start on
+            Vercel** — the domain (and its DNS) moves to Vercel at cutover, and
+            we are **not** editing Squarespace/Google DNS in the meantime. So the
+            Resend SPF/DKIM/DMARC records get added **in the Vercel DNS panel**
+            once the domain is on Vercel, in the same pass as re-creating the
+            Google Workspace MX/SPF/DKIM/DMARC records there. `EMAIL_FROM` must
+            match whatever domain/subdomain is verified. Sequencing: (1) move
+            domain to Vercel, (2) re-create Workspace email DNS in Vercel so mail
+            keeps flowing, (3) add Resend's records + click Verify, (4) set the
+            Vercel env vars.
       Until both are done the route validates + logs the submission and returns
       `{ delivered: false }`.
 - [ ] **Vacation Request Form — GA4 `generate_lead` event** — the form fires
