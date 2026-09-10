@@ -11,6 +11,11 @@ import { defineField, defineType } from "sanity";
  * agent without losing their bio/photo history, and keeps this list useful as
  * recruiting proof (see Prospective Agent persona) without stale profiles
  * showing on the live page.
+ *
+ * `location` / `email` / `instagramHandle` are structured contact fields, not
+ * prose — the team card renders them with their own treatment (a pin, a
+ * `mailto:` link, an Instagram link), so contact info never has to be
+ * hand-typed into the bottom of `bio`.
  */
 export const agentProfile = defineType({
   name: "agentProfile",
@@ -48,6 +53,38 @@ export const agentProfile = defineType({
       title: "Title",
       type: "string",
       description: 'e.g. "Travel Advisor", "Owner / Lead Advisor"',
+    }),
+    defineField({
+      name: "location",
+      title: "Location",
+      type: "string",
+      description:
+        'Where this advisor is based, e.g. "Orlando, FL". Shown under their name on the team card. Leave blank to hide it.',
+    }),
+    defineField({
+      name: "email",
+      title: "Contact email",
+      type: "string",
+      description:
+        "Public contact email for this advisor — shown on the team card as a clickable email link. Leave blank to hide it.",
+      validation: (rule) =>
+        rule
+          .email()
+          .warning("That doesn't look like a valid email address."),
+    }),
+    defineField({
+      name: "instagramHandle",
+      title: "Instagram handle",
+      type: "string",
+      description:
+        'Just the username, e.g. "alyssaatthecastle" (a leading "@" is fine too) — not a full URL. Shown on the team card as a link to the Instagram profile. Leave blank to hide it.',
+      validation: (rule) =>
+        rule.custom((value) => {
+          if (!value) return true; // optional — the link just doesn't render
+          return /^@?[A-Za-z0-9._]{1,30}$/.test(value)
+            ? true
+            : 'Enter just the Instagram username (letters, numbers, "." and "_"), not a full URL or embed code.';
+        }),
     }),
     defineField({
       name: "bio",

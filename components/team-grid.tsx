@@ -1,3 +1,5 @@
+import { Instagram, Mail, MapPin } from "lucide-react";
+
 import { SanityImage } from "@/components/sanity-image";
 import type { AgentProfile } from "@/lib/sanity.queries";
 
@@ -6,53 +8,95 @@ import type { AgentProfile } from "@/lib/sanity.queries";
  * collection, no per-agent routes). Server Component; agents come from
  * `getActiveAgents()` (active only, ordered by `order` then name).
  *
- * Cards are display-only — not links — so nothing competes with the site's one
- * CTA. Scales to ~20 agents.
+ * The card itself is not a link, so nothing competes with the site's one
+ * button-weight CTA ("Request a Quote"). The advisor's own email / Instagram
+ * are structured contact fields (not bio prose) and render as small, muted
+ * inline text links — metadata, not calls to action. Scales to ~20 agents.
  */
 export function TeamGrid({ agents }: { agents: AgentProfile[] }) {
   if (agents.length === 0) return null;
 
   return (
     <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-      {agents.map((agent) => (
-        <li key={agent._id} className="flex flex-col">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted">
-            <SanityImage
-              image={agent.photo}
-              alt={agent.photo.alt ?? agent.name}
-              aspect={4 / 5}
-              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
+      {agents.map((agent) => {
+        // The editor may type the handle with or without a leading "@".
+        const instagramHandle =
+          agent.instagramHandle?.replace(/^@+/, "").trim() || null;
 
-          <div className="mt-4">
-            <h2 className="text-xl text-foreground">{agent.name}</h2>
-            {agent.title ? (
-              <p className="mt-0.5 text-sm font-medium text-primary">
-                {agent.title}
-              </p>
-            ) : null}
-            {agent.bio ? (
-              <p className="mt-2 line-clamp-4 text-sm text-muted-foreground">
-                {agent.bio}
-              </p>
-            ) : null}
-            {agent.specialties.length > 0 ? (
-              <ul className="mt-3 flex flex-wrap gap-1.5">
-                {agent.specialties.map((specialty) => (
-                  <li
-                    key={specialty}
-                    className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted-foreground"
-                  >
-                    {specialty}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-        </li>
-      ))}
+        return (
+          <li key={agent._id} className="flex flex-col">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted">
+              <SanityImage
+                image={agent.photo}
+                alt={agent.photo.alt ?? agent.name}
+                aspect={4 / 5}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+
+            <div className="mt-4">
+              <h2 className="text-xl text-foreground">{agent.name}</h2>
+              {agent.title ? (
+                <p className="mt-0.5 text-sm font-medium text-primary">
+                  {agent.title}
+                </p>
+              ) : null}
+              {agent.location ? (
+                <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <MapPin aria-hidden className="h-3.5 w-3.5 shrink-0" />
+                  {agent.location}
+                </p>
+              ) : null}
+              {agent.bio ? (
+                <p className="mt-2 line-clamp-4 text-sm text-muted-foreground">
+                  {agent.bio}
+                </p>
+              ) : null}
+              {agent.specialties.length > 0 ? (
+                <ul className="mt-3 flex flex-wrap gap-1.5">
+                  {agent.specialties.map((specialty) => (
+                    <li
+                      key={specialty}
+                      className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted-foreground"
+                    >
+                      {specialty}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {agent.email || instagramHandle ? (
+                <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm">
+                  {agent.email ? (
+                    <li>
+                      <a
+                        href={`mailto:${agent.email}`}
+                        className="inline-flex items-center gap-1.5 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                      >
+                        <Mail aria-hidden className="h-3.5 w-3.5 shrink-0" />
+                        <span className="break-all">{agent.email}</span>
+                      </a>
+                    </li>
+                  ) : null}
+                  {instagramHandle ? (
+                    <li>
+                      <a
+                        href={`https://www.instagram.com/${instagramHandle}/`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                      >
+                        <Instagram aria-hidden className="h-3.5 w-3.5 shrink-0" />
+                        <span>@{instagramHandle}</span>
+                      </a>
+                    </li>
+                  ) : null}
+                </ul>
+              ) : null}
+            </div>
+          </li>
+        );
+      })}
     </ul>
   );
 }

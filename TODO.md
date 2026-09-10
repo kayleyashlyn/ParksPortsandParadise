@@ -303,3 +303,11 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       a hidden field fed into the `/destinations/[slug]` JSON-LD (`keywords` on each
       `TouristAttraction`). The 2 locations that had `shortTag` values lost them in
       the rename — re-enter them as comma-separated search terms in `searchKeywords`.
+- [ ] **`agentProfile` contact fields — move data out of bios** (schema shipped
+      2026-09-10, `feat/agent-contact-fields`). New optional `location` / `email` /
+      `instagramHandle` fields on `agentProfile`; `team-grid.tsx` renders them as a
+      pin / `mailto:` link / `instagram.com/<handle>` link. The 3 seeded agents
+      currently have this info hand-typed at the end of `bio` (e.g. Alyssa's is
+      `"Jones, OK\n@alyssaatthecastle"`; Paige/Ashley have placeholder lists) —
+      content task: cut it from `bio` into the new fields. No migration script;
+      all three fields are optional so nothing breaks until it's done.
