@@ -418,8 +418,14 @@ export function VacationRequestForm({
 
       <div className="mt-8 flex items-center justify-between gap-3">
         {/* Back is always present. Within the form it just changes step —
-            your answers are kept. On step 1 it leaves the form. */}
-        <Button type="button" variant="outline" onClick={goBack}>
+            your answers are kept. On step 1 it leaves the form. Kept lighter
+            than Continue/Submit so there's still one emphasized action. */}
+        <Button
+          type="button"
+          variant="outline"
+          className="shadow-none"
+          onClick={goBack}
+        >
           <ChevronLeft className="h-4 w-4" />
           Back
         </Button>

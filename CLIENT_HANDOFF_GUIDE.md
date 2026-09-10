@@ -322,3 +322,4 @@ Keep this line current.
 | 2026-09-09 | §3 — added the **Blog Post** content model + `/blog` + `/blog/[slug]` pages. Migration of the existing Squarespace posts is a client content task. |
 | 2026-09-09 | Security headers added in `next.config.mjs` (HSTS, nosniff, frame options, Referrer-Policy, Permissions-Policy). CSP is report-only pending a check against the deployed Studio / forms / Instagram embed, then it gets enforced. |
 | 2026-09-09 | CSP now **enforced** — verified against the deployed site (no violations; the Studio WebSocket error there was a Sanity CORS gap, fixed separately). Split into a strict policy for the public site and a looser one for `/studio`. |
+| 2026-09-09 | UI polish from client review (header wordmark on mobile, form Back button on every step, smaller Instagram section, no card-image zoom on touch). Added a pre-launch item: supply a transparent sparkle favicon + a horizontal logo lockup asset. |
