@@ -72,7 +72,7 @@ page builder (that was a conscious decision so the site can't drift off-brand).
 |---|---|---|
 | **Destination Family** | The three destination pages: Theme Parks, Cruise Lines, All-Inclusive Resorts | Each has a hero image, short description, display order, and a list of **Locations** shown as sections on that one page. Locations never become their own pages. |
 | **Location** (inside a Destination Family) | One entry on a destination page — name, image, blurb, optional button label | **Search keywords** field is **not shown on the page** — it feeds behind-the-scenes SEO data only. |
-| **Agent** | The "Meet the Team" grid | Name, photo, title, short bio, specialties, plus separate **Location**, **Contact email**, and **Instagram handle** fields — put contact info in those, not in the bio (the card turns them into a pin, an email link, and an Instagram link). Instagram handle is just the username (e.g. `alyssaatthecastle`). Set **Active** off (don't delete) when someone leaves — keeps their history. Display order optional. |
+| **Agent** | The "Meet the Team" grid | Name, photo, title, short bio, specialties, plus separate **Location**, **Contact email**, and **Instagram handle** fields — put contact info in those, not in the bio (the card turns them into a pin, an email link, and an Instagram link). Instagram handle is just the username (e.g. `alyssaatthecastle`). **Team section** puts founders/leadership in their own row above the advisors (leave it on "Advisor" for everyone else). Set **Active** off (don't delete) when someone leaves — keeps their history. Display order optional. |
 | **Blog Post** | The `/blog` ("Trip Inspiration") index and each post page | Title, slug, **Published at** (the post is hidden until this date — back-date migrated posts, or set a future date to schedule), excerpt, optional byline, optional main image, and a rich-text body. The index stays on an "empty" message until at least one post is published. |
 | **Accreditation Badge** | The trust bar (Seller of Travel numbers, CLIA, IATAN, etc.) | Text-only unless you upload official logo art. |
 | **Site Settings** (single document) | Site-wide bits: the **Homepage hero** (image + optional background video) and the **Instagram feed** (on/off + SnapWidget ID) | There is only ever **one** of these; you can't create or delete it. Set the hero image under "Homepage hero" — until you do, the homepage shows a plain text headline. The optional hero video auto-plays muted on desktop only (phones and reduced-motion visitors see just the image); keep it a few seconds and well under ~5 MB. |
@@ -300,7 +300,8 @@ Keep this line current.
       photos.
 - [ ] Sanity: on each **Agent**, move the location / email / Instagram out of the
       bio text into the new **Location**, **Contact email**, and **Instagram
-      handle** fields; trim the bio to just the short blurb.
+      handle** fields; trim the bio to just the short blurb. Set **Team section**
+      to "Founder / leadership" for Paige and Ashley.
 - [ ] Resend: account + API key + verified sending domain (DNS).
 - [ ] GA4: Measurement ID set in Vercel Production; `generate_lead` marked as key
       event. (Cookie-consent banner is built — opt-in, GPC-aware.)
@@ -346,3 +347,4 @@ Keep this line current.
 | 2026-09-09 | Homepage hero is now CMS-driven — set a hero **image** (and an optional short **video**) under Site Settings → Homepage hero. Plain text headline until an image is set. Video auto-plays muted on desktop only. |
 | 2026-09-10 | §5 — cutover approach confirmed: **fresh start on Vercel**, DNS management moves to Vercel at launch, current Squarespace/Google DNS left untouched until then. Documented the cutover sequence (email records first). §6 — Resend sending-domain DNS records are **deferred to the cutover** and added in Vercel's DNS panel; values are in hand. |
 | 2026-09-10 | §3 — **Agent** model gained **Location**, **Contact email**, and **Instagram handle** fields. Contact info goes in these (rendered as a pin / `mailto:` link / Instagram link on the team card), not in the bio. One-time content task added to move existing agents' details out of their bios. |
+| 2026-09-10 | §3 — **Agent** model gained a **Team section** field ("Founder / leadership" vs "Advisor"). Founders now render in their own row at the top of the "Meet the Team" page. Defaults to "Advisor"; set Paige and Ashley to "Founder / leadership". |

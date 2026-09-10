@@ -232,6 +232,8 @@ Client flagged that agents get added/removed regularly, and doesn't want to depe
 
 Contact details are **structured fields, not bio prose** (added 2026-09-10): `location` (e.g. "Orlando, FL"), `email` (rendered as a `mailto:` link), and `instagramHandle` (username only — the frontend builds the `instagram.com/<handle>` URL and the `@handle` label). All three are optional; each renders on the team card only when set, with its own treatment (pin icon / email link / Instagram link) rather than as extra sentences. `bio` therefore only carries the short brand-voice blurb (schema max 300 chars). Existing seeded agents have this info hand-typed at the end of their bio — moving it into the new fields is a one-time content task (see `CLIENT_HANDOFF_GUIDE.md`).
 
+A `teamGroup` field (`"leadership"` | `"advisor"`, radio, defaults to `"advisor"`) splits the grid into two rows — founders/leadership above the advisors (client direction 2026-09-10). The query coalesces a missing value to `"advisor"`, so existing profiles need no edit; the frontend renders each group as its own grid section with a gap between.
+
 ### Blog / Trip Inspiration — in launch scope (client-confirmed 2026-09-09)
 
 `post` document type (`sanity/schemaTypes/post.ts`), kept flat: `title`, `slug`,

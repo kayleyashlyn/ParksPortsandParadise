@@ -16,6 +16,10 @@ import { defineField, defineType } from "sanity";
  * prose — the team card renders them with their own treatment (a pin, a
  * `mailto:` link, an Instagram link), so contact info never has to be
  * hand-typed into the bottom of `bio`.
+ *
+ * `teamGroup` splits the "Meet the Team" grid into two rows — founders /
+ * leadership above the advisors. Defaults to "advisor"; the frontend
+ * coalesces a missing value so existing profiles need no edit.
  */
 export const agentProfile = defineType({
   name: "agentProfile",
@@ -53,6 +57,21 @@ export const agentProfile = defineType({
       title: "Title",
       type: "string",
       description: 'e.g. "Travel Advisor", "Owner / Lead Advisor"',
+    }),
+    defineField({
+      name: "teamGroup",
+      title: "Team section",
+      type: "string",
+      options: {
+        list: [
+          { title: "Founder / leadership", value: "leadership" },
+          { title: "Advisor", value: "advisor" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "advisor",
+      description:
+        'Founders / leadership appear in their own row at the top of the "Meet the Team" page, above the advisors.',
     }),
     defineField({
       name: "location",
