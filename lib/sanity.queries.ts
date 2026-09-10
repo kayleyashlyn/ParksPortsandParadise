@@ -151,6 +151,15 @@ export type AgentProfile = {
   photo: SanityImage;
   /** e.g. "Travel Advisor", "Owner / Lead Advisor". */
   title: string | null;
+  /** e.g. "Orlando, FL". Structured — rendered with a pin, not as bio prose. */
+  location: string | null;
+  /** Public contact email; rendered as a `mailto:` link. */
+  email: string | null;
+  /**
+   * Instagram username as the editor typed it (may include a leading "@").
+   * The frontend strips the "@" to build the profile URL and the label.
+   */
+  instagramHandle: string | null;
   /** Short bio (schema max 300). */
   bio: string | null;
   specialties: string[];
@@ -165,6 +174,9 @@ const activeAgentsQuery = groq`
     name,
     photo,
     title,
+    location,
+    email,
+    instagramHandle,
     bio,
     "specialties": coalesce(specialties, []),
     order
