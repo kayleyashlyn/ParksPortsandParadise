@@ -44,7 +44,11 @@ export function HeroVideo({
       muted
       loop
       playsInline
-      preload="auto"
+      // `metadata`, not `auto`: the poster image is the LCP and carries the
+      // hero on its own — the video is decorative, so don't race the whole
+      // file against post-load resources. The browser fetches the rest once
+      // playback starts.
+      preload="metadata"
       aria-hidden
       tabIndex={-1}
     >

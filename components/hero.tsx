@@ -55,9 +55,12 @@ export function Hero({ settings }: { settings: SiteSettings | null }) {
             type={settings.heroVideoMimeType}
           />
         ) : null}
+        {/* Scrim: the text is vertically centered, so the mid band has to be
+            heavy enough on its own for white body copy to clear WCAG AA
+            (4.5:1) over a bright photo — not just the bottom edge. */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/45 to-black/30"
+          className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/55 to-black/40"
         />
       </div>
 
@@ -65,7 +68,7 @@ export function Hero({ settings }: { settings: SiteSettings | null }) {
         <h1 className="max-w-3xl text-balance text-4xl font-medium sm:text-5xl lg:text-6xl">
           Parks, Ports, and Paradise
         </h1>
-        <p className="mt-4 max-w-prose text-pretty text-lg text-white/90">
+        <p className="mt-4 max-w-prose text-pretty text-lg text-white [text-shadow:0_1px_3px_rgb(0_0_0/0.5)]">
           Tell us where you want to go — we&rsquo;ll handle the details.
         </p>
         <div className="mt-8">{cta}</div>
