@@ -186,6 +186,12 @@ export function getActiveAgents(): Promise<AgentProfile[]> {
 /* ------------------------------------------------------------------ */
 
 export type SiteSettings = {
+  /** Homepage hero background image. Null → the plain text hero renders instead. */
+  heroPoster: SanityImage | null;
+  /** Resolved URL of the optional hero background video; null when unset. */
+  heroVideoUrl: string | null;
+  /** MIME of the hero video (`video/mp4` | `video/webm`) for the `<source>` tag. */
+  heroVideoMimeType: string | null;
   instagramFeedEnabled: boolean;
   /** SnapWidget widget ID for the homepage feed; null until the editor sets it. */
   instagramWidgetId: string | null;
@@ -193,6 +199,9 @@ export type SiteSettings = {
 
 const siteSettingsQuery = groq`
   *[_id == "siteSettings"][0]{
+    heroPoster,
+    "heroVideoUrl": heroVideo.asset->url,
+    "heroVideoMimeType": heroVideo.asset->mimeType,
     "instagramFeedEnabled": coalesce(instagramFeedEnabled, false),
     instagramWidgetId
   }
