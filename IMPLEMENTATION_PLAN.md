@@ -193,12 +193,14 @@ Held in reserve for Phase 2 (flagged, not built now): day-by-day timeline, inter
 
 Build this as a **multi-step form** (React Hook Form + Zod), not one long single-page form — matches the "custom multi-step inquiry form" already scoped in the README and reduces abandonment vs. the wall-of-fields pattern.
 
-### Work With Us — recruiting application form (from client's existing page)
+### Work With Us — prospective-advisor contact form
 
 Distinct from the inquiry funnel above: different audience (the "Prospective Agent"
 persona, §3), a short **single-step** form, and its own API route
 (`/api/work-with-us` → same Resend notification helper, `lib/notify.ts`, to
-`hello@parksportsandparadise.com`). Schema: `lib/workWithUsSchema.ts`.
+`hello@parksportsandparadise.com`). Schema: `lib/workWithUsSchema.ts`. Per client
+direction (2026-09-09) it's framed as a low-key "get in touch" — **not** an
+"apply" flow.
 
 | Field | Type | Required |
 |---|---|---|
@@ -208,14 +210,13 @@ persona, §3), a short **single-step** form, and its own API route
 | Currently a travel agent? How long / which company? | textarea | ✅ |
 | What type of travel do you plan to book? | textarea | — |
 
-**Résumé:** not a file upload — the page asks applicants to email their résumé to
-`hello@` so the site needs no file-storage integration. Email-only is a
-**confirmed client decision** (2026-09-09), not an interim shortcut. The page
-also carries a short **FAQ** (`<details>` list) covering experience, E&O
-insurance, culture, and time-to-first-booking. Per client direction (2026-09-09)
-there is **no visible fee / commission structure** on the page — compensation is
-covered during onboarding, and the FAQ uses "onboarding" (not "interview")
-throughout.
+**No résumé, no file upload** (confirmed client direction 2026-09-09) — it's a
+conversation-starter, not a formal application. The section heading is
+"Get in touch", the submit button is "Send message". The page also carries a
+short **FAQ** (`<details>` list) covering experience, E&O insurance, culture,
+and time-to-first-booking. Per client direction there is **no visible fee /
+commission structure** on the page — compensation is covered during onboarding,
+and the FAQ uses "onboarding" (not "interview") throughout.
 
 ---
 
