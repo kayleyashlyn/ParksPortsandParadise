@@ -248,10 +248,14 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **`?destination=` prefill is best-effort** — `matchDestinationOption()`
       maps a CMS location name to one of the form's fixed options by fuzzy
       contains; names it can't match just don't pre-fill.
-- [ ] **Homepage sections still missing** (`app/page.tsx`) — real hero (blocked
-      on brand photography), testimonials (no content), a newsletter section.
-      Hero/section copy needs sign-off. Built: destination-family grid + trust
-      bar + Instagram feed (all CMS-driven).
+- [ ] **Homepage sections still missing** (`app/page.tsx`) — testimonials (no
+      content) and a newsletter section. Built: image/video **hero**
+      (`components/hero.tsx`, CMS-driven — `siteSettings.heroPoster` +
+      optional `heroVideo`; plain text hero until a poster is uploaded;
+      video is desktop + motion-OK only), destination-family grid, trust bar,
+      Instagram feed. **Client action:** upload a hero image (and optionally a
+      short muted loop video, well under ~5 MB) in Studio → Site Settings →
+      Homepage hero. Real brand photography still pending (CLAUDE.md embargo).
 - [ ] **Instagram feed — SnapWidget setup** — component + `siteSettings` schema
       shipped (2026-09-09); the section renders only once the client:
       - [ ] creates a SnapWidget widget for `@parksportsandparadise` (business

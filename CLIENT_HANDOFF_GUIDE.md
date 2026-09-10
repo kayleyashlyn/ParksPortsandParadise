@@ -75,7 +75,7 @@ page builder (that was a conscious decision so the site can't drift off-brand).
 | **Agent** | The "Meet the Team" grid | Set **Active** off (don't delete) when someone leaves — keeps their history. Display order optional. |
 | **Blog Post** | The `/blog` ("Trip Inspiration") index and each post page | Title, slug, **Published at** (the post is hidden until this date — back-date migrated posts, or set a future date to schedule), excerpt, optional byline, optional main image, and a rich-text body. The index stays on an "empty" message until at least one post is published. |
 | **Accreditation Badge** | The trust bar (Seller of Travel numbers, CLIA, IATAN, etc.) | Text-only unless you upload official logo art. |
-| **Site Settings** (single document) | Site-wide toggles — currently the Instagram feed on/off + SnapWidget ID | There is only ever **one** of these; you can't create or delete it. |
+| **Site Settings** (single document) | Site-wide bits: the **Homepage hero** (image + optional background video) and the **Instagram feed** (on/off + SnapWidget ID) | There is only ever **one** of these; you can't create or delete it. Set the hero image under "Homepage hero" — until you do, the homepage shows a plain text headline. The optional hero video auto-plays muted on desktop only (phones and reduced-motion visitors see just the image); keep it a few seconds and well under ~5 MB. |
 
 ### 3.3 Images — always add "Alt text"
 Every image field now has an **Alt text** box under it. Write a short, literal
@@ -290,6 +290,9 @@ Keep this line current.
       event. (Cookie-consent banner is built — opt-in, GPC-aware.)
 - [ ] SnapWidget: account created, widget built, ID entered in Site Settings
       (or feed left disabled for launch).
+- [ ] Homepage hero: upload a hero **image** (and optionally a short muted loop
+      **video**, well under ~5 MB) in Site Settings → Homepage hero. Until then
+      the homepage shows a plain text headline.
 - [ ] Legal: `/privacy` + `/terms` reviewed by counsel, placeholders filled,
       draft banner removed.
 - [ ] Domain: website DNS pointed at Vercel; email (MX/SPF/DKIM/DMARC) left
@@ -323,3 +326,4 @@ Keep this line current.
 | 2026-09-09 | Security headers added in `next.config.mjs` (HSTS, nosniff, frame options, Referrer-Policy, Permissions-Policy). CSP is report-only pending a check against the deployed Studio / forms / Instagram embed, then it gets enforced. |
 | 2026-09-09 | CSP now **enforced** — verified against the deployed site (no violations; the Studio WebSocket error there was a Sanity CORS gap, fixed separately). Split into a strict policy for the public site and a looser one for `/studio`. |
 | 2026-09-09 | UI polish from client review (header wordmark on mobile, form Back button on every step, smaller Instagram section, no card-image zoom on touch). Added a pre-launch item: supply a transparent sparkle favicon + a horizontal logo lockup asset. |
+| 2026-09-09 | Homepage hero is now CMS-driven — set a hero **image** (and an optional short **video**) under Site Settings → Homepage hero. Plain text headline until an image is set. Video auto-plays muted on desktop only. |

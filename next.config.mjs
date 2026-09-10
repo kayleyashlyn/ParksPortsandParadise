@@ -18,10 +18,11 @@
  *   image previews), `wss://*.sanity.io` (realtime), `*.sanity-cdn.com` (Studio
  *   bundle + bridge), `lh3.googleusercontent.com` (Google-account avatars).
  *
- * Hosts: Sanity read API (`*.apicdn.sanity.io`), Google Analytics via
- * `@next/third-parties` (`googletagmanager.com` + `*.google-analytics.com` /
- * `*.analytics.google.com`), SnapWidget (`snapwidget.com`, homepage Instagram
- * iframe), Unsplash (interim placeholder imagery — BRAND_KIT.md). No `report-to`
+ * Hosts: Sanity read API (`*.apicdn.sanity.io`), `cdn.sanity.io` (images +
+ * the homepage hero video), Google Analytics via `@next/third-parties`
+ * (`googletagmanager.com` + `*.google-analytics.com` / `*.analytics.google.com`),
+ * SnapWidget (`snapwidget.com`, homepage Instagram iframe), Unsplash (interim
+ * placeholder imagery — BRAND_KIT.md). No `report-to`
  * endpoint is wired; violations surface in the browser console only. Roll back
  * by switching a `Content-Security-Policy` key to
  * `Content-Security-Policy-Report-Only`.
@@ -45,7 +46,8 @@ const marketingCsp = [
   "frame-src 'self' https://snapwidget.com",
   "worker-src 'self'",
   "manifest-src 'self'",
-  "media-src 'self'",
+  // cdn.sanity.io — the homepage hero background video (Site Settings asset).
+  "media-src 'self' https://cdn.sanity.io",
   "upgrade-insecure-requests",
 ].join("; ");
 
