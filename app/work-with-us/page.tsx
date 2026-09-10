@@ -16,8 +16,9 @@ export const metadata: Metadata = pageMetadata({
 /**
  * Agent-recruiting page (IMPLEMENTATION_PLAN.md §9, "Prospective Agent" persona
  * in §3). Restrained by design — this is a working page, not a hero showcase.
- * The application form posts to `/api/work-with-us` (Resend notification to the
- * business inbox); résumés come in by email so the site needs no file storage.
+ * The form is a lightweight "get in touch" contact form (no résumé / file
+ * upload) that posts to `/api/work-with-us` → Resend notification to the
+ * business inbox.
  */
 export default function WorkWithUsPage() {
   return (
@@ -62,19 +63,20 @@ export default function WorkWithUsPage() {
         </p>
       </section>
 
-      <section className="mt-14" aria-labelledby="apply-heading">
-        <h2 id="apply-heading" className="text-2xl">
-          Apply
+      <section className="mt-14" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" className="text-2xl">
+          Get in touch
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Fill out the form below, then email your résumé to{" "}
+          Tell us a little about yourself and what you&rsquo;re after — no résumé,
+          no formalities. Prefer email? Reach us at{" "}
           <a
             className="font-medium text-primary underline underline-offset-2"
             href={`mailto:${CONTACT.email}`}
           >
             {CONTACT.email}
           </a>
-          . Prefer to reach out directly? That email works too.
+          .
         </p>
         <div className="mt-6">
           <WorkWithUsForm />
