@@ -61,7 +61,7 @@ export function WorkWithUsForm() {
       const result = (await res.json().catch(() => ({}))) as {
         delivered?: boolean;
       };
-      // Recruiting-funnel event — only once the application actually reached the
+      // Recruiting-funnel event — only once the message actually reached the
       // inbox (until Resend is configured the route returns `delivered: false`).
       // `gtag` only exists after the visitor accepts analytics cookies, so this
       // is a safe no-op otherwise.
@@ -85,18 +85,10 @@ export function WorkWithUsForm() {
         >
           <Check className="h-6 w-6" />
         </div>
-        <h2 className="mt-4 text-2xl">Application received</h2>
+        <h2 className="mt-4 text-2xl">Thanks — we&rsquo;ve got it</h2>
         <p className="mx-auto mt-2 max-w-md text-muted-foreground">
-          Thanks for your interest in joining Parks Ports &amp; Paradise. We
-          review every application and will be in touch. Don&rsquo;t forget to
-          email your résumé to{" "}
-          <a
-            className="underline underline-offset-2"
-            href={`mailto:${CONTACT.email}`}
-          >
-            {CONTACT.email}
-          </a>
-          .
+          Thanks for reaching out about joining Parks Ports &amp; Paradise. One
+          of us will get back to you soon.
         </p>
       </div>
     );
@@ -161,17 +153,6 @@ export function WorkWithUsForm() {
           error={errors.travelFocus?.message}
           {...register("travelFocus")}
         />
-
-        <p className="rounded-md border border-border bg-muted/50 px-3 py-2.5 text-sm text-muted-foreground">
-          Please email your résumé to{" "}
-          <a
-            className="font-medium text-primary underline underline-offset-2"
-            href={`mailto:${CONTACT.email}?subject=Advisor%20application%20%E2%80%94%20r%C3%A9sum%C3%A9`}
-          >
-            {CONTACT.email}
-          </a>{" "}
-          after you submit this form.
-        </p>
       </div>
 
       {/* Honeypot — off-screen and not tabbable; real people leave it blank. */}
@@ -192,8 +173,7 @@ export function WorkWithUsForm() {
           role="alert"
           className="mt-6 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
         >
-          Something went wrong sending your application. Please try again, or
-          email{" "}
+          Something went wrong sending your message. Please try again, or email{" "}
           <a
             className="underline underline-offset-2"
             href={`mailto:${CONTACT.email}`}
@@ -217,7 +197,7 @@ export function WorkWithUsForm() {
               Sending…
             </>
           ) : (
-            "Submit application"
+            "Send message"
           )}
         </Button>
       </div>

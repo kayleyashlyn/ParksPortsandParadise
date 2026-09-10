@@ -229,13 +229,13 @@ Two forms, both emailing the same inbox (`hello@`) through Resend (Section 6):
   `generate_lead` analytics event (Section 7).
 - Every "Request a Quote" button leads here, some pre-filling the destination.
 
-**Work With Us application** (`/work-with-us`) — the recruiting path.
+**Work With Us — "Get in touch"** (`/work-with-us`) — the recruiting path.
 
-- Short application form for prospective advisors (name, email, phone,
-  travel-agent experience, what they plan to book). On submit it emails you a
-  summary titled "New advisor application," reply-to the applicant.
-- Applicants are asked to **email their résumé** to `hello@` — the form has no
-  file upload (confirmed client decision).
+- A short **contact form** for prospective advisors (name, email, phone,
+  travel-agent experience, what they plan to book) — framed as a
+  conversation-starter, **not** a formal application, and **no résumé**. On
+  submit it emails you a summary subject-lined "New Work With Us message —
+  {name}," reply-to the sender.
 - The page has a short FAQ (experience, E&O, culture, time to first booking).
   Per your direction there is **no fee or commission information** on the page —
   compensation is covered during onboarding. The FAQ uses "onboarding," not
@@ -306,8 +306,8 @@ Keep this line current.
       mark (the full seal is unreadable at tab size). Also: a horizontal logo
       lockup (mark + wordmark) would improve the site header — right now the
       header falls back to a text wordmark on mobile.
-- [x] `/work-with-us` — built; copy finalised (email-only résumé, no fee info,
-      "onboarding" terminology).
+- [x] `/work-with-us` — built; copy finalised (low-key "Get in touch" contact
+      form, no résumé, no fee info, "onboarding" terminology).
 - [ ] `/blog` — **in scope for launch.** Pages + "Blog Post" model built. Still
       needs: the existing Squarespace posts recreated in Studio (back-date each
       one's **Published at**) and at least one published before launch, or hide
@@ -326,4 +326,5 @@ Keep this line current.
 | 2026-09-09 | Security headers added in `next.config.mjs` (HSTS, nosniff, frame options, Referrer-Policy, Permissions-Policy). CSP is report-only pending a check against the deployed Studio / forms / Instagram embed, then it gets enforced. |
 | 2026-09-09 | CSP now **enforced** — verified against the deployed site (no violations; the Studio WebSocket error there was a Sanity CORS gap, fixed separately). Split into a strict policy for the public site and a looser one for `/studio`. |
 | 2026-09-09 | UI polish from client review (header wordmark on mobile, form Back button on every step, smaller Instagram section, no card-image zoom on touch). Added a pre-launch item: supply a transparent sparkle favicon + a horizontal logo lockup asset. |
+| 2026-09-09 | Work With Us reframed as a low-key "Get in touch" contact form per client — dropped the "Apply" heading and all résumé asks; submit button now "Send message"; notification subject "New Work With Us message — {name}". |
 | 2026-09-09 | Homepage hero is now CMS-driven — set a hero **image** (and an optional short **video**) under Site Settings → Homepage hero. Plain text headline until an image is set. Video auto-plays muted on desktop only. |

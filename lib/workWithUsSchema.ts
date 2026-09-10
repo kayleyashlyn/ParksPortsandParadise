@@ -1,14 +1,11 @@
 import { z } from "zod";
 
 /**
- * Work With Us — agent-recruiting application form (IMPLEMENTATION_PLAN.md §9).
- * Distinct from the Vacation Request Form: different audience (prospective
- * advisors, not travellers) and a much shorter, single-step form.
- *
- * Fields mirror the agency's current intake, minus the résumé file upload —
- * applicants email their résumé to hello@ instead, so the site needs no
- * file-storage integration. Email-only is a confirmed client decision
- * (2026-09-09), not an interim shortcut.
+ * Work With Us — a lightweight "get in touch" contact form for prospective
+ * advisors (IMPLEMENTATION_PLAN.md §9). Distinct from the Vacation Request
+ * Form: different audience (prospective advisors, not travellers), a much
+ * shorter single-step form, and framed as a conversation-starter — **no
+ * résumé, no file upload** (confirmed client direction 2026-09-09).
  *
  * This schema is the single source of truth for the form's fields; keep it in
  * step with `components/work-with-us-form.tsx` and the plan.

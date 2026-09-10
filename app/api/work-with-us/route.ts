@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
   const data = parsed.data;
   const { delivered } = await sendNotification({
-    subject: `New advisor application — ${data.firstName} ${data.lastName}`,
+    subject: `New Work With Us message — ${data.firstName} ${data.lastName}`,
     text: formatSummary(data),
     replyTo: data.email,
   });
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
 function formatSummary(data: WorkWithUsInput): string {
   return [
-    "New Advisor Application",
+    "New Work With Us message (prospective advisor)",
     "",
     "CONTACT",
     line("Name", `${data.firstName} ${data.lastName}`),
@@ -66,7 +66,5 @@ function formatSummary(data: WorkWithUsInput): string {
     "",
     "TRAVEL THEY PLAN TO BOOK",
     data.travelFocus && data.travelFocus.length > 0 ? data.travelFocus : "—",
-    "",
-    "Résumé: applicant was asked to email it to the business inbox.",
   ].join("\n");
 }

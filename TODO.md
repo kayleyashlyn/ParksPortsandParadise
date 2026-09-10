@@ -209,14 +209,14 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       images at proper resolution, and set `publishedAt` to the original date
       (posts with a future `publishedAt` stay hidden). Refresh visuals on posts
       whose imagery predates the brand refresh (IMPLEMENTATION_PLAN §11 #2/#7).
-- [x] **`/work-with-us`** — page + single-step application form built and copy
-      finalised per client (2026-09-09): résumé is **email-only** (confirmed, not
-      interim); **no visible fee / commission structure**; FAQ uses "onboarding"
-      not "interview" and covers experience, E&O, culture, time-to-first-booking.
+- [x] **`/work-with-us`** — page + single-step form built and copy finalised per
+      client (2026-09-09): framed as a low-key **"Get in touch"** contact form —
+      **no résumé / file upload**, submit button "Send message"; **no visible
+      fee / commission structure**; FAQ uses "onboarding" not "interview" and
+      covers experience, E&O, culture, time-to-first-booking.
       (`app/work-with-us/page.tsx`, `components/work-with-us-form.tsx`,
       `app/api/work-with-us/route.ts` → `lib/notify.ts` → `hello@`.) No open
-      follow-up — E&O answer still says "confirmed during onboarding", which is
-      the intended framing.
+      follow-up.
 - [ ] **`/privacy` + `/terms` are DRAFT** (`feat/privacy-terms-shells`) —
       starting-point copy in `app/privacy/page.tsx` / `app/terms/page.tsx`, wrapped
       by `components/legal-page.tsx`. A "Draft — pending legal review" notice shows
