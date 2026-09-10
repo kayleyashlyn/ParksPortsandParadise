@@ -311,3 +311,9 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       `"Jones, OK\n@alyssaatthecastle"`; Paige/Ashley have placeholder lists) —
       content task: cut it from `bio` into the new fields. No migration script;
       all three fields are optional so nothing breaks until it's done.
+- [ ] **`agentProfile.teamGroup` — set the founders** (schema shipped 2026-09-10,
+      `feat/team-leadership-group`). `teamGroup` (`"leadership"` | `"advisor"`,
+      defaults to `"advisor"`) splits `/meet-the-team` into a founders row above
+      the advisors. Content task: set **Team section → Founder / leadership** on
+      Paige Gold and Ashley Mackay. Query coalesces a missing value, so until then
+      everyone just renders in the single advisors grid as before.

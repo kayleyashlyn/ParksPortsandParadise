@@ -18,6 +18,9 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function MeetTheTeamPage() {
   const agents = await getActiveAgents();
+  // Founders / leadership render in their own row above the advisors.
+  const leadership = agents.filter((agent) => agent.teamGroup === "leadership");
+  const advisors = agents.filter((agent) => agent.teamGroup !== "leadership");
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:px-8">
@@ -31,7 +34,10 @@ export default async function MeetTheTeamPage() {
 
       <div className="mt-12">
         {agents.length > 0 ? (
-          <TeamGrid agents={agents} />
+          <div className="space-y-16">
+            {leadership.length > 0 ? <TeamGrid agents={leadership} /> : null}
+            {advisors.length > 0 ? <TeamGrid agents={advisors} /> : null}
+          </div>
         ) : (
           <p className="text-muted-foreground">
             Our advisor profiles are being updated — check back soon.

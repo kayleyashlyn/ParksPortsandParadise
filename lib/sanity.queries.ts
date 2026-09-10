@@ -151,6 +151,11 @@ export type AgentProfile = {
   photo: SanityImage;
   /** e.g. "Travel Advisor", "Owner / Lead Advisor". */
   title: string | null;
+  /**
+   * Which row of the Meet the Team grid this profile sits in. `"leadership"`
+   * renders above `"advisor"`. Coalesced from a missing value in the query.
+   */
+  teamGroup: "leadership" | "advisor";
   /** e.g. "Orlando, FL". Structured — rendered with a pin, not as bio prose. */
   location: string | null;
   /** Public contact email; rendered as a `mailto:` link. */
@@ -174,6 +179,7 @@ const activeAgentsQuery = groq`
     name,
     photo,
     title,
+    "teamGroup": coalesce(teamGroup, "advisor"),
     location,
     email,
     instagramHandle,
