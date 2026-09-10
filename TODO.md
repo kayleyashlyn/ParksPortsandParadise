@@ -116,6 +116,19 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       deliberately did **not** commit a placeholder. Owner: design — supply a
       1200×630 branded share image; then set it as the default in
       `app/layout.tsx` `openGraph.images` (+ `twitter.images`).
+- [ ] **Favicon — transparent sparkle mark** (client request 2026-09-09). Want
+      just the gold sparkle motif on a transparent background, not the full seal
+      (illegible at 16–32 px). Need a square transparent PNG (≥512 px) or SVG of
+      the sparkles alone; then replace `app/icon.png`, `app/apple-icon.png`,
+      `app/favicon.ico` and it's wired automatically (Next file convention, no
+      code). Can't derive it cleanly from the existing seal PNGs here.
+- [ ] **Horizontal logo lockup** — the only logo assets are the vertical
+      circular seal (`public/images/logos/logo-*.png`, 1080×1350). Its fine text
+      is unreadable at header size, so the header now shows the seal only at
+      `sm+` and a text wordmark ("Parks Ports & Paradise", `font-heading`)
+      carries the brand on mobile (`components/site-header.tsx`). A proper
+      horizontal lockup (mark + wordmark) from the client would let both show at
+      every width and drop the CSS wordmark fallback.
 - [ ] **`content-schema-agent`: optional SEO fields on `destinationFamily`** —
       metadata currently reuses `shortDescription` for `<meta description>` /
       `og:description` and crops `heroImage` to 1200×630 for `og:image`. That's

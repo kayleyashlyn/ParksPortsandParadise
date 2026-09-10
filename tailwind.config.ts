@@ -21,6 +21,10 @@ import typography from "@tailwindcss/typography";
  */
 const config: Config = {
   darkMode: ["class"],
+  // Only apply `hover:` utilities on devices that actually hover (mouse/trackpad).
+  // On touch, a tap otherwise latches the hover state — so scrolling past a card
+  // left its image zoomed (`group-hover:scale-105`). See UI refinements.
+  future: { hoverOnlyWhenSupported: true },
   content: [
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",

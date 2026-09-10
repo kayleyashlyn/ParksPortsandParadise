@@ -68,21 +68,29 @@ export function SiteHeader() {
         Skip to content
       </a>
 
-      <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-6 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-4 sm:gap-6 sm:px-6 lg:px-8">
         <Link
           href="/"
+          aria-label="Parks Ports & Paradise — home"
           data-analytics-id="site-logo"
-          className="flex shrink-0 items-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex min-w-0 items-center gap-2.5 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
+          {/* The circular seal has too much fine text to read at header size, so
+              it only shows where there's room (sm+); the wordmark carries the
+              brand on mobile. A horizontal logo lockup would let both show at
+              every width — see TODO.md. */}
           <Image
             src="/images/logos/logo-primary.png"
-            alt="Parks Ports and Paradise"
+            alt=""
+            aria-hidden
             width={96}
             height={120}
             priority
-            className="h-11 w-auto"
+            className="hidden h-11 w-auto sm:block"
           />
-          <span className="sr-only">Parks Ports &amp; Paradise — home</span>
+          <span className="truncate font-heading text-sm leading-none text-foreground sm:text-xl">
+            Parks Ports &amp; Paradise
+          </span>
         </Link>
 
         <nav aria-label="Primary" className="hidden flex-1 md:block">
