@@ -110,8 +110,17 @@ export function SiteHeader() {
     };
     document.addEventListener("keydown", onKeyDown);
 
+    // If the viewport grows to `md` while the panel is open, close it — the
+    // panel becomes `display:none` there and would otherwise leave the page
+    // inert and scroll-locked with no visible way out.
+    const onResize = () => {
+      if (window.innerWidth >= 768) setMobileOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("resize", onResize);
       inerted.forEach((el) => el.removeAttribute("inert"));
       document.removeEventListener("keydown", onKeyDown);
     };
@@ -233,7 +242,15 @@ export function SiteHeader() {
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            onClick={() => setMobileOpen((v) => !v)}
+            onClick={() => {
+              // Safari/Firefox (macOS) don't focus a <button> on click, so on
+              // close focus would be lost to <body>. Put it back on the toggle
+              // explicitly. (Opening moves focus into the panel via the effect;
+              // route-change close goes through the [pathname] effect, not here,
+              // so it still lets focus flow to the new page.)
+              if (mobileOpen) menuToggleRef.current?.focus();
+              setMobileOpen((v) => !v);
+            }}
           >
             {mobileOpen ? (
               <X aria-hidden className="h-5 w-5" />
