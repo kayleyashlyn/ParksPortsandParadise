@@ -30,7 +30,7 @@ export function InstagramFeed({ settings }: { settings: SiteSettings | null }) {
             href={CONTACT.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-sm text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-sm text-sm font-medium text-primary underline underline-offset-4 transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             {CONTACT.instagramHandle}
           </a>

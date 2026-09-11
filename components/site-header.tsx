@@ -24,6 +24,10 @@ export function SiteHeader() {
   const [mobileSubOpen, setMobileSubOpen] = useState(false);
   // Only one nav item has a flyout (ui-agent.md: one flyout max).
   const flyoutRef = useRef<HTMLLIElement>(null);
+  const flyoutTriggerRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const mobilePanelRef = useRef<HTMLDivElement>(null);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
 
   // Close every menu on route change.
   useEffect(() => {
@@ -32,35 +36,120 @@ export function SiteHeader() {
     setMobileSubOpen(false);
   }, [pathname]);
 
-  // Desktop flyout: dismiss on outside click / Escape.
+  // Desktop flyout: dismiss on outside click, on Escape (focus back to the
+  // trigger), or when focus leaves the flyout entirely (Tab / Shift+Tab out).
   useEffect(() => {
     if (!flyoutOpen) return;
+    const node = flyoutRef.current;
     function onPointer(e: MouseEvent) {
-      if (flyoutRef.current && !flyoutRef.current.contains(e.target as Node)) {
+      if (node && !node.contains(e.target as Node)) {
         setFlyoutOpen(false);
       }
     }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setFlyoutOpen(false);
+      if (e.key === "Escape") {
+        setFlyoutOpen(false);
+        flyoutTriggerRef.current?.focus();
+      }
+    }
+    function onFocusOut(e: FocusEvent) {
+      // relatedTarget is null when focus leaves the document (e.g. to browser
+      // chrome) — don't close in that case.
+      if (
+        node &&
+        e.relatedTarget instanceof Node &&
+        !node.contains(e.relatedTarget)
+      ) {
+        setFlyoutOpen(false);
+      }
     }
     document.addEventListener("mousedown", onPointer);
     document.addEventListener("keydown", onKey);
+    node?.addEventListener("focusout", onFocusOut);
     return () => {
       document.removeEventListener("mousedown", onPointer);
       document.removeEventListener("keydown", onKey);
+      node?.removeEventListener("focusout", onFocusOut);
     };
   }, [flyoutOpen]);
 
-  // Lock scroll while the mobile panel is open.
+  // While the mobile panel is open: lock scroll, make the rest of the page
+  // `inert` (so a screen reader / keyboard user can't wander behind it), move
+  // focus into the panel, trap Tab within [toggle + panel], and close on Escape.
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (!mobileOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    const header = headerRef.current;
+    const inerted = Array.from(document.body.children).filter(
+      (el) =>
+        el !== header && el.tagName !== "SCRIPT" && el.tagName !== "STYLE",
+    );
+    inerted.forEach((el) => el.setAttribute("inert", ""));
+
+    // Toggle first so Shift+Tab from the first link reaches the close button,
+    // then the panel's own focusables (skipping any inside the collapsed
+    // sub-menu, which have no `offsetParent`).
+    const focusables = () =>
+      [
+        menuToggleRef.current,
+        ...Array.from(
+          mobilePanelRef.current?.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled])',
+          ) ?? [],
+        ).filter((el) => el.offsetParent !== null),
+      ].filter((el): el is HTMLElement => el != null);
+
+    // Move focus into the panel (first link after the toggle).
+    focusables()[1]?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        menuToggleRef.current?.focus();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const f = focusables();
+      if (f.length === 0) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && (!active || active === first || !f.includes(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (
+        !e.shiftKey &&
+        (!active || active === last || !f.includes(active))
+      ) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    // If the viewport grows to `md` while the panel is open, close it — the
+    // panel becomes `display:none` there and would otherwise leave the page
+    // inert and scroll-locked with no visible way out.
+    const onResize = () => {
+      if (window.innerWidth >= 768) setMobileOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("resize", onResize);
+      inerted.forEach((el) => el.removeAttribute("inert"));
+      document.removeEventListener("keydown", onKeyDown);
     };
   }, [mobileOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
+    >
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:shadow focus:ring-2 focus:ring-ring"
@@ -99,6 +188,7 @@ export function SiteHeader() {
               item.children ? (
                 <li key={item.href} ref={flyoutRef} className="relative">
                   <button
+                    ref={flyoutTriggerRef}
                     type="button"
                     aria-expanded={flyoutOpen}
                     aria-controls="destinations-flyout"
@@ -164,6 +254,7 @@ export function SiteHeader() {
             <Link href={PRIMARY_CTA.href}>{PRIMARY_CTA.label}</Link>
           </Button>
           <Button
+            ref={menuToggleRef}
             type="button"
             variant="ghost"
             size="icon"
@@ -171,7 +262,15 @@ export function SiteHeader() {
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            onClick={() => setMobileOpen((v) => !v)}
+            onClick={() => {
+              // Safari/Firefox (macOS) don't focus a <button> on click, so on
+              // close focus would be lost to <body>. Put it back on the toggle
+              // explicitly. (Opening moves focus into the panel via the effect;
+              // route-change close goes through the [pathname] effect, not here,
+              // so it still lets focus flow to the new page.)
+              if (mobileOpen) menuToggleRef.current?.focus();
+              setMobileOpen((v) => !v);
+            }}
           >
             {mobileOpen ? (
               <X aria-hidden className="h-5 w-5" />
@@ -184,6 +283,7 @@ export function SiteHeader() {
 
       <div
         id="mobile-nav"
+        ref={mobilePanelRef}
         hidden={!mobileOpen}
         className="border-t border-border bg-background md:hidden"
       >

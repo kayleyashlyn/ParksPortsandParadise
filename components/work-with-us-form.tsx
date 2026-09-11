@@ -27,6 +27,14 @@ export function WorkWithUsForm() {
   // Honeypot — a hidden field real users never fill. Kept out of RHF/Zod.
   const [company, setCompany] = React.useState("");
 
+  // On success the <form> is unmounted and replaced by the confirmation panel;
+  // move focus to its heading so it isn't dropped to <body>. (The panel is
+  // also role="status" so it's announced even if focus isn't followed.)
+  const successHeadingRef = React.useRef<HTMLHeadingElement>(null);
+  React.useEffect(() => {
+    if (status === "success") successHeadingRef.current?.focus();
+  }, [status]);
+
   const {
     register,
     handleSubmit,
@@ -78,14 +86,23 @@ export function WorkWithUsForm() {
 
   if (status === "success") {
     return (
-      <div className="rounded-lg border border-border bg-muted/50 p-8 text-center">
+      <div
+        role="status"
+        className="rounded-lg border border-border bg-muted/50 p-8 text-center"
+      >
         <div
           aria-hidden
           className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground"
         >
           <Check className="h-6 w-6" />
         </div>
-        <h2 className="mt-4 text-2xl">Thanks — we&rsquo;ve got it</h2>
+        <h2
+          ref={successHeadingRef}
+          tabIndex={-1}
+          className="mt-4 text-2xl focus:outline-none"
+        >
+          Thanks — we&rsquo;ve got it
+        </h2>
         <p className="mx-auto mt-2 max-w-md text-muted-foreground">
           Thanks for reaching out about joining Parks Ports &amp; Paradise. One
           of us will get back to you soon.
@@ -253,11 +270,16 @@ function TextField({
           {hint}
         </p>
       ) : null}
-      {error ? (
-        <p id={`${id}-error`} className="mt-1 text-xs text-destructive">
-          {error}
-        </p>
-      ) : null}
+      {/* Persistent polite live region (see vacation-request-form) — announces
+          a single blur error without an assertive stampede on full-form submit.
+          The form-level submit error keeps role="alert". */}
+      <p
+        id={`${id}-error`}
+        aria-live="polite"
+        className="mt-1 text-xs text-destructive empty:hidden"
+      >
+        {error}
+      </p>
     </div>
   );
 }
@@ -300,11 +322,16 @@ function TextAreaField({
           {hint}
         </p>
       ) : null}
-      {error ? (
-        <p id={`${id}-error`} className="mt-1 text-xs text-destructive">
-          {error}
-        </p>
-      ) : null}
+      {/* Persistent polite live region (see vacation-request-form) — announces
+          a single blur error without an assertive stampede on full-form submit.
+          The form-level submit error keeps role="alert". */}
+      <p
+        id={`${id}-error`}
+        aria-live="polite"
+        className="mt-1 text-xs text-destructive empty:hidden"
+      >
+        {error}
+      </p>
     </div>
   );
 }

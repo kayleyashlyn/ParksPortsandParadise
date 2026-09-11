@@ -119,6 +119,26 @@ export function VacationRequestForm({
   const isLast = stepIndex === STEPS.length - 1;
   const progress = Math.round(((stepIndex + 1) / STEPS.length) * 100);
 
+  // When the step changes (not on first mount), move focus to the step header —
+  // it wraps both the step title and the "Step X of Y" text, so a screen
+  // reader announces the new step, and keyboard focus isn't left on a button
+  // whose label just changed under the user.
+  const stepHeaderRef = React.useRef<HTMLDivElement>(null);
+  const prevStepRef = React.useRef(stepIndex);
+  React.useEffect(() => {
+    if (prevStepRef.current === stepIndex) return;
+    prevStepRef.current = stepIndex;
+    stepHeaderRef.current?.focus();
+  }, [stepIndex]);
+
+  // On success the <form> is unmounted and replaced by the confirmation panel;
+  // move focus to its heading so it isn't dropped to <body>. (The panel is
+  // also role="status" so it's announced even if focus isn't followed.)
+  const successHeadingRef = React.useRef<HTMLHeadingElement>(null);
+  React.useEffect(() => {
+    if (status === "success") successHeadingRef.current?.focus();
+  }, [status]);
+
   async function goNext() {
     const ok = await trigger(step.fields, { shouldFocus: true });
     if (ok) {
@@ -175,14 +195,23 @@ export function VacationRequestForm({
 
   if (status === "success") {
     return (
-      <div className="rounded-lg border border-border bg-muted/50 p-8 text-center">
+      <div
+        role="status"
+        className="rounded-lg border border-border bg-muted/50 p-8 text-center"
+      >
         <div
           aria-hidden
           className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-secondary-foreground"
         >
           <Check className="h-6 w-6" />
         </div>
-        <h2 className="mt-4 text-2xl">Request received</h2>
+        <h2
+          ref={successHeadingRef}
+          tabIndex={-1}
+          className="mt-4 text-2xl focus:outline-none"
+        >
+          Request received
+        </h2>
         <p className="mx-auto mt-2 max-w-md text-muted-foreground">
           Thanks! One of our advisors will reach out soon to start planning your
           trip. Nothing else to do right now.
@@ -203,8 +232,15 @@ export function VacationRequestForm({
       className="rounded-lg border border-border bg-card p-6 sm:p-8"
     >
       <div>
-        <div className="flex items-baseline justify-between gap-3">
-          <p className="text-sm font-semibold">{step.title}</p>
+        <div
+          ref={stepHeaderRef}
+          tabIndex={-1}
+          className="flex items-baseline justify-between gap-3 focus:outline-none"
+        >
+          {/* `font-sans` overrides the global serif-heading rule — this is a
+              small in-form label, not a display heading — but it's still a real
+              heading so screen-reader users can jump between steps. */}
+          <h2 className="font-sans text-sm font-semibold">{step.title}</h2>
           <p className="text-xs text-muted-foreground">
             Step {stepIndex + 1} of {STEPS.length}
           </p>
@@ -508,11 +544,16 @@ function TextField({
           {hint}
         </p>
       ) : null}
-      {error ? (
-        <p id={`${id}-error`} className="mt-1 text-xs text-destructive">
-          {error}
-        </p>
-      ) : null}
+      {/* Persistent polite live region — announces a single error on blur
+          without the assertive "interrupt stampede" when a whole step fails
+          validation at once. The form-level submit error keeps role="alert". */}
+      <p
+        id={`${id}-error`}
+        aria-live="polite"
+        className="mt-1 text-xs text-destructive empty:hidden"
+      >
+        {error}
+      </p>
     </div>
   );
 }
@@ -570,11 +611,13 @@ function OptionGroup({
           </label>
         ))}
       </div>
-      {error ? (
-        <p id={errorId} className="mt-1.5 text-xs text-destructive">
-          {error}
-        </p>
-      ) : null}
+      <p
+        id={`${field.name}-error`}
+        aria-live="polite"
+        className="mt-1.5 text-xs text-destructive empty:hidden"
+      >
+        {error}
+      </p>
     </fieldset>
   );
 }

@@ -59,7 +59,7 @@ export function SiteFooter() {
                       {...(link.external
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
-                      className="text-sm text-foreground/80 underline-offset-4 hover:text-foreground hover:underline"
+                      className="text-sm text-foreground/80 underline decoration-foreground/30 underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
                     >
                       {link.label}
                     </Link>
@@ -113,7 +113,7 @@ export function SiteFooter() {
             </a>
             <a
               href={`mailto:${CONTACT.email}`}
-              className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="text-xs text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
             >
               {CONTACT.email}
             </a>

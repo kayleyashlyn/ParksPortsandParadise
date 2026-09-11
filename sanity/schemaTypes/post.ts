@@ -123,10 +123,13 @@ export const post = defineType({
               name: "alt",
               title: "Alt text",
               type: "string",
+              description:
+                "Describe what the image shows, for screen readers and search engines. Required — images in the body carry meaning.",
+              // Hard requirement (not warning-level like the seeded content
+              // images): body images are always informative, and there are no
+              // legacy body images to grandfather in.
               validation: (rule) =>
-                rule
-                  .required()
-                  .warning("Add alt text — important for accessibility and SEO."),
+                rule.required().error("Add alt text for this image."),
             }),
           ],
         }),

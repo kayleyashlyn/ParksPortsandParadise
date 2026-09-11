@@ -239,8 +239,10 @@ A `teamGroup` field (`"leadership"` | `"advisor"`, radio, defaults to `"advisor"
 `post` document type (`sanity/schemaTypes/post.ts`), kept flat: `title`, `slug`,
 `publishedAt` (datetime — the post is hidden until this time, so migrated posts
 get back-dated and future posts schedule themselves), `excerpt`, `author`
-(optional byline), `mainImage` (optional, inline `alt`), `body` (Portable Text —
-headings/lists/quote/links + inline images with `alt`). No categories, tags, or
+(optional byline), `mainImage` (optional, inline `alt` — warning-level like the
+other seeded content images), `body` (Portable Text — headings/lists/quote/links
++ inline images whose `alt` is **hard-required**: body images always carry
+meaning and there's no legacy body content to grandfather). No categories, tags, or
 related-posts machinery in Phase 1. Routes: `/blog` (index, newest first) and
 `/blog/[slug]` (`generateStaticParams` + ISR, `BlogPosting` JSON-LD, `prose`
 body via `@portabletext/react`). Nav already carried "Blog / Trip Inspiration".
