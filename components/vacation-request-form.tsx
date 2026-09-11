@@ -544,15 +544,16 @@ function TextField({
           {hint}
         </p>
       ) : null}
-      {error ? (
-        <p
-          id={`${id}-error`}
-          role="alert"
-          className="mt-1 text-xs text-destructive"
-        >
-          {error}
-        </p>
-      ) : null}
+      {/* Persistent polite live region — announces a single error on blur
+          without the assertive "interrupt stampede" when a whole step fails
+          validation at once. The form-level submit error keeps role="alert". */}
+      <p
+        id={`${id}-error`}
+        aria-live="polite"
+        className="mt-1 text-xs text-destructive empty:hidden"
+      >
+        {error}
+      </p>
     </div>
   );
 }
@@ -610,11 +611,13 @@ function OptionGroup({
           </label>
         ))}
       </div>
-      {error ? (
-        <p id={errorId} role="alert" className="mt-1.5 text-xs text-destructive">
-          {error}
-        </p>
-      ) : null}
+      <p
+        id={`${field.name}-error`}
+        aria-live="polite"
+        className="mt-1.5 text-xs text-destructive empty:hidden"
+      >
+        {error}
+      </p>
     </fieldset>
   );
 }
