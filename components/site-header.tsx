@@ -24,6 +24,9 @@ export function SiteHeader() {
   const [mobileSubOpen, setMobileSubOpen] = useState(false);
   // Only one nav item has a flyout (ui-agent.md: one flyout max).
   const flyoutRef = useRef<HTMLLIElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const mobilePanelRef = useRef<HTMLDivElement>(null);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
 
   // Close every menu on route change.
   useEffect(() => {
@@ -51,16 +54,74 @@ export function SiteHeader() {
     };
   }, [flyoutOpen]);
 
-  // Lock scroll while the mobile panel is open.
+  // While the mobile panel is open: lock scroll, make the rest of the page
+  // `inert` (so a screen reader / keyboard user can't wander behind it), move
+  // focus into the panel, trap Tab within [toggle + panel], and close on Escape.
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (!mobileOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    const header = headerRef.current;
+    const inerted = Array.from(document.body.children).filter(
+      (el) =>
+        el !== header && el.tagName !== "SCRIPT" && el.tagName !== "STYLE",
+    );
+    inerted.forEach((el) => el.setAttribute("inert", ""));
+
+    // Toggle first so Shift+Tab from the first link reaches the close button,
+    // then the panel's own focusables (skipping any inside the collapsed
+    // sub-menu, which have no `offsetParent`).
+    const focusables = () =>
+      [
+        menuToggleRef.current,
+        ...Array.from(
+          mobilePanelRef.current?.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled])',
+          ) ?? [],
+        ).filter((el) => el.offsetParent !== null),
+      ].filter((el): el is HTMLElement => el != null);
+
+    // Move focus into the panel (first link after the toggle).
+    focusables()[1]?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        menuToggleRef.current?.focus();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const f = focusables();
+      if (f.length === 0) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && (!active || active === first || !f.includes(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (
+        !e.shiftKey &&
+        (!active || active === last || !f.includes(active))
+      ) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+
     return () => {
       document.body.style.overflow = "";
+      inerted.forEach((el) => el.removeAttribute("inert"));
+      document.removeEventListener("keydown", onKeyDown);
     };
   }, [mobileOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70"
+    >
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:shadow focus:ring-2 focus:ring-ring"
@@ -164,6 +225,7 @@ export function SiteHeader() {
             <Link href={PRIMARY_CTA.href}>{PRIMARY_CTA.label}</Link>
           </Button>
           <Button
+            ref={menuToggleRef}
             type="button"
             variant="ghost"
             size="icon"
@@ -184,6 +246,7 @@ export function SiteHeader() {
 
       <div
         id="mobile-nav"
+        ref={mobilePanelRef}
         hidden={!mobileOpen}
         className="border-t border-border bg-background md:hidden"
       >
