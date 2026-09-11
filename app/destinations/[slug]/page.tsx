@@ -99,16 +99,19 @@ export default async function DestinationFamilyPage({
             priority
             className="object-cover"
           />
+          {/* Scrim heavy enough for white text (incl. the ~14px back-link) to
+              clear WCAG AA over a bright hero photo — the copy sits at the
+              bottom, so the `from-black` end carries most of the load. */}
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/20"
+            className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/35"
           />
         </div>
 
         <div className="mx-auto flex min-h-[52vh] max-w-[1400px] flex-col justify-end px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <Link
             href="/destinations"
-            className="inline-flex w-fit items-center gap-1.5 rounded-sm text-sm font-medium text-white/90 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            className="inline-flex w-fit items-center gap-1.5 rounded-sm text-sm font-medium text-white [text-shadow:0_1px_3px_rgb(0_0_0/0.5)] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <ArrowLeft aria-hidden className="h-4 w-4" />
             All destinations
@@ -117,7 +120,7 @@ export default async function DestinationFamilyPage({
             {family.title}
           </h1>
           {family.shortDescription ? (
-            <p className="mt-4 max-w-2xl text-pretty text-white/90">
+            <p className="mt-4 max-w-2xl text-pretty text-white [text-shadow:0_1px_3px_rgb(0_0_0/0.5)]">
               {family.shortDescription}
             </p>
           ) : null}

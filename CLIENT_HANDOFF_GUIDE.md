@@ -80,9 +80,11 @@ page builder (that was a conscious decision so the site can't drift off-brand).
 ### 3.3 Images — always add "Alt text"
 Every image field now has an **Alt text** box under it. Write a short, literal
 description ("Cinderella Castle at Walt Disney World at dusk"). It matters for
-accessibility and search. Studio will show a **warning** (not an error) if you
-leave it blank — the site falls back to the location/person's name, but real alt
-text is better. Please backfill alt text on the images already loaded.
+accessibility and search. Studio shows a **warning** (not an error) if you leave
+it blank on most images — the site falls back to the location/person's name, but
+real alt text is better. Please backfill alt text on the images already loaded.
+**Exception:** images placed *inside a blog post's body* **require** alt text —
+Studio won't let you publish the post until every body image has it.
 
 ### 3.4 Publishing
 - Edits are **drafts** until you click **Publish**. Nothing is live until then.
@@ -348,3 +350,4 @@ Keep this line current.
 | 2026-09-10 | §5 — cutover approach confirmed: **fresh start on Vercel**, DNS management moves to Vercel at launch, current Squarespace/Google DNS left untouched until then. Documented the cutover sequence (email records first). §6 — Resend sending-domain DNS records are **deferred to the cutover** and added in Vercel's DNS panel; values are in hand. |
 | 2026-09-10 | §3 — **Agent** model gained **Location**, **Contact email**, and **Instagram handle** fields. Contact info goes in these (rendered as a pin / `mailto:` link / Instagram link on the team card), not in the bio. One-time content task added to move existing agents' details out of their bios. |
 | 2026-09-10 | §3 — **Agent** model gained a **Team section** field ("Founder / leadership" vs "Advisor"). Founders now render in their own row at the top of the "Meet the Team" page. Defaults to "Advisor"; set Paige and Ashley to "Founder / leadership". |
+| 2026-09-10 | Accessibility pass across the site (form/step announcements + focus, mobile-menu focus trapping, contrast, reduced-motion, link underlines). §3.3 — **alt text on images inside a blog post body is now required** (Studio blocks publish without it); other images stay warning-level. |

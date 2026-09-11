@@ -271,7 +271,11 @@ function TextField({
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} className="mt-1 text-xs text-destructive">
+        <p
+          id={`${id}-error`}
+          role="alert"
+          className="mt-1 text-xs text-destructive"
+        >
           {error}
         </p>
       ) : null}
@@ -318,7 +322,11 @@ function TextAreaField({
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} className="mt-1 text-xs text-destructive">
+        <p
+          id={`${id}-error`}
+          role="alert"
+          className="mt-1 text-xs text-destructive"
+        >
           {error}
         </p>
       ) : null}

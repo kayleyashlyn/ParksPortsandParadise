@@ -24,6 +24,7 @@ export function SiteHeader() {
   const [mobileSubOpen, setMobileSubOpen] = useState(false);
   // Only one nav item has a flyout (ui-agent.md: one flyout max).
   const flyoutRef = useRef<HTMLLIElement>(null);
+  const flyoutTriggerRef = useRef<HTMLButtonElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const mobilePanelRef = useRef<HTMLDivElement>(null);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
@@ -35,22 +36,40 @@ export function SiteHeader() {
     setMobileSubOpen(false);
   }, [pathname]);
 
-  // Desktop flyout: dismiss on outside click / Escape.
+  // Desktop flyout: dismiss on outside click, on Escape (focus back to the
+  // trigger), or when focus leaves the flyout entirely (Tab / Shift+Tab out).
   useEffect(() => {
     if (!flyoutOpen) return;
+    const node = flyoutRef.current;
     function onPointer(e: MouseEvent) {
-      if (flyoutRef.current && !flyoutRef.current.contains(e.target as Node)) {
+      if (node && !node.contains(e.target as Node)) {
         setFlyoutOpen(false);
       }
     }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setFlyoutOpen(false);
+      if (e.key === "Escape") {
+        setFlyoutOpen(false);
+        flyoutTriggerRef.current?.focus();
+      }
+    }
+    function onFocusOut(e: FocusEvent) {
+      // relatedTarget is null when focus leaves the document (e.g. to browser
+      // chrome) — don't close in that case.
+      if (
+        node &&
+        e.relatedTarget instanceof Node &&
+        !node.contains(e.relatedTarget)
+      ) {
+        setFlyoutOpen(false);
+      }
     }
     document.addEventListener("mousedown", onPointer);
     document.addEventListener("keydown", onKey);
+    node?.addEventListener("focusout", onFocusOut);
     return () => {
       document.removeEventListener("mousedown", onPointer);
       document.removeEventListener("keydown", onKey);
+      node?.removeEventListener("focusout", onFocusOut);
     };
   }, [flyoutOpen]);
 
@@ -169,6 +188,7 @@ export function SiteHeader() {
               item.children ? (
                 <li key={item.href} ref={flyoutRef} className="relative">
                   <button
+                    ref={flyoutTriggerRef}
                     type="button"
                     aria-expanded={flyoutOpen}
                     aria-controls="destinations-flyout"

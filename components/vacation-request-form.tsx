@@ -237,7 +237,10 @@ export function VacationRequestForm({
           tabIndex={-1}
           className="flex items-baseline justify-between gap-3 focus:outline-none"
         >
-          <p className="text-sm font-semibold">{step.title}</p>
+          {/* `font-sans` overrides the global serif-heading rule — this is a
+              small in-form label, not a display heading — but it's still a real
+              heading so screen-reader users can jump between steps. */}
+          <h2 className="font-sans text-sm font-semibold">{step.title}</h2>
           <p className="text-xs text-muted-foreground">
             Step {stepIndex + 1} of {STEPS.length}
           </p>
@@ -542,7 +545,11 @@ function TextField({
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} className="mt-1 text-xs text-destructive">
+        <p
+          id={`${id}-error`}
+          role="alert"
+          className="mt-1 text-xs text-destructive"
+        >
           {error}
         </p>
       ) : null}
@@ -604,7 +611,7 @@ function OptionGroup({
         ))}
       </div>
       {error ? (
-        <p id={errorId} className="mt-1.5 text-xs text-destructive">
+        <p id={errorId} role="alert" className="mt-1.5 text-xs text-destructive">
           {error}
         </p>
       ) : null}
