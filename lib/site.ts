@@ -77,18 +77,18 @@ export const CONTACT = {
 } as const;
 
 /**
- * Agent Portal — footer utility link only (§11 #4). Interim target is the
- * embedded Sanity Studio (`/studio`) so the link resolves; set
- * `NEXT_PUBLIC_AGENT_PORTAL_URL` once the real gated portal exists.
- * NB: the plan's "Agent Portal" is the travel advisors' external portal — a
- * different system from the CMS Studio. Revisit before launch.
+ * Agent Portal — footer utility link only (§11 #4). The plan's "Agent Portal"
+ * is the travel advisors' external portal, a different system from this site
+ * / the CMS Studio (client-confirmed URL, 2026-09-11). `NEXT_PUBLIC_AGENT_PORTAL_URL`
+ * can still override this if the portal ever moves, without a code change.
  */
+const DEFAULT_AGENT_PORTAL_URL = "https://www.parksportsandparadise.com/agent-portal";
 const rawAgentPortalUrl =
-  process.env.NEXT_PUBLIC_AGENT_PORTAL_URL ?? "/studio";
+  process.env.NEXT_PUBLIC_AGENT_PORTAL_URL || DEFAULT_AGENT_PORTAL_URL;
 // Accept only an internal path or an https URL; otherwise fall back.
 export const AGENT_PORTAL_URL = /^(\/|https:\/\/)/.test(rawAgentPortalUrl)
   ? rawAgentPortalUrl
-  : "/studio";
+  : DEFAULT_AGENT_PORTAL_URL;
 
 /** Client-confirmed (IMPLEMENTATION_PLAN.md §4 trust bar, §11 #4). */
 export const SELLER_OF_TRAVEL = [
