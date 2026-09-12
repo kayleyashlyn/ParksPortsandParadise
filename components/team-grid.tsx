@@ -2,6 +2,7 @@ import { Instagram, Mail, MapPin } from "lucide-react";
 
 import { SanityImage } from "@/components/sanity-image";
 import type { AgentProfile } from "@/lib/sanity.queries";
+import { cn } from "@/lib/utils";
 
 /**
  * "Meet the Team" advisor grid (IMPLEMENTATION_PLAN.md §4 / §7 — a self-service
@@ -12,12 +13,27 @@ import type { AgentProfile } from "@/lib/sanity.queries";
  * button-weight CTA ("Request a Quote"). The advisor's own email / Instagram
  * are structured contact fields (not bio prose) and render as small, muted
  * inline text links — metadata, not calls to action. Scales to ~20 agents.
+ *
+ * `center` (used for the founders/leadership row on `/meet-the-team`, a small
+ * group) caps the grid at 2 columns and centers it, instead of stretching
+ * across the same 3-column width as the full advisor roster.
  */
-export function TeamGrid({ agents }: { agents: AgentProfile[] }) {
+export function TeamGrid({
+  agents,
+  center = false,
+}: {
+  agents: AgentProfile[];
+  center?: boolean;
+}) {
   if (agents.length === 0) return null;
 
   return (
-    <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+    <ul
+      className={cn(
+        "grid gap-x-6 gap-y-10",
+        center ? "mx-auto max-w-3xl sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3",
+      )}
+    >
       {agents.map((agent) => {
         // The editor may type the handle with or without a leading "@".
         const instagramHandle =
