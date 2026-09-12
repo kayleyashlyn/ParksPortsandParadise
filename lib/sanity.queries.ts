@@ -54,6 +54,8 @@ export type DestinationLocation = {
   blurb: string | null;
   /** Optional CTA label override; falls back to "Request a Quote". */
   ctaLabel: string | null;
+  /** Optional "Learn more" link to this location's own official site; hides the link when blank. */
+  officialWebsiteUrl: string | null;
 };
 
 export type DestinationFamily = {
@@ -83,7 +85,8 @@ const destinationFamilyProjection = groq`{
     image,
     searchKeywords,
     blurb,
-    ctaLabel
+    ctaLabel,
+    officialWebsiteUrl
   }, [])
 }`;
 

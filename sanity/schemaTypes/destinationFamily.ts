@@ -69,6 +69,15 @@ export const locationObject = defineType({
       type: "string",
       description: 'Defaults to "Request a Quote" (pre-filled with this destination) if left blank.',
     }),
+    defineField({
+      name: "officialWebsiteUrl",
+      title: "Official Website (optional)",
+      type: "url",
+      description:
+        'Optional "Learn more" link out to this location\'s own official site (e.g. Walt Disney World\'s or Royal Caribbean\'s site) — separate from, and secondary to, the "Request a Quote" button. Leave blank to hide the link on the page.',
+      validation: (rule) =>
+        rule.uri({ scheme: ["http", "https"] }),
+    }),
   ],
   preview: {
     select: { title: "name", media: "image", subtitle: "blurb" },

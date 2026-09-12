@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 
 import { SanityImage } from "@/components/sanity-image";
 import type { DestinationLocation } from "@/lib/sanity.queries";
@@ -7,10 +7,15 @@ import { PRIMARY_CTA } from "@/lib/site";
 
 /**
  * Locations for one destination family, broken out as sections on the SAME page
- * (IMPLEMENTATION_PLAN.md §4–5) — never sub-pages. Each entry is a single link
- * straight to the Vacation Request Form with the destination pre-filled
- * (`?destination=`); the affordance is link-weight text, not a button, so it
- * doesn't compete with the page's one dominant "Request a Quote" CTA.
+ * (IMPLEMENTATION_PLAN.md §4–5) — never sub-pages. Each card carries up to two
+ * independent links: the card-wide "stretched link" (a real anchor on the
+ * heading, visually behaving as a whole-card click target) straight to the
+ * Vacation Request Form with the destination pre-filled (`?destination=`),
+ * and an optional secondary "Learn more" link out to the location's own
+ * official site when `officialWebsiteUrl` is set. The primary link-weight
+ * text CTA stays the dominant affordance; "Learn more" is deliberately
+ * smaller/quieter so it never competes with the page's one dominant
+ * "Request a Quote" CTA.
  *
  * Server Component. Renders nothing when the family has no locations yet — the
  * page shows its own "coming soon" copy in that case.
@@ -50,10 +55,7 @@ export function DestinationLocations({
             aria-labelledby={`${anchor}-heading`}
             className="scroll-mt-24"
           >
-            <Link
-              href={href}
-              className="group grid items-center gap-6 rounded-lg border border-border bg-card p-4 transition-[box-shadow,background-color] hover:bg-brand-blush/10 hover:shadow-[0_20px_40px_-18px_rgba(115,147,185,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-5 md:grid-cols-2 md:gap-8"
-            >
+            <div className="group relative grid items-center gap-6 rounded-lg border border-border bg-card p-4 transition-[box-shadow,background-color] hover:bg-brand-blush/10 hover:shadow-[0_20px_40px_-18px_rgba(115,147,185,0.45)] sm:p-5 md:grid-cols-2 md:gap-8">
               <div
                 className={`relative ${i % 2 === 1 ? "md:order-2" : ""}`}
               >
@@ -89,24 +91,43 @@ export function DestinationLocations({
               </div>
 
               <div>
-                <h2
-                  id={`${anchor}-heading`}
-                  className="text-2xl text-foreground sm:text-3xl"
-                >
-                  {location.name}
+                <h2 className="text-2xl text-foreground sm:text-3xl">
+                  <Link
+                    id={`${anchor}-heading`}
+                    href={href}
+                    className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    {location.name}
+                  </Link>
                 </h2>
                 {location.blurb ? (
                   <p className="mt-3 max-w-prose text-pretty text-muted-foreground">
                     {location.blurb}
                   </p>
                 ) : null}
-                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 group-hover:underline">
-                  {ctaLabel}
-                  <ArrowRight aria-hidden className="h-4 w-4" />
-                  <span className="sr-only">for {location.name}</span>
-                </span>
+                <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 group-hover:underline">
+                    {ctaLabel}
+                    <ArrowRight aria-hidden className="h-4 w-4" />
+                    <span className="sr-only">for {location.name}</span>
+                  </span>
+                  {location.officialWebsiteUrl ? (
+                    <a
+                      href={location.officialWebsiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative z-10 inline-flex items-center gap-1 text-xs text-muted-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      Learn more
+                      <ExternalLink aria-hidden className="h-3.5 w-3.5" />
+                      <span className="sr-only">
+                        about {location.name} (opens in a new tab)
+                      </span>
+                    </a>
+                  ) : null}
+                </div>
               </div>
-            </Link>
+            </div>
           </section>
         );
       })}

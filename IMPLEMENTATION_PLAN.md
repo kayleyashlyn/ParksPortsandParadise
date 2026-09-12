@@ -153,7 +153,8 @@ Location (object, not a standalone document/route)
  ├─ image                    (+ inline `alt` string — warning-level, falls back to name on the frontend)
  ├─ searchKeywords           (NOT rendered — comma-separated SEO terms, fed into the page's JSON-LD `keywords`; was a visible `shortTag` eyebrow before 2026-09-09, repurposed per client direction that the terms are SEO triggers, not user-facing copy)
  ├─ blurb                    (1–2 sentences on what makes this location distinct — client-requested 2026-09-08; still short, schema max 200 chars)
- └─ ctaOverride               (optional, defaults to "Request a Quote," destination pre-filled)
+ ├─ ctaOverride               (optional, defaults to "Request a Quote," destination pre-filled)
+ └─ officialWebsiteUrl        (optional, added 2026-09-12 — a secondary "Learn more" link out to the location's own official site, e.g. Walt Disney World's or Royal Caribbean's; http/https only, hidden on the page when blank, never competes with the "Request a Quote" CTA)
 ```
 
 All four image fields (`destinationFamily.heroImage`, `destinationLocation.image`,
