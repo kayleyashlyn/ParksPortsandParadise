@@ -52,20 +52,40 @@ export function DestinationLocations({
           >
             <Link
               href={href}
-              className="group grid items-center gap-6 rounded-lg border border-border bg-card p-4 transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-5 md:grid-cols-2 md:gap-8"
+              className="group grid items-center gap-6 rounded-lg border border-border bg-card p-4 transition-[box-shadow,background-color] hover:bg-brand-blush/10 hover:shadow-[0_20px_40px_-18px_rgba(115,147,185,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-5 md:grid-cols-2 md:gap-8"
             >
               <div
-                className={`relative aspect-[4/3] overflow-hidden rounded-md bg-muted ${
-                  i % 2 === 1 ? "md:order-2" : ""
-                }`}
+                className={`relative ${i % 2 === 1 ? "md:order-2" : ""}`}
               >
-                <SanityImage
-                  image={location.image}
-                  alt={location.image.alt ?? location.name}
-                  aspect={4 / 3}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                {/* Decorative Sand Gold accent square — offset toward the
+                    outer edge and alternating with the image's L/R order per
+                    row. It's earlier in source order than the photo below, so
+                    with the default z-index:auto stacking (no explicit
+                    z-index — that would escape to the nearest *positioned*
+                    ancestor's stacking context, which here is well above this
+                    pair and would risk painting behind the card's own
+                    background) the photo naturally paints over it, leaving
+                    only the peeking corner visible. Clearly secondary to the
+                    photo and copy. */}
+                <div
+                  aria-hidden
+                  className={`absolute h-16 w-16 rounded-md bg-brand-secondary sm:h-20 sm:w-20 ${
+                    i % 2 === 1
+                      ? "-bottom-3 -right-3 sm:-bottom-4 sm:-right-4"
+                      : "-bottom-3 -left-3 sm:-bottom-4 sm:-left-4"
+                  }`}
                 />
+                <div
+                  className="relative aspect-[4/3] overflow-hidden rounded-md bg-muted shadow-[0_25px_50px_-20px_rgba(115,147,185,0.5)]"
+                >
+                  <SanityImage
+                    image={location.image}
+                    alt={location.image.alt ?? location.name}
+                    aspect={4 / 3}
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
               </div>
 
               <div>

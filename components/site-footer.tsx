@@ -69,7 +69,10 @@ export function SiteFooter() {
             </nav>
           ))}
 
-          <div>
+          {/* Thin Warm Taupe accent divider ahead of the newsletter field on
+              wide screens — a brand-palette touch beyond the functional
+              border-border hairlines used elsewhere in this footer. */}
+          <div className="lg:border-l lg:border-brand-taupe/40 lg:pl-10">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Newsletter
             </h2>

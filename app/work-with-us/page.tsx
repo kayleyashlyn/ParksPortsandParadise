@@ -24,7 +24,7 @@ export default function WorkWithUsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <header className="max-w-2xl">
-        <p className="text-sm font-medium uppercase tracking-wider text-primary">
+        <p className="inline-block border-b-2 border-brand-secondary pb-1 text-sm font-medium uppercase tracking-wider text-primary">
           Join the team
         </p>
         <h1 className="mt-2 text-balance text-4xl sm:text-5xl">

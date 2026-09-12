@@ -24,7 +24,7 @@ export function DestinationFamilyCard({
   return (
     <Link
       href={`/destinations/${family.slug}`}
-      className="group block overflow-hidden rounded-lg border border-border bg-card transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="group block overflow-hidden rounded-lg border border-border bg-card transition-[box-shadow,background-color] hover:bg-brand-blush/10 hover:shadow-[0_20px_40px_-18px_rgba(115,147,185,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <SanityImage

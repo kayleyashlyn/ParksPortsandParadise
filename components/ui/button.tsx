@@ -19,8 +19,15 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        // The one dominant CTA style (PRIMARY_CTA everywhere) gets a tactile
+        // hover lift + deeper shadow so it reads as pressable, not flat. Only
+        // this variant gets `transform`/`shadow` in its transition list — the
+        // custom `transition-[...]` here intentionally replaces (not adds to)
+        // the base `transition-colors`, since Tailwind's class-merge resolves
+        // same-property utility conflicts by keeping the later one; every
+        // other variant keeps the base's plain color transition.
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-secondary/80 hover:shadow-md",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },

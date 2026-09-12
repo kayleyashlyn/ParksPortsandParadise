@@ -40,7 +40,10 @@ export function TeamGrid({
           agent.instagramHandle?.replace(/^@+/, "").trim() || null;
 
         return (
-          <li key={agent._id} className="flex flex-col">
+          <li
+            key={agent._id}
+            className="-m-2 flex flex-col rounded-lg p-2 transition-colors hover:bg-brand-blush/10"
+          >
             <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted">
               <SanityImage
                 image={agent.photo}
@@ -74,7 +77,7 @@ export function TeamGrid({
                   {agent.specialties.map((specialty) => (
                     <li
                       key={specialty}
-                      className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted-foreground"
+                      className="rounded-full border border-brand-secondary/50 bg-brand-secondary/10 px-2.5 py-0.5 text-xs text-foreground"
                     >
                       {specialty}
                     </li>

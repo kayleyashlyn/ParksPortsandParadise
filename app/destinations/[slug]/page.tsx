@@ -88,8 +88,12 @@ export default async function DestinationFamilyPage({
       <JsonLd data={breadcrumbLd} />
       {itemListLd ? <JsonLd data={itemListLd} /> : null}
 
-      {/* Hero — CMS-supplied family photography */}
-      <header className="relative isolate overflow-hidden bg-muted">
+      {/* Hero — CMS-supplied family photography. The soft shadow below is
+          tinted with brand Slate Blue (rgba of colors.brand.primary) rather
+          than a generic gray, per the brand-polish pass; overflow-hidden on
+          this element clips its own children, not its own box-shadow, so no
+          extra wrapper is needed. */}
+      <header className="relative isolate overflow-hidden bg-muted shadow-[0_30px_60px_-25px_rgba(115,147,185,0.55)]">
         <div className="absolute inset-0 -z-10">
           <SanityImage
             image={family.heroImage}
@@ -127,7 +131,7 @@ export default async function DestinationFamilyPage({
         </div>
       </header>
 
-      <div className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6 lg:px-8">
         {family.locations.length > 0 ? (
           <DestinationLocations
             familyTitle={family.title}
@@ -141,7 +145,10 @@ export default async function DestinationFamilyPage({
           </p>
         )}
 
-        <section className="mt-16 rounded-lg border border-border bg-muted/50 px-6 py-10 text-center sm:px-10">
+        {/* Brand-tinted wash (Warm Taupe) instead of the plain bg-muted/50
+            band used elsewhere, so the page reads as more than one flat
+            white stretch — same treatment as the /destinations index CTA. */}
+        <section className="mt-14 rounded-lg border border-border bg-brand-taupe/10 px-6 py-10 text-center sm:px-10">
           <h2 className="text-2xl sm:text-3xl">Ready to plan this trip?</h2>
           <p className="mx-auto mt-2 max-w-md text-muted-foreground">
             Tell us about your travellers and your dates. We&apos;ll build a

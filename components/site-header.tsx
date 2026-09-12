@@ -157,7 +157,7 @@ export function SiteHeader() {
         Skip to content
       </a>
 
-      <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-4 sm:gap-6 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-20 max-w-[1400px] items-center gap-3 px-4 sm:gap-6 sm:px-6 lg:px-8">
         <Link
           href="/"
           aria-label="Parks Ports & Paradise — home"
@@ -167,15 +167,17 @@ export function SiteHeader() {
           {/* The circular seal has too much fine text to read at header size, so
               it only shows where there's room (sm+); the wordmark carries the
               brand on mobile. A horizontal logo lockup would let both show at
-              every width — see TODO.md. */}
+              every width — see TODO.md. Sized to read as a real mark (not a
+              favicon) within the h-20 header bar; intrinsic width/height scaled
+              to match so next/image doesn't upscale a small source. */}
           <Image
             src="/images/logos/logo-primary.png"
             alt=""
             aria-hidden
-            width={96}
-            height={120}
+            width={128}
+            height={160}
             priority
-            className="hidden h-11 w-auto sm:block"
+            className="hidden h-14 w-auto sm:block lg:h-16"
           />
           <span className="truncate font-heading text-sm leading-none text-foreground sm:text-xl">
             Parks Ports &amp; Paradise
