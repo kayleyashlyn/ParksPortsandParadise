@@ -35,7 +35,9 @@ export default async function MeetTheTeamPage() {
       <div className="mt-12">
         {agents.length > 0 ? (
           <div className="space-y-16">
-            {leadership.length > 0 ? <TeamGrid agents={leadership} /> : null}
+            {leadership.length > 0 ? (
+              <TeamGrid agents={leadership} center />
+            ) : null}
             {advisors.length > 0 ? <TeamGrid agents={advisors} /> : null}
           </div>
         ) : (
