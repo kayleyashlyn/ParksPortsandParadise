@@ -99,10 +99,10 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       `NEXT_PUBLIC_SITE_URL` (Production = the prod domain, Preview = the preview
       URL). Re-check the whole env list against `.env.example` while in there.
       The site is CMS-driven — no code change makes it build green without these.
-- [ ] **`AGENT_PORTAL_URL` real target** — `lib/site.ts` currently points the
-      footer "Agent Portal" link at `/studio` (the CMS). The plan's Agent Portal
-      is the advisors' external portal — a different system. Set
-      `NEXT_PUBLIC_AGENT_PORTAL_URL` to the real gated URL.
+- [x] **`AGENT_PORTAL_URL` real target** — DONE (2026-09-11). Client confirmed
+      the real URL: `https://www.parksportsandparadise.com/agent-portal`. It's
+      now the in-code fallback in `lib/site.ts` (was `/studio`, a placeholder);
+      `NEXT_PUBLIC_AGENT_PORTAL_URL` can still override it if the portal moves.
 - [x] **`metadataBase` + OG/Twitter metadata** — done 2026-09-09 (`feat/seo-phase-1`).
       `app/layout.tsx` sets `metadataBase` from `SITE_URL` (`lib/site.ts`,
       env `NEXT_PUBLIC_SITE_URL`), default OpenGraph/Twitter/robots, and a
