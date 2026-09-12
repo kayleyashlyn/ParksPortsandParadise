@@ -19,7 +19,7 @@ export function TrustBar({ badges }: { badges: AccreditationBadge[] }) {
   return (
     <section
       aria-label="Accreditations and registrations"
-      className="border-y border-border bg-muted/50"
+      className="border-y border-brand-taupe/30"
     >
       <ul className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-center gap-x-8 gap-y-4 px-4 py-6 sm:px-6 lg:px-8">
         {badges.map((badge) => {

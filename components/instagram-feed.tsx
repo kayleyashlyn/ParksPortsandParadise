@@ -14,38 +14,43 @@ export function InstagramFeed({ settings }: { settings: SiteSettings | null }) {
   if (!settings?.instagramFeedEnabled || !widgetId) return null;
 
   return (
-    <section
-      aria-labelledby="instagram-heading"
-      className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:px-8"
-    >
-      {/* The SnapWidget grid stretches to fill its container, so it's capped on
-          larger screens — full-width on mobile (where it reads well), centered
-          and bounded above that. */}
-      <div className="mx-auto max-w-xl">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-          <h2 id="instagram-heading" className="text-2xl sm:text-3xl">
-            Follow along
-          </h2>
-          <a
-            href={CONTACT.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-sm text-sm font-medium text-primary underline underline-offset-4 transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            {CONTACT.instagramHandle}
-          </a>
-        </div>
+    // Full-bleed, very light Warm Taupe wash — alternates with the Blush wash
+    // behind DestinationFamilyGrid above it, continuing the homepage's banded
+    // section rhythm.
+    <div className="bg-brand-taupe/5">
+      <section
+        aria-labelledby="instagram-heading"
+        className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:px-8"
+      >
+        {/* The SnapWidget grid stretches to fill its container, so it's capped on
+            larger screens — full-width on mobile (where it reads well), centered
+            and bounded above that. */}
+        <div className="mx-auto max-w-xl">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <h2 id="instagram-heading" className="text-2xl sm:text-3xl">
+              Follow along
+            </h2>
+            <a
+              href={CONTACT.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-sm text-sm font-medium text-primary underline underline-offset-4 transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {CONTACT.instagramHandle}
+            </a>
+          </div>
 
-        <div className="mt-6 overflow-hidden rounded-lg border border-border bg-muted">
-          <iframe
-            title={`Instagram feed for ${CONTACT.instagramHandle}`}
-            src={`https://snapwidget.com/embed/${encodeURIComponent(widgetId)}`}
-            loading="lazy"
-            referrerPolicy="strict-origin-when-cross-origin"
-            className="block aspect-square w-full border-0"
-          />
+          <div className="mt-6 overflow-hidden rounded-lg border border-border bg-muted">
+            <iframe
+              title={`Instagram feed for ${CONTACT.instagramHandle}`}
+              src={`https://snapwidget.com/embed/${encodeURIComponent(widgetId)}`}
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              className="block aspect-square w-full border-0"
+            />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

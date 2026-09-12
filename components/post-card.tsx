@@ -23,7 +23,7 @@ export function PostCard({
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card transition-[box-shadow,background-color] hover:bg-brand-blush/10 hover:shadow-[0_20px_40px_-18px_rgba(115,147,185,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       {post.mainImage ? (
         <div className="relative aspect-[16/9] overflow-hidden bg-muted">
@@ -37,7 +37,11 @@ export function PostCard({
         </div>
       ) : null}
       <div className="flex flex-1 flex-col p-5">
-        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        {/* Sand Gold accent as an underline rather than the text color itself
+            — recoloring the date to the raw brand.secondary swatch would
+            drop well below WCAG AA 4.5:1 on this light background, so the
+            gold reads as a small brand touch without an inaccessible label. */}
+        <p className="inline-block w-fit border-b-2 border-brand-secondary/70 pb-0.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
           <time dateTime={post.publishedAt}>
             {formatPostDate(post.publishedAt)}
           </time>
