@@ -291,10 +291,16 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       **Still open:** no `locations[]` in Studio yet, so all three currently show
       the "guide coming soon" empty state. `?destination=` prefill needs the
       Vacation Request Form to read the query param (owner: `forms-agent`).
-- [ ] **Trust bar renders text only** (`components/trust-bar.tsx`) — to show
-      `badgeImage` seals, add `badgeImage.asset->metadata.dimensions` to the
-      `accreditationBadge` projection in `lib/sanity.queries.ts` and render with
-      `next/image`.
+- [x] **Trust bar renders `badgeImage` seals** — DONE (2026-09-11). The client
+      had already uploaded real logo artwork for all 4 badges (CLIA, IATAN, TL
+      Network, Universal Orlando) but `components/trust-bar.tsx` never rendered
+      it — text-only labels shipped regardless. Now renders via `SanityImage`
+      in a fixed box with `object-contain` (no `aspect`/crop — badge art isn't
+      hotspot-cropped); falls back to the text label only when a badge has no
+      `badgeImage` (e.g. the Seller of Travel registration numbers). The
+      `metadata.dimensions` projection this item used to call for turned out to
+      be unnecessary — `SanityImage`'s existing `fill` + `object-contain`
+      handles it without intrinsic dimensions.
 - [x] **Sanity image `alt` text** — DONE. Per-image `alt` field added to all four
       image schemas; call sites fall back to the sibling label only when `alt` is
       blank. Editors need to backfill `alt` on the already-seeded images.
