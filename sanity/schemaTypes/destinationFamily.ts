@@ -1,10 +1,11 @@
 import { defineField, defineType, defineArrayMember } from "sanity";
 
 /**
- * Powers exactly THREE documents at launch — Theme Parks (Disney + Universal +
- * SeaWorld, grouped together per client direction), Cruise Lines, All-Inclusive
- * Resorts — confirmed with the client as the flagship destination families
- * (see IMPLEMENTATION_PLAN.md §4–5).
+ * Powers four documents at launch — Disney Destinations, Universal Studios,
+ * Cruise Lines, All Inclusive & More — confirmed with the client as the
+ * flagship destination families (see IMPLEMENTATION_PLAN.md §4–5; updated
+ * 2026-09-13 when Disney/Universal split into their own families and
+ * "All-Inclusive Resorts" was renamed).
  *
  * Locations live as an in-document array, NOT as their own document type
  * or route. Per the client's explicit direction: break locations out
@@ -135,7 +136,7 @@ export const destinationFamily = defineType({
       name: "order",
       title: "Display Order",
       type: "number",
-      description: "Controls nav flyout and homepage grid order (Theme Parks, Cruise Lines, All-Inclusive).",
+      description: "Controls nav flyout and homepage grid order (Disney Destinations, Universal Studios, Cruise Lines, All Inclusive & More).",
       validation: (rule) => rule.required(),
     }),
     defineField({

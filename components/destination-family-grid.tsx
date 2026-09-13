@@ -32,16 +32,16 @@ export function DestinationFamilyGrid({
           Where to next?
         </h2>
         <p className="mt-3 max-w-prose text-muted-foreground">
-          Three ways to get away — pick a direction and we build the trip
+          Four ways to get away — pick a direction and we build the trip
           around you.
         </p>
 
-        <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {families.map((family) => (
             <li key={family._id}>
               <DestinationFamilyCard
                 family={family}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
               />
             </li>
           ))}

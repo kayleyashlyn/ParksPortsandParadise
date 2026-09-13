@@ -1,6 +1,7 @@
 import { destinationFamily, locationObject } from "./destinationFamily";
 import { accreditationBadge } from "./accreditationBadge";
 import { agentProfile } from "./agentProfile";
+import { newsletterSubscriber } from "./newsletterSubscriber";
 import { post } from "./post";
 import { siteSettings } from "./siteSettings";
 
@@ -18,6 +19,7 @@ export const schemaTypes = [
   locationObject,
   accreditationBadge,
   agentProfile,
+  newsletterSubscriber,
   post,
   siteSettings,
 ];

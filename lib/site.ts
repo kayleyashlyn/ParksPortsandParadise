@@ -12,7 +12,7 @@
  */
 export const SITE_NAME = "Parks Ports & Paradise";
 export const SITE_DESCRIPTION =
-  "Family vacation planning for theme parks, cruises, and all-inclusive resorts. Tell us about your trip and our advisors build a custom quote — free.";
+  "Family vacation planning for Disney, Universal, cruises, and all-inclusive resorts. Tell us about your trip and our advisors build a custom quote — free.";
 
 /**
  * Canonical site origin (no trailing slash). Drives `metadataBase`, canonical
@@ -37,24 +37,32 @@ export const PRIMARY_NAV: NavItem[] = [
   {
     label: "Destinations",
     href: "/destinations",
-    // hrefs match the live Sanity `destinationFamily` slugs (parks / ports /
-    // paradise) — keep in sync with the CMS, not with these labels.
+    // hrefs match the live Sanity `destinationFamily` slugs (parks-disney /
+    // parks-universal / ports / paradise) — keep in sync with the CMS, not
+    // with these labels. Split from three families into four 2026-09-13
+    // (Disney and Universal un-grouped; "All-Inclusive Resorts" renamed).
     children: [
       {
-        label: "Theme Parks",
-        href: "/destinations/parks",
+        label: "Disney Destinations",
+        href: "/destinations/parks-disney",
         description:
-          "Walt Disney World, Disneyland, Universal, SeaWorld, Aulani",
+          "Walt Disney World, Disneyland, Aulani, Disney Paris, National Geographic Expeditions",
+      },
+      {
+        label: "Universal Studios",
+        href: "/destinations/parks-universal",
+        description: "Universal Orlando and Universal Studios Hollywood",
       },
       {
         label: "Cruise Lines",
         href: "/destinations/ports",
-        description: "Disney Cruise Line, Royal Caribbean",
+        description:
+          "Disney Cruise Line, Royal Caribbean, Norwegian, MSC, Carnival",
       },
       {
-        label: "All-Inclusive Resorts",
+        label: "All Inclusive & More",
         href: "/destinations/paradise",
-        description: "Beach and resort escapes beyond the parks and ships",
+        description: "Sandals/Beaches, Hard Rock, Moon Palace, Xcaret, Atlantis",
       },
     ],
   },
@@ -68,6 +76,21 @@ export const PRIMARY_NAV: NavItem[] = [
 export const PRIMARY_CTA = {
   label: "Request a Quote",
   href: "/plan-your-vacation",
+} as const;
+
+/**
+ * The lead-magnet freebie offered in exchange for a newsletter signup (footer
+ * field + `<NewsletterPopup>`) — one place for the copy + file link so the two
+ * surfaces can't drift. `shortLabel` is the lowercase, article-free form used
+ * mid-sentence ("check your inbox for the {shortLabel}") so copy stays
+ * generic if the freebie ever changes again.
+ */
+export const NEWSLETTER_FREEBIE = {
+  title: "WDW Lightning Lane Cheat Sheet",
+  shortLabel: "cheat sheet",
+  description:
+    "Drop your email for trip ideas and deals — we'll also send you our free Walt Disney World Lightning Lane cheat sheet.",
+  fileHref: "/downloads/wdw-lightning-lane-cheat-sheet.png",
 } as const;
 
 export const CONTACT = {
@@ -110,9 +133,10 @@ export const FOOTER_NAV: FooterColumn[] = [
   {
     heading: "Explore",
     links: [
-      { label: "Theme Parks", href: "/destinations/parks" },
+      { label: "Disney Destinations", href: "/destinations/parks-disney" },
+      { label: "Universal Studios", href: "/destinations/parks-universal" },
       { label: "Cruise Lines", href: "/destinations/ports" },
-      { label: "All-Inclusive Resorts", href: "/destinations/paradise" },
+      { label: "All Inclusive & More", href: "/destinations/paradise" },
       { label: "Trip Inspiration", href: "/blog" },
     ],
   },

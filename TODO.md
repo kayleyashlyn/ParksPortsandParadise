@@ -48,6 +48,23 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       `alt?: string | null` and every `<SanityImage>` call site now passes
       `image.alt ?? <sibling label>`. **Editors still need to fill alt on existing
       images** (Studio shows the warning until they do).
+- [ ] **Destination family re-categorization (client feedback, 2026-09-13) —
+      content task, not code.** Nav/footer/form code already expects four
+      families; the Studio documents themselves still need editing:
+      - [ ] Split the "Theme Parks" doc into two: rename it **"Disney
+            Destinations"** (slug `parks-disney`; keep WDW, Disneyland, Aulani;
+            add National Geographic Expeditions, Disney Paris) and create a new
+            **"Universal Studios"** doc (slug `parks-universal`; move the
+            existing Universal FL + Universal Hollywood locations onto it).
+      - [ ] Delete the SeaWorld location entirely (client direction — dropped,
+            not reassigned).
+      - [ ] Rename "All-Inclusive Resorts" → **"All Inclusive & More"** (slug
+            stays `paradise`); add Hard Rock, Moon Palace, Xcaret, Atlantis
+            alongside the existing Sandals/Beaches entry.
+      - [ ] Add Norwegian, MSC, Carnival as new locations on "Cruise Lines"
+            (slug stays `ports`).
+      - [ ] Each new/moved location needs its own location-specific image + alt
+            text per the existing editorial rule — no generic stock.
 - [ ] **Query return types are hand-written, not runtime-validated** — if a GROQ
       projection in `lib/sanity.queries.ts` drifts from its TS type, nothing
       catches it. Consider `sanity typegen` or a Zod parse at the fetch boundary.
@@ -85,20 +102,17 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       while adding other env vars) got past `?? fallback` and crashed
       `new URL(SITE_URL)` in `app/layout.tsx` — broke every deploy incl.
       production. `lib/site.ts` now treats empty/blank the same as unset.
-- [ ] **Vercel env vars regressed (2026-09-09) — deploys are RED.** After the
-      `SITE_URL` fix above, the Vercel build fails deeper with
-      `Dataset "production" not found for project ID "placeholder"` — i.e.
-      `NEXT_PUBLIC_SANITY_PROJECT_ID` / `NEXT_PUBLIC_SANITY_DATASET` are missing
-      or blank on Vercel (they were working through PR #13; likely disturbed
-      while adding `NEXT_PUBLIC_GA4_MEASUREMENT_ID` / `RESEND_API_KEY`).
-      **Owner: client — restore in Vercel → Settings → Environment Variables,
-      all environments:**
-      `NEXT_PUBLIC_SANITY_PROJECT_ID=kuk7exxj`,
-      `NEXT_PUBLIC_SANITY_DATASET=production`,
-      `NEXT_PUBLIC_SANITY_API_VERSION=2026-09-08`, and a non-blank
-      `NEXT_PUBLIC_SITE_URL` (Production = the prod domain, Preview = the preview
-      URL). Re-check the whole env list against `.env.example` while in there.
-      The site is CMS-driven — no code change makes it build green without these.
+- [x] **Vercel env vars regressed (2026-09-09) — deploys are RED.** RESOLVED
+      (2026-09-13). `NEXT_PUBLIC_SANITY_PROJECT_ID` / `NEXT_PUBLIC_SANITY_DATASET`
+      are confirmed present in Vercel (client checked — showed masked, not blank).
+      **Found a second, worse issue while checking:** `NEXT_PUBLIC_SITE_URL` was
+      set to the literal string `2026-09-08` (the API-version date, pasted into
+      the wrong field) instead of a URL — `new URL("2026-09-08")` throws, so this
+      crashed `metadataBase` in `app/layout.tsx` on every single page, on every
+      environment. Client corrected it to `https://parksportsandparadise.com` in
+      Production. **Still worth a final check:** confirm the same fix is applied
+      on Preview (or leave it blank there — the code falls back to the prod
+      domain automatically), and redeploy to confirm the site actually renders.
 - [x] **`AGENT_PORTAL_URL` real target** — DONE (2026-09-11). Client confirmed
       the real URL: `https://www.parksportsandparadise.com/agent-portal`. It's
       now the in-code fallback in `lib/site.ts` (was `/studio`, a placeholder);
@@ -193,8 +207,22 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       - The `generate_lead` event itself fires from the Vacation Request Form
         (`feat/plan-your-vacation` / PR #4) — `window.gtag?.()` is optional-chained,
         so it's a safe no-op when the visitor declined or the tag isn't loaded.
-- [ ] **Newsletter submit** — `components/newsletter-form.tsx` is presentational;
-      needs a real endpoint + GA4 event. Owner: `forms-agent` / `seo-agent`.
+- [x] **Newsletter submit** — DONE (2026-09-13). `components/newsletter-form.tsx`
+      (footer) and the new `components/newsletter-popup.tsx` (freebie-download
+      popup, repurposing the same capture) both post to `app/api/newsletter/route.ts`,
+      which stores a `newsletterSubscriber` doc in Sanity via `lib/sanity.writeClient.ts`
+      and fires `newsletter_signup` via `window.gtag?.()`. **Remaining:**
+      - [ ] **Set `SANITY_API_WRITE_TOKEN` in Vercel** (all environments) —
+            generate it in Sanity's manage console (API → Tokens → Add API
+            token, "Editor" permissions) — see CLIENT_HANDOFF_GUIDE.md. Without
+            it, signups are validated + logged server-side but not stored.
+      - [x] **Real freebie file wired** (2026-09-13) — client supplied the "WDW
+            Lightning Lane Cheat Sheet" flyer; it's at
+            `public/downloads/wdw-lightning-lane-cheat-sheet.png`, and
+            `NEWSLETTER_FREEBIE` in `lib/site.ts` (title/description/shortLabel/
+            fileHref) was updated to match.
+      - [ ] In GA4 Admin, consider marking `newsletter_signup` as a conversion
+            event (parallel to `generate_lead`).
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;
       pick concrete `images.unsplash.com` URLs / collections (host is already
       allow-listed in `next.config.mjs`).
