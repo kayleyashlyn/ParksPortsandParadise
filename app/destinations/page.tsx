@@ -14,7 +14,7 @@ export const revalidate = 60;
 export const metadata: Metadata = pageMetadata({
   title: "Destinations",
   description:
-    "Theme parks, cruises, and all-inclusive resorts — the three ways we get families away. Pick a direction and our advisors build the trip around you.",
+    "Disney, Universal, cruises, and all-inclusive resorts — the four ways we get families away. Pick a direction and our advisors build the trip around you.",
   path: "/destinations",
 });
 
@@ -42,7 +42,7 @@ export default async function DestinationsPage() {
             Destinations
           </h1>
           <p className="mt-4 max-w-2xl text-pretty text-muted-foreground">
-            We plan three kinds of trips — theme parks, cruises, and
+            We plan four kinds of trips — Disney, Universal, cruises, and
             all-inclusive resorts. Browse a family below, then tell us about
             your trip and an advisor puts together a free quote.
           </p>

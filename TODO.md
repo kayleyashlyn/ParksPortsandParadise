@@ -48,6 +48,23 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       `alt?: string | null` and every `<SanityImage>` call site now passes
       `image.alt ?? <sibling label>`. **Editors still need to fill alt on existing
       images** (Studio shows the warning until they do).
+- [ ] **Destination family re-categorization (client feedback, 2026-09-13) —
+      content task, not code.** Nav/footer/form code already expects four
+      families; the Studio documents themselves still need editing:
+      - [ ] Split the "Theme Parks" doc into two: rename it **"Disney
+            Destinations"** (slug `parks-disney`; keep WDW, Disneyland, Aulani;
+            add National Geographic Expeditions, Disney Paris) and create a new
+            **"Universal Studios"** doc (slug `parks-universal`; move the
+            existing Universal FL + Universal Hollywood locations onto it).
+      - [ ] Delete the SeaWorld location entirely (client direction — dropped,
+            not reassigned).
+      - [ ] Rename "All-Inclusive Resorts" → **"All Inclusive & More"** (slug
+            stays `paradise`); add Hard Rock, Moon Palace, Xcaret, Atlantis
+            alongside the existing Sandals/Beaches entry.
+      - [ ] Add Norwegian, MSC, Carnival as new locations on "Cruise Lines"
+            (slug stays `ports`).
+      - [ ] Each new/moved location needs its own location-specific image + alt
+            text per the existing editorial rule — no generic stock.
 - [ ] **Query return types are hand-written, not runtime-validated** — if a GROQ
       projection in `lib/sanity.queries.ts` drifts from its TS type, nothing
       catches it. Consider `sanity typegen` or a Zod parse at the fetch boundary.
@@ -193,8 +210,22 @@ earlier build work; check them off or move them to a plan/issue as they're done.
       - The `generate_lead` event itself fires from the Vacation Request Form
         (`feat/plan-your-vacation` / PR #4) — `window.gtag?.()` is optional-chained,
         so it's a safe no-op when the visitor declined or the tag isn't loaded.
-- [ ] **Newsletter submit** — `components/newsletter-form.tsx` is presentational;
-      needs a real endpoint + GA4 event. Owner: `forms-agent` / `seo-agent`.
+- [x] **Newsletter submit** — DONE (2026-09-13). `components/newsletter-form.tsx`
+      (footer) and the new `components/newsletter-popup.tsx` (freebie-download
+      popup, repurposing the same capture) both post to `app/api/newsletter/route.ts`,
+      which stores a `newsletterSubscriber` doc in Sanity via `lib/sanity.writeClient.ts`
+      and fires `newsletter_signup` via `window.gtag?.()`. **Remaining:**
+      - [ ] **Set `SANITY_API_WRITE_TOKEN` in Vercel** (all environments) —
+            generate it in Sanity's manage console (API → Tokens → Add API
+            token, "Editor" permissions) — see CLIENT_HANDOFF_GUIDE.md. Without
+            it, signups are validated + logged server-side but not stored.
+      - [ ] **Drop the real freebie file** at
+            `public/downloads/vacation-planning-checklist.pdf` (the path
+            `NEWSLETTER_FREEBIE.fileHref` in `lib/site.ts` points to) — currently
+            a placeholder path with no file behind it. Update the title/description
+            in that same constant to match the client's actual file.
+      - [ ] In GA4 Admin, consider marking `newsletter_signup` as a conversion
+            event (parallel to `generate_lead`).
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;
       pick concrete `images.unsplash.com` URLs / collections (host is already
       allow-listed in `next.config.mjs`).

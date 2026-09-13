@@ -4,6 +4,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { Analytics } from "@/components/analytics";
 import { CookieConsent } from "@/components/cookie-consent";
 import { JsonLd } from "@/components/json-ld";
+import { NewsletterPopup } from "@/components/newsletter-popup";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { siteJsonLd } from "@/lib/seo";
@@ -79,6 +80,7 @@ export default function RootLayout({
         </main>
         <SiteFooter />
         <CookieConsent />
+        <NewsletterPopup />
         <Analytics gaId={gaId} />
       </body>
     </html>

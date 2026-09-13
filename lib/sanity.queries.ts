@@ -98,7 +98,7 @@ const destinationFamilyBySlugQuery = groq`
   *[_type == "destinationFamily" && slug.current == $slug][0] ${destinationFamilyProjection}
 `;
 
-/** All destination families, ordered by `order` (Theme Parks, Cruise Lines, All-Inclusive). */
+/** All destination families, ordered by `order` (Disney Destinations, Universal Studios, Cruise Lines, All Inclusive & More). */
 export function getDestinationFamilies(): Promise<DestinationFamily[]> {
   return client.fetch<DestinationFamily[]>(destinationFamiliesQuery);
 }

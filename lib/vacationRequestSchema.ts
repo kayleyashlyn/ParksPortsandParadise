@@ -9,15 +9,28 @@ import { z } from "zod";
  * re-typing the strings (a second source of truth that would drift).
  */
 
+// Grouped to match the four destination families (IMPLEMENTATION_PLAN.md §4–5,
+// updated 2026-09-13): Disney Destinations, Universal Studios, Cruise Lines,
+// All Inclusive & More. The generic "All-Inclusive Resort" catch-all was
+// replaced by the named options below — "Other" still covers anything else.
 export const DESTINATION_OPTIONS = [
   "Walt Disney World Resort, FL",
-  "Universal Studios, FL",
   "Disneyland Resorts, CA",
-  "Universal Studios Hollywood, CA",
   "Aulani, Hawaii",
+  "Disneyland Paris",
+  "National Geographic Expeditions",
+  "Universal Studios, FL",
+  "Universal Studios Hollywood, CA",
   "Disney Cruise Line",
   "Royal Caribbean Cruise Line",
-  "All-Inclusive Resort",
+  "Norwegian Cruise Line",
+  "MSC Cruises",
+  "Carnival Cruise Line",
+  "Sandals/Beaches Resorts",
+  "Hard Rock Hotels & Resorts",
+  "Moon Palace Resorts",
+  "Xcaret",
+  "Atlantis Bahamas",
   "Other",
 ] as const;
 

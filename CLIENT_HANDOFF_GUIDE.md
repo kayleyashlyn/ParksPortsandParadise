@@ -70,8 +70,9 @@ page builder (that was a conscious decision so the site can't drift off-brand).
 
 | Model | What it controls | Notes |
 |---|---|---|
-| **Destination Family** | The three destination pages: Theme Parks, Cruise Lines, All-Inclusive Resorts | Each has a hero image, short description, display order, and a list of **Locations** shown as sections on that one page. Locations never become their own pages. |
+| **Destination Family** | The four destination pages: Disney Destinations, Universal Studios, Cruise Lines, All Inclusive & More | Each has a hero image, short description, display order, and a list of **Locations** shown as sections on that one page. Locations never become their own pages. |
 | **Location** (inside a Destination Family) | One entry on a destination page — name, image, blurb, optional button label, optional official website link | **Search keywords** field is **not shown on the page** — it feeds behind-the-scenes SEO data only. **Official Website** is optional — paste that destination's own site (e.g. Walt Disney World's or Royal Caribbean's) and a small "Learn more" link appears next to the "Request a Quote" button, opening that site in a new tab. Leave it blank and the "Learn more" link simply doesn't show — most Locations won't have it filled in yet. |
+| **Newsletter Subscriber** | A read-only list of emails captured by the footer signup field and the freebie-download popup | You don't create these — the site writes one automatically on each signup. Check here (or search the `hello@` inbox, since each signup also emails you) to see who's subscribed. |
 | **Agent** | The "Meet the Team" grid | Name, photo, title, short bio, specialties, plus separate **Location**, **Contact email**, and **Instagram handle** fields — put contact info in those, not in the bio (the card turns them into a pin, an email link, and an Instagram link). Instagram handle is just the username (e.g. `alyssaatthecastle`). **Team section** puts founders/leadership in their own row above the advisors (leave it on "Advisor" for everyone else). Set **Active** off (don't delete) when someone leaves — keeps their history. Display order optional. |
 | **Blog Post** | The `/blog` ("Trip Inspiration") index and each post page | Title, slug, **Published at** (the post is hidden until this date — back-date migrated posts, or set a future date to schedule), excerpt, optional byline, optional main image, and a rich-text body. The index stays on an "empty" message until at least one post is published. |
 | **Accreditation Badge** | The trust bar (Seller of Travel numbers, CLIA, IATAN, etc.) | Text-only unless you upload official logo art. |
@@ -259,6 +260,26 @@ Two forms, both emailing the same inbox (`hello@`) through Resend (Section 6):
 **Spam:** both forms have a hidden field that traps bots; those submissions are
 silently dropped and never emailed.
 
+**Newsletter signup** (footer field, plus a one-time freebie-download popup) —
+added 2026-09-13.
+
+- A visitor enters just an email address, either in the footer or in a popup
+  that offers a free download in exchange for it (after a short delay, once
+  per browser).
+- On submit, the email is **stored as a Newsletter Subscriber in Sanity**
+  (see §3.2) — that's the system of record, not your inbox — and you also get
+  a heads-up email via Resend, same as the other two forms.
+- The popup then shows a download button for the freebie file.
+- **Setup still required:**
+  - [ ] Developer creates a Sanity API token (manage console → API → Tokens →
+        Add API token, "Editor" permissions) and adds it to Vercel as
+        `SANITY_API_WRITE_TOKEN` (Production). Without it, signups are
+        accepted but not stored.
+  - [ ] **You need to supply the actual freebie file** (e.g. a PDF checklist)
+        — hand it to your developer, who adds it to the site and updates the
+        popup's title/description to match. Until then the download link
+        points at a placeholder that doesn't exist yet.
+
 ---
 
 ## 10. Legal pages — `/privacy` and `/terms` 🟡 DRAFT
@@ -353,3 +374,5 @@ Keep this line current.
 | 2026-09-10 | Accessibility pass across the site (form/step announcements + focus, mobile-menu focus trapping, contrast, reduced-motion, link underlines). §3.3 — **alt text on images inside a blog post body is now required** (Studio blocks publish without it); other images stay warning-level. |
 | 2026-09-11 | Footer **Agent Portal** link now points at the real URL, `https://www.parksportsandparadise.com/agent-portal` (client-confirmed) — it was a placeholder pointing at `/studio` until now. It's an in-code default; no Vercel env var needed unless the portal URL ever changes. |
 | 2026-09-12 | §3 — **Location** model gained an optional **Official Website** field. Fill it in to show a small secondary "Learn more" link (opens in a new tab) next to a Location's "Request a Quote" link; leave it blank to hide the link, which is the current state for nearly every Location. Purely a content field — no env var or account change. |
+| 2026-09-13 | §3, §9 — newsletter signup wired up (client request): footer field + new freebie-download popup both post to a new **Newsletter Subscriber** model in Sanity, plus an email heads-up via Resend. New env var `SANITY_API_WRITE_TOKEN` (Vercel, Production) — see §9. **Outstanding:** client to supply the real freebie file; developer to generate the Sanity token. |
+| 2026-09-13 | §3 — **Destination Family** re-categorized per client feedback: the combined "Theme Parks" family split into **Disney Destinations** (+ National Geographic Expeditions, Disney Paris) and **Universal Studios**; **Cruise Lines** gained Norwegian, MSC, Carnival; "All-Inclusive Resorts" renamed **All Inclusive & More** (+ Hard Rock, Moon Palace, Xcaret, Atlantis); SeaWorld dropped from the site. Content restructuring is a Studio task (see `TODO.md`) — schema unchanged, only the nav/footer code and the Vacation Request Form's destination list needed updating. |
