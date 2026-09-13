@@ -67,7 +67,7 @@ Flat, single-flyout nav (Castlebound pattern, not ET Family Travel's):
 
 ```
 Home
-Destinations                     ← flyout: Disney Destinations · Universal Studios · Cruise Lines · All Inclusive & More
+Destinations                     ← flyout: Disney Destinations · Universal Studios · Cruise Lines · All-Inclusives & More
 Meet the Team                    (advisor bios — doubles as recruiting proof)
 Plan Your Vacation                → Vacation Request Form (the one dominant CTA, repeated in header/hero/footer)
 Work With Us                     (agent recruiting page)
@@ -90,7 +90,7 @@ Line as the whole top-level offer, not 100 individual sub-pages):
 1. **Disney Destinations** — Walt Disney World, Disneyland Resort, National Geographic Expeditions, Disney Paris, Aulani.
 2. **Universal Studios** — Universal Studios (FL & Hollywood). Split out from the original combined "Theme Parks" family per client direction.
 3. **Cruise Lines** — Disney Cruise Line, Royal Caribbean, Norwegian, MSC, Carnival.
-4. **All Inclusive & More** — Sandals/Beaches, Hard Rock, Moon Palace, Xcaret, Atlantis, and other resort/beach destinations outside the Disney/Universal/cruise families. Renamed from "All-Inclusive Resorts."
+4. **All-Inclusives & More** — Sandals/Beaches, Hard Rock, Moon Palace, Xcaret, Atlantis, and other resort/beach destinations outside the Disney/Universal/cruise families. Renamed from "All-Inclusive Resorts."
 
 SeaWorld, previously grouped under the combined "Theme Parks" family, was dropped
 from the site per client direction (2026-09-13) rather than reassigned.
@@ -122,7 +122,7 @@ is the primary, prominent placement.
 
 ```
 Home
-Destinations              ← flyout: Disney Destinations · Universal Studios · Cruise Lines · All Inclusive & More
+Destinations              ← flyout: Disney Destinations · Universal Studios · Cruise Lines · All-Inclusives & More
 Meet the Team
 Plan Your Vacation        → Vacation Request Form
 Work With Us
@@ -151,7 +151,7 @@ Destination Family (Sanity document)     ← powers one page + one nav flyout it
  ├─ slug
  ├─ heroImage               (+ inline `alt` string — warning-level, falls back to title on the frontend)
  ├─ shortDescription         (1–2 sentences, brand-voice copy, kept minimal per client direction)
- ├─ order                    (controls nav/homepage ordering — Disney Destinations, Universal Studios, Cruise Lines, All Inclusive & More)
+ ├─ order                    (controls nav/homepage ordering — Disney Destinations, Universal Studios, Cruise Lines, All-Inclusives & More)
  └─ locations[]              (array of Location objects, see below — rendered as sections/anchors on the SAME page)
 
 Location (object, not a standalone document/route)
@@ -285,8 +285,8 @@ brand refresh rather than migrating stale branding as-is (§11 #2/#7).
 ## 9. Phase 1 (MVP) vs. Phase 2 Backlog
 
 **Phase 1 — MVP (launch scope)**
-- Homepage: hero, **prominent trust/accreditation bar** (elevated placement, not footer-only — see §4), curated destination-family grid (Disney Destinations / Universal Studios / Cruise Lines / All Inclusive & More), Instagram feed, testimonials, newsletter signup (a freebie-download popup + the footer field, both feeding the same `newsletterSubscriber` capture — added 2026-09-13), single dominant "Request a Quote" CTA repeated throughout.
-- Four destination-family pages (Disney Destinations / Universal Studios / Cruise Lines / All Inclusive & More — split from an original three per client feedback 2026-09-13), each showing its locations broken out on that single page — minimal text, image matched to each specific location (no generic stand-ins), no per-location sub-pages, no per-itinerary detail pages.
+- Homepage: hero, **prominent trust/accreditation bar** (elevated placement, not footer-only — see §4), curated destination-family grid (Disney Destinations / Universal Studios / Cruise Lines / All-Inclusives & More), Instagram feed, testimonials, newsletter signup (a freebie-download popup + the footer field, both feeding the same `newsletterSubscriber` capture — added 2026-09-13), single dominant "Request a Quote" CTA repeated throughout.
+- Four destination-family pages (Disney Destinations / Universal Studios / Cruise Lines / All-Inclusives & More — split from an original three per client feedback 2026-09-13), each showing its locations broken out on that single page — minimal text, image matched to each specific location (no generic stand-ins), no per-location sub-pages, no per-itinerary detail pages.
 - Meet the Team / agent bio page (recruiting + trust asset).
 - Work With Us (agent recruiting) page.
 - Multi-step Vacation Request Form with email notification + GA4 conversion tracking.
