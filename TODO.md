@@ -189,6 +189,33 @@ earlier build work; check them off or move them to a plan/issue as they're done.
 - [ ] **`flyoutRef` single-flyout assumption** — `components/site-header.tsx`
       binds the outside-click ref inside `.map()`; only safe while "one flyout
       max" holds (it's a hard nav rule, so this is a watch-item, not a bug).
+- [x] **Pre-signoff QA pass (2026-09-13)** — full manual sweep of the live
+      Vercel production deployment before client sign-off. Console/network
+      clean on every page (home, all 4 destination families, Meet the Team,
+      Plan Your Vacation, Work With Us, Blog + a post, Privacy, sitemap.xml,
+      robots.txt), mobile nav/layout checked (no horizontal overflow), the
+      newsletter popup + footer form both verified end-to-end (write to
+      Sanity succeeded — `SANITY_API_WRITE_TOKEN` is live), Agent Portal link
+      confirmed pointing at the real URL. Found and fixed:
+      - Nav/footer said **"Universal Studios"**; the actual Studio family
+        title is **"Universal"** — same class of drift as the
+        All-Inclusives fix. `lib/site.ts` now matches.
+      - `?destination=Hard%20Rock%20Resorts` deep-links (from the
+        All-Inclusives & More page) didn't pre-fill anything — the Vacation
+        Request Form's option was "Hard Rock Hotels & Resorts", which didn't
+        fuzzy-match the Sanity location name "Hard Rock Resorts". Renamed
+        the form option to match.
+      - **"Nickelodeon Resorts"** — a location the client added in Studio —
+        had no corresponding Vacation Request Form option at all (not even a
+        mismatched one). Added it to `DESTINATION_OPTIONS`.
+      - No custom 404 page existed — a dead/mistyped link hit Next.js's bare
+        unbranded default. Added `app/not-found.tsx` (header/footer + a
+        "Request a Quote" / "Back to home" CTA).
+      - Not fixed, flagged for the client: the "Mickey's Not-So-Scary
+        Halloween Party" blog post says tickets go on sale "TOMORROW May
+        22nd" — reads as stale/dated on evergreen content now that it's
+        live past that date. Wording call, not a bug — content edit in
+        Studio whenever convenient.
 
 ## Feature wiring (owned elsewhere, tracked here for visibility)
 
