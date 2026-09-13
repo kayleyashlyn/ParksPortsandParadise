@@ -203,7 +203,7 @@ export function NewsletterPopup() {
                   {status === "submitting" && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  Get the checklist
+                  Get the {NEWSLETTER_FREEBIE.shortLabel}
                 </Button>
               </div>
             </form>

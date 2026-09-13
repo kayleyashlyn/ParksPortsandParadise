@@ -275,10 +275,9 @@ added 2026-09-13.
         Add API token, "Editor" permissions) and adds it to Vercel as
         `SANITY_API_WRITE_TOKEN` (Production). Without it, signups are
         accepted but not stored.
-  - [ ] **You need to supply the actual freebie file** (e.g. a PDF checklist)
-        — hand it to your developer, who adds it to the site and updates the
-        popup's title/description to match. Until then the download link
-        points at a placeholder that doesn't exist yet.
+  - [x] **Freebie file received and live** (2026-09-13) — the "WDW Lightning
+        Lane Cheat Sheet" flyer you sent is now the popup/footer download.
+        Want a different or additional freebie later? Just send the file.
 
 ---
 
@@ -374,5 +373,6 @@ Keep this line current.
 | 2026-09-10 | Accessibility pass across the site (form/step announcements + focus, mobile-menu focus trapping, contrast, reduced-motion, link underlines). §3.3 — **alt text on images inside a blog post body is now required** (Studio blocks publish without it); other images stay warning-level. |
 | 2026-09-11 | Footer **Agent Portal** link now points at the real URL, `https://www.parksportsandparadise.com/agent-portal` (client-confirmed) — it was a placeholder pointing at `/studio` until now. It's an in-code default; no Vercel env var needed unless the portal URL ever changes. |
 | 2026-09-12 | §3 — **Location** model gained an optional **Official Website** field. Fill it in to show a small secondary "Learn more" link (opens in a new tab) next to a Location's "Request a Quote" link; leave it blank to hide the link, which is the current state for nearly every Location. Purely a content field — no env var or account change. |
-| 2026-09-13 | §3, §9 — newsletter signup wired up (client request): footer field + new freebie-download popup both post to a new **Newsletter Subscriber** model in Sanity, plus an email heads-up via Resend. New env var `SANITY_API_WRITE_TOKEN` (Vercel, Production) — see §9. **Outstanding:** client to supply the real freebie file; developer to generate the Sanity token. |
+| 2026-09-13 | §3, §9 — newsletter signup wired up (client request): footer field + new freebie-download popup both post to a new **Newsletter Subscriber** model in Sanity, plus an email heads-up via Resend. New env var `SANITY_API_WRITE_TOKEN` (Vercel, Production) — see §9. **Outstanding:** developer to generate the Sanity token. |
+| 2026-09-13 | §9 — client-supplied freebie file ("WDW Lightning Lane Cheat Sheet") wired into the newsletter popup/footer download. No more outstanding content item on the newsletter feature besides the `SANITY_API_WRITE_TOKEN` above. |
 | 2026-09-13 | §3 — **Destination Family** re-categorized per client feedback: the combined "Theme Parks" family split into **Disney Destinations** (+ National Geographic Expeditions, Disney Paris) and **Universal Studios**; **Cruise Lines** gained Norwegian, MSC, Carnival; "All-Inclusive Resorts" renamed **All Inclusive & More** (+ Hard Rock, Moon Palace, Xcaret, Atlantis); SeaWorld dropped from the site. Content restructuring is a Studio task (see `TODO.md`) — schema unchanged, only the nav/footer code and the Vacation Request Form's destination list needed updating. |

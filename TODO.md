@@ -219,11 +219,11 @@ earlier build work; check them off or move them to a plan/issue as they're done.
             generate it in Sanity's manage console (API → Tokens → Add API
             token, "Editor" permissions) — see CLIENT_HANDOFF_GUIDE.md. Without
             it, signups are validated + logged server-side but not stored.
-      - [ ] **Drop the real freebie file** at
-            `public/downloads/vacation-planning-checklist.pdf` (the path
-            `NEWSLETTER_FREEBIE.fileHref` in `lib/site.ts` points to) — currently
-            a placeholder path with no file behind it. Update the title/description
-            in that same constant to match the client's actual file.
+      - [x] **Real freebie file wired** (2026-09-13) — client supplied the "WDW
+            Lightning Lane Cheat Sheet" flyer; it's at
+            `public/downloads/wdw-lightning-lane-cheat-sheet.png`, and
+            `NEWSLETTER_FREEBIE` in `lib/site.ts` (title/description/shortLabel/
+            fileHref) was updated to match.
       - [ ] In GA4 Admin, consider marking `newsletter_signup` as a conversion
             event (parallel to `generate_lead`).
 - [ ] **Unsplash placeholder imagery** — `BRAND_KIT.md` records categories only;

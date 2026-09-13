@@ -31,7 +31,7 @@ export function NewsletterForm() {
   if (status === "done") {
     return (
       <div role="status" className="text-sm text-foreground/80">
-        <p>Thanks — check your inbox for the checklist.</p>
+        <p>Thanks — check your inbox for the {NEWSLETTER_FREEBIE.shortLabel}.</p>
         <a
           href={NEWSLETTER_FREEBIE.fileHref}
           className="mt-1 inline-block underline decoration-foreground/30 underline-offset-4 hover:decoration-foreground"

@@ -81,14 +81,16 @@ export const PRIMARY_CTA = {
 /**
  * The lead-magnet freebie offered in exchange for a newsletter signup (footer
  * field + `<NewsletterPopup>`) — one place for the copy + file link so the two
- * surfaces can't drift. `fileHref` is a placeholder: TODO.md tracks dropping
- * the client's real file at that path in `public/downloads/` before launch.
+ * surfaces can't drift. `shortLabel` is the lowercase, article-free form used
+ * mid-sentence ("check your inbox for the {shortLabel}") so copy stays
+ * generic if the freebie ever changes again.
  */
 export const NEWSLETTER_FREEBIE = {
-  title: "Free Family Vacation Planning Checklist",
+  title: "WDW Lightning Lane Cheat Sheet",
+  shortLabel: "cheat sheet",
   description:
-    "Drop your email for trip ideas and deals — we'll also send you our free planning checklist.",
-  fileHref: "/downloads/vacation-planning-checklist.pdf",
+    "Drop your email for trip ideas and deals — we'll also send you our free Walt Disney World Lightning Lane cheat sheet.",
+  fileHref: "/downloads/wdw-lightning-lane-cheat-sheet.png",
 } as const;
 
 export const CONTACT = {
