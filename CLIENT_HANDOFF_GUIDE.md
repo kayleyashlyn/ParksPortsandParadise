@@ -30,6 +30,28 @@ well. You do **not** need to understand the code. You mainly touch **one** of th
 | **Google Analytics 4** | Traffic and inquiry-conversion reporting | Read-only, when you want numbers |
 | **SnapWidget** | The Instagram feed embedded on the homepage | Only if you change which account/layout shows |
 
+### Quick answer: is this a Sanity change, or does it need a developer?
+
+Before you go looking for a field in Studio, ask: **is this a specific piece of
+content (a photo, a bio, a family's list of locations), or is it boilerplate
+that appears the same way everywhere (a button label, a nav item, a CTA
+paragraph repeated on every page)?**
+
+- **Specific content → Sanity, you can do it yourself.** Destination families
+  and their locations, agent bios, blog posts, accreditation badges, the
+  homepage hero image/video, the Instagram widget ID. See §3.2 for the full
+  list.
+- **Site-wide boilerplate / structure → lives in the code, needs a developer
+  request.** The navigation menu and footer links, the generic CTA text
+  repeated at the bottom of every destination page, the newsletter popup's
+  title/file, page titles and meta descriptions, anything involving an account
+  or API key. See **§3.6** for the full list and why — this is the single most
+  common point of confusion, especially because a couple of these (like the
+  navigation labels) sit right next to Sanity content that *does* update
+  itself, so it looks like it should be the same kind of edit.
+- **Not sure which?** Just ask your developer "is X in Sanity or in the code?"
+  before spending time hunting for a field that isn't there.
+
 ---
 
 ## 2. Accounts & sign-ins (master list)
@@ -70,7 +92,7 @@ page builder (that was a conscious decision so the site can't drift off-brand).
 
 | Model | What it controls | Notes |
 |---|---|---|
-| **Destination Family** | The four destination pages: Disney Destinations, Universal Studios, Cruise Lines, All-Inclusives & More | Each has a hero image, short description, display order, and a list of **Locations** shown as sections on that one page. Locations never become their own pages. |
+| **Destination Family** | The four destination pages: Disney Destinations, Universal Studios, Cruise Lines, All-Inclusives & More | Each has a hero image, short description, display order, and a list of **Locations** shown as sections on that one page. Locations never become their own pages. **Gotcha:** renaming a family here (e.g. Title) does **not** rename it in the navigation menu or footer — those labels are typed separately in the code so the one-dropdown-level nav rule stays enforceable. Tell your developer whenever you rename or add/remove a family so they can update the nav/footer to match (see §3.6). |
 | **Location** (inside a Destination Family) | One entry on a destination page — name, image, blurb, optional button label, optional official website link | **Search keywords** field is **not shown on the page** — it feeds behind-the-scenes SEO data only. **Official Website** is optional — paste that destination's own site (e.g. Walt Disney World's or Royal Caribbean's) and a small "Learn more" link appears next to the "Request a Quote" button, opening that site in a new tab. Leave it blank and the "Learn more" link simply doesn't show — most Locations won't have it filled in yet. |
 | **Newsletter Subscriber** | A read-only list of emails captured by the footer signup field and the freebie-download popup | You don't create these — the site writes one automatically on each signup. Check here (or search the `hello@` inbox, since each signup also emails you) to see who's subscribed. |
 | **Agent** | The "Meet the Team" grid | Name, photo, title, short bio, specialties, plus separate **Location**, **Contact email**, and **Instagram handle** fields — put contact info in those, not in the bio (the card turns them into a pin, an email link, and an Instagram link). Instagram handle is just the username (e.g. `alyssaatthecastle`). **Team section** puts founders/leadership in their own row above the advisors (leave it on "Advisor" for everyone else). Set **Active** off (don't delete) when someone leaves — keeps their history. Display order optional. |
@@ -101,6 +123,28 @@ Studio won't let you publish the post until every body image has it.
 | Published a change, site still old | Cache timer hasn't elapsed | Wait ~1–2 min, hard refresh (Cmd/Ctrl+Shift+R) |
 | Image looks cropped oddly | Hotspot/crop not set | Open the image, drag the hotspot circle to the important part |
 | A destination page says "guide coming soon" | That family has no Locations yet | Add at least one Location and publish |
+
+### 3.6 Content that lives in the code, not Sanity
+
+These all **look** like content, but there's no Sanity field for them — they're
+typed directly into the site's code, so changing them means asking your
+developer, not opening Studio. Flagging these up front because mixing this up
+is the #1 source of "I changed it but nothing happened" confusion.
+
+| What | Where it actually lives | Notes |
+|---|---|---|
+| Navigation menu (item labels, the Destinations flyout, order) | `lib/site.ts` | Must be kept in sync by hand whenever a Destination Family is renamed/added/removed in Sanity (see the gotcha in §3.2) — they don't read from each other automatically. |
+| Footer links & column headings | `lib/site.ts` | Same file as the nav; same "must be kept in sync manually" rule. |
+| The "Don't see your dream destination here?" CTA block at the bottom of every destination-family page | `app/destinations/[slug]/page.tsx` | One shared block of text repeated on all four family pages — not a per-family Sanity field, so a wording change updates all four pages at once. |
+| Newsletter popup title, description, and the downloadable freebie file itself | `lib/site.ts` (`NEWSLETTER_FREEBIE`) + a file in the codebase | To swap the freebie or its copy, send your developer the new file and the exact wording you want — there's no Studio field for either. |
+| Page titles / meta descriptions used for Google search results and social share previews | `lib/seo.ts` and each page's own file | Content, but SEO-specific — ask your developer if you want one changed. |
+| The site's one-line tagline used as the default description everywhere nothing more specific is set | `lib/site.ts` (`SITE_DESCRIPTION`) | |
+| Any account, API key, or integration (Resend, GA4, Sanity tokens, the Agent Portal link) | Vercel environment variables | Never a Sanity field — see §4 and the relevant section for each. |
+| Legal page structure (headings, sections) | `app/privacy/page.tsx` / `app/terms/page.tsx` | The actual legal wording is pending attorney review either way — see §10. |
+
+If something you want to change isn't in the §3.2 table above **or** this
+table, ask your developer — it likely just hasn't come up yet, not that it's
+impossible.
 
 ---
 
@@ -376,3 +420,5 @@ Keep this line current.
 | 2026-09-13 | §3, §9 — newsletter signup wired up (client request): footer field + new freebie-download popup both post to a new **Newsletter Subscriber** model in Sanity, plus an email heads-up via Resend. New env var `SANITY_API_WRITE_TOKEN` (Vercel, Production) — see §9. **Outstanding:** developer to generate the Sanity token. |
 | 2026-09-13 | §9 — client-supplied freebie file ("WDW Lightning Lane Cheat Sheet") wired into the newsletter popup/footer download. No more outstanding content item on the newsletter feature besides the `SANITY_API_WRITE_TOKEN` above. |
 | 2026-09-13 | §3 — **Destination Family** re-categorized per client feedback: the combined "Theme Parks" family split into **Disney Destinations** (+ National Geographic Expeditions, Disney Paris) and **Universal Studios**; **Cruise Lines** gained Norwegian, MSC, Carnival; "All-Inclusive Resorts" renamed **All-Inclusives & More** (+ Hard Rock, Moon Palace, Xcaret, Atlantis); SeaWorld dropped from the site. Content restructuring is a Studio task (see `TODO.md`) — schema unchanged, only the nav/footer code and the Vacation Request Form's destination list needed updating. |
+| 2026-09-13 | Updated the generic CTA text at the bottom of every destination-family page per client request ("Don't see your dream destination here?..."). Purely a code change — that block isn't a Sanity field (see new §3.6). |
+| 2026-09-13 | Added §1 "Quick answer: is this a Sanity change or code?" and §3.6 "Content that lives in the code, not Sanity" — a direct index of things that look editable but require a developer (nav/footer labels, the destination-page CTA block, the newsletter freebie, SEO metadata, env vars). Prompted by real back-and-forth this session: renaming a Destination Family in Studio didn't update the nav label to match, which wasn't documented anywhere before now. |
