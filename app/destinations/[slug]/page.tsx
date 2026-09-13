@@ -149,10 +149,14 @@ export default async function DestinationFamilyPage({
             band used elsewhere, so the page reads as more than one flat
             white stretch — same treatment as the /destinations index CTA. */}
         <section className="mt-14 rounded-lg border border-border bg-brand-taupe/10 px-6 py-10 text-center sm:px-10">
-          <h2 className="text-2xl sm:text-3xl">Ready to plan this trip?</h2>
-          <p className="mx-auto mt-2 max-w-md text-muted-foreground">
-            Tell us about your travellers and your dates. We&apos;ll build a
-            custom {family.title.toLowerCase()} quote — free.
+          <h2 className="text-2xl sm:text-3xl">
+            Don&apos;t see your dream destination here?
+          </h2>
+          <p className="mx-auto mt-2 max-w-lg text-muted-foreground">
+            This is just a taste of the magic we can help you plan — wherever
+            your family&apos;s next adventure takes you, we&apos;d love to
+            hear about it. Tell us your travel wishes and we&apos;ll send you
+            a free, no-obligation quote.
           </p>
           <div className="mt-6">
             <Button asChild variant="secondary" size="lg">
