@@ -11,7 +11,7 @@ import { z } from "zod";
 
 // Grouped to match the four destination families (IMPLEMENTATION_PLAN.md §4–5,
 // updated 2026-09-13): Disney Destinations, Universal Studios, Cruise Lines,
-// All Inclusive & More. The generic "All-Inclusive Resort" catch-all was
+// All-Inclusives & More. The generic "All-Inclusive Resort" catch-all was
 // replaced by the named options below — "Other" still covers anything else.
 export const DESTINATION_OPTIONS = [
   "Walt Disney World Resort, FL",

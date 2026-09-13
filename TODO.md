@@ -58,7 +58,7 @@ earlier build work; check them off or move them to a plan/issue as they're done.
             existing Universal FL + Universal Hollywood locations onto it).
       - [ ] Delete the SeaWorld location entirely (client direction — dropped,
             not reassigned).
-      - [ ] Rename "All-Inclusive Resorts" → **"All Inclusive & More"** (slug
+      - [ ] Rename "All-Inclusive Resorts" → **"All-Inclusives & More"** (slug
             stays `paradise`); add Hard Rock, Moon Palace, Xcaret, Atlantis
             alongside the existing Sandals/Beaches entry.
       - [ ] Add Norwegian, MSC, Carnival as new locations on "Cruise Lines"

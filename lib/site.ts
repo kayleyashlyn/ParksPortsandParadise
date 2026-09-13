@@ -60,7 +60,7 @@ export const PRIMARY_NAV: NavItem[] = [
           "Disney Cruise Line, Royal Caribbean, Norwegian, MSC, Carnival",
       },
       {
-        label: "All Inclusive & More",
+        label: "All-Inclusives & More",
         href: "/destinations/paradise",
         description: "Sandals/Beaches, Hard Rock, Moon Palace, Xcaret, Atlantis",
       },
@@ -136,7 +136,7 @@ export const FOOTER_NAV: FooterColumn[] = [
       { label: "Disney Destinations", href: "/destinations/parks-disney" },
       { label: "Universal Studios", href: "/destinations/parks-universal" },
       { label: "Cruise Lines", href: "/destinations/ports" },
-      { label: "All Inclusive & More", href: "/destinations/paradise" },
+      { label: "All-Inclusives & More", href: "/destinations/paradise" },
       { label: "Trip Inspiration", href: "/blog" },
     ],
   },
