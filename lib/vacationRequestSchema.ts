@@ -27,10 +27,11 @@ export const DESTINATION_OPTIONS = [
   "MSC Cruises",
   "Carnival Cruise Line",
   "Sandals/Beaches Resorts",
-  "Hard Rock Hotels & Resorts",
+  "Hard Rock Resorts",
   "Moon Palace Resorts",
   "Xcaret",
   "Atlantis Bahamas",
+  "Nickelodeon Resorts",
   "Other",
 ] as const;
 

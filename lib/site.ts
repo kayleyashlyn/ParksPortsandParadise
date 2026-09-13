@@ -49,7 +49,7 @@ export const PRIMARY_NAV: NavItem[] = [
           "Walt Disney World, Disneyland, Aulani, Disney Paris, National Geographic Expeditions",
       },
       {
-        label: "Universal Studios",
+        label: "Universal",
         href: "/destinations/parks-universal",
         description: "Universal Orlando and Universal Studios Hollywood",
       },
@@ -134,7 +134,7 @@ export const FOOTER_NAV: FooterColumn[] = [
     heading: "Explore",
     links: [
       { label: "Disney Destinations", href: "/destinations/parks-disney" },
-      { label: "Universal Studios", href: "/destinations/parks-universal" },
+      { label: "Universal", href: "/destinations/parks-universal" },
       { label: "Cruise Lines", href: "/destinations/ports" },
       { label: "All-Inclusives & More", href: "/destinations/paradise" },
       { label: "Trip Inspiration", href: "/blog" },
