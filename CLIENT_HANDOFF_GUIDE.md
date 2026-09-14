@@ -355,46 +355,62 @@ Keep this line current.
 
 ---
 
-## 12. Pre-launch checklist (summary — full technical list in `TODO.md`)
+## 12. Pre-launch checklist (re-verified 2026-09-13 — full technical list in `TODO.md`)
 
-- [ ] Sanity: add Vercel preview + production URLs to CORS; confirm editor
-      account(s) invited with the right role.
-- [ ] Sanity: backfill **Alt text** on all existing images; re-enter the two
-      location "search keywords" values that were migrated.
-- [ ] Sanity: populate **Locations** on each Destination Family (they show "coming
-      soon" until then); swap interim photography for the client's real brand
-      photos.
-- [ ] Sanity: on each **Agent**, move the location / email / Instagram out of the
-      bio text into the new **Location**, **Contact email**, and **Instagram
-      handle** fields; trim the bio to just the short blurb. Set **Team section**
-      to "Founder / leadership" for Paige and Ashley.
-- [ ] Resend: account + API key + verified sending domain (DNS).
-- [ ] GA4: Measurement ID set in Vercel Production; `generate_lead` marked as key
-      event. (Cookie-consent banner is built — opt-in, GPC-aware.)
-- [ ] SnapWidget: account created, widget built, ID entered in Site Settings
-      (or feed left disabled for launch).
-- [ ] Homepage hero: upload a hero **image** (and optionally a short muted loop
-      **video**, well under ~5 MB) in Site Settings → Homepage hero. Until then
-      the homepage shows a plain text headline.
-- [ ] Legal: `/privacy` + `/terms` reviewed by counsel, placeholders filled,
-      draft banner removed.
-- [ ] Domain: website DNS pointed at Vercel; email (MX/SPF/DKIM/DMARC) left
-      intact; done at a low-traffic time.
-- [x] Security headers — baseline set + Content-Security-Policy are live and
-      enforced (verified against the deployed site). If anything on the site ever
-      fails to load after a future change, check the browser console for a
-      "Content Security Policy" error and send it to your developer.
-- [ ] Default social-share (OG) image supplied and set.
-- [ ] Favicon — supply a transparent square PNG/SVG of just the gold sparkle
-      mark (the full seal is unreadable at tab size). Also: a horizontal logo
-      lockup (mark + wordmark) would improve the site header — right now the
-      header falls back to a text wordmark on mobile.
-- [x] `/work-with-us` — built; copy finalised (low-key "Get in touch" contact
-      form, no résumé, no fee info, "onboarding" terminology).
-- [ ] `/blog` — **in scope for launch.** Pages + "Blog Post" model built. Still
-      needs: the existing Squarespace posts recreated in Studio (back-date each
-      one's **Published at**) and at least one published before launch, or hide
-      "Blog" from the nav for day one.
+**Confirmed done** (checked directly against the live site/Studio, not just assumed):
+- [x] Sanity: **Locations populated** on all four Destination Families, each
+      with real, location-specific photography (no stock stand-ins).
+- [x] Sanity: **Alt text** present on every destination/location image (only
+      gap: one inactive, hidden agent's photo — not public, not blocking).
+- [x] Sanity: **Agent** bios cleaned up — location / email / Instagram live in
+      their own fields, not bio text; Paige and Ashley are set to "Founder /
+      leadership" and render in their own row.
+- [x] **Blog** — both existing Squarespace posts (Halloween + Christmas party)
+      are migrated and published; that was the full set, nothing left behind.
+- [x] **GA4** — `NEXT_PUBLIC_GA4_MEASUREMENT_ID` is set and confirmed firing in
+      Production (verified live: the tag loads on "Accept"). Still worth doing:
+      mark `generate_lead` and `newsletter_signup` as **key events** in GA4
+      Admin — that's a GA4-side setting, not a code/env change.
+- [x] **SnapWidget** — enabled with a widget ID configured in Site Settings.
+      The iframe embed itself is wired correctly; give the homepage a quick
+      look yourself to confirm real Instagram photos are appearing inside it —
+      that's third-party content nobody outside a browser can verify by code.
+- [x] **Favicon** — already the transparent gold sparkle mark, not the full
+      seal.
+- [x] **`SANITY_API_WRITE_TOKEN`** — set and confirmed working (a live test
+      newsletter signup successfully wrote to Sanity).
+- [x] **Agent Portal** footer link — confirmed pointing at the real URL.
+- [x] Security headers — baseline + CSP enforced, verified against the
+      deployed site.
+- [x] `/work-with-us` — built, copy finalized.
+- [x] Newsletter — freebie file live, popup + footer both tested end-to-end.
+
+**Still open:**
+- [ ] **Homepage hero image** — Site Settings has no hero image/video set yet;
+      the homepage still shows the plain text headline. Upload one under Site
+      Settings → Homepage hero whenever the real photography is ready.
+- [ ] **Legal pages** — `/privacy` and `/terms` are still **draft**, with
+      `[BRACKETED]` placeholders and a visible "pending legal review" banner.
+      Needs an attorney pass before launch.
+- [ ] **Domain/DNS cutover** — `parksportsandparadise.com` is still live on
+      Squarespace; the new site only exists at its Vercel preview URL so far.
+      See §5 for the cutover sequence.
+- [ ] **Resend** — confirm you're actually receiving the notification emails
+      (Vacation Request Form, Work With Us, newsletter signups) in the `hello@`
+      inbox, not just that the site accepts submissions. If nothing's arriving,
+      it's likely `RESEND_API_KEY` / sending-domain verification, deferred
+      until the DNS cutover per §5/§6.
+- [ ] **Sanity CORS + editor roles** — confirm every real editor's account is
+      invited with the right role, and that the eventual production domain is
+      whitelisted in CORS (not just the Vercel preview URL).
+- [ ] **Default social-share (OG) image** — no site-wide `og:image` yet; inner
+      pages without one fall back to a bare link when shared on social.
+- [ ] **Horizontal logo lockup** — still just the vertical seal; the header
+      falls back to a text wordmark on mobile until a mark+wordmark asset is
+      supplied.
+- [ ] **Blog post wording** — the Halloween post says tickets go on sale
+      "TOMORROW May 22nd," which now reads as stale. Minor content edit,
+      whenever convenient.
 
 ---
 
@@ -422,3 +438,4 @@ Keep this line current.
 | 2026-09-13 | §3 — **Destination Family** re-categorized per client feedback: the combined "Theme Parks" family split into **Disney Destinations** (+ National Geographic Expeditions, Disney Paris) and **Universal Studios**; **Cruise Lines** gained Norwegian, MSC, Carnival; "All-Inclusive Resorts" renamed **All-Inclusives & More** (+ Hard Rock, Moon Palace, Xcaret, Atlantis); SeaWorld dropped from the site. Content restructuring is a Studio task (see `TODO.md`) — schema unchanged, only the nav/footer code and the Vacation Request Form's destination list needed updating. |
 | 2026-09-13 | Updated the generic CTA text at the bottom of every destination-family page per client request ("Don't see your dream destination here?..."). Purely a code change — that block isn't a Sanity field (see new §3.6). |
 | 2026-09-13 | Added §1 "Quick answer: is this a Sanity change or code?" and §3.6 "Content that lives in the code, not Sanity" — a direct index of things that look editable but require a developer (nav/footer labels, the destination-page CTA block, the newsletter freebie, SEO metadata, env vars). Prompted by real back-and-forth this session: renaming a Destination Family in Studio didn't update the nav label to match, which wasn't documented anywhere before now. |
+| 2026-09-13 | Full pre-signoff QA pass on the live production deployment — see `TODO.md` for the bugs found and fixed (a second nav-label mismatch on "Universal," a destination-prefill mismatch on "Hard Rock," a missing form option for "Nickelodeon Resorts," a missing branded 404 page). §12 rewritten from scratch against verified current state rather than assumption: GA4, SnapWidget, favicon, alt text, blog migration, and the newsletter token all confirmed **done**; hero image, legal pages, DNS cutover, Resend delivery, Sanity CORS/roles, default OG image, and the logo lockup confirmed **still open**. |
