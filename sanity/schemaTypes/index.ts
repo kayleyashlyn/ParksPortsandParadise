@@ -4,6 +4,7 @@ import { agentProfile } from "./agentProfile";
 import { newsletterSubscriber } from "./newsletterSubscriber";
 import { post } from "./post";
 import { siteSettings } from "./siteSettings";
+import { testimonial } from "./testimonial";
 
 /**
  * Registered with Sanity Studio's schema config (sanity.config.ts):
@@ -22,4 +23,5 @@ export const schemaTypes = [
   newsletterSubscriber,
   post,
   siteSettings,
+  testimonial,
 ];
