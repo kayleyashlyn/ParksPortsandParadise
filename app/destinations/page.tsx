@@ -73,8 +73,8 @@ export default async function DestinationsPage() {
         <section className="mt-14 rounded-lg border border-border bg-brand-blush/10 px-6 py-10 text-center sm:px-10">
           <h2 className="text-2xl sm:text-3xl">Not sure where to start?</h2>
           <p className="mx-auto mt-2 max-w-md text-muted-foreground">
-            Tell us who&apos;s travelling and what you&apos;re hoping for.
-            We&apos;ll point you at the right trip and quote it for free.
+            Tell us who&rsquo;s traveling and what you&rsquo;re hoping for.
+            We&rsquo;ll point you at the right trip and quote it for free.
           </p>
           <div className="mt-6">
             <Button asChild variant="secondary" size="lg">

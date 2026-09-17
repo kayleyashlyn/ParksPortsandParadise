@@ -69,7 +69,7 @@ export const PRIMARY_NAV: NavItem[] = [
   { label: "Meet the Team", href: "/meet-the-team" },
   { label: "Plan Your Vacation", href: "/plan-your-vacation" },
   { label: "Work With Us", href: "/work-with-us" },
-  { label: "Blog", href: "/blog" },
+  { label: "Trip Inspiration", href: "/blog" },
 ];
 
 /** The single dominant CTA, repeated across the site (§2 / ui-agent.md). */
@@ -89,7 +89,7 @@ export const NEWSLETTER_FREEBIE = {
   title: "WDW Lightning Lane Cheat Sheet",
   shortLabel: "cheat sheet",
   description:
-    "Drop your email for trip ideas and deals — we'll also send you our free Walt Disney World Lightning Lane cheat sheet.",
+    "Drop your email for trip ideas and deals — we’ll also send you our free Walt Disney World Lightning Lane cheat sheet.",
   fileHref: "/downloads/wdw-lightning-lane-cheat-sheet.png",
 } as const;
 

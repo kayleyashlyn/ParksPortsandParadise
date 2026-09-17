@@ -139,7 +139,7 @@ export default async function DestinationFamilyPage({
           />
         ) : (
           <p className="max-w-prose text-muted-foreground">
-            We&apos;re still writing up the {family.title.toLowerCase()} guide.
+            We&rsquo;re still writing up the {family.title.toLowerCase()} guide.
             In the meantime, tell us where you want to go and an advisor will
             take it from there.
           </p>
@@ -150,12 +150,12 @@ export default async function DestinationFamilyPage({
             white stretch — same treatment as the /destinations index CTA. */}
         <section className="mt-14 rounded-lg border border-border bg-brand-taupe/10 px-6 py-10 text-center sm:px-10">
           <h2 className="text-2xl sm:text-3xl">
-            Don&apos;t see your dream destination here?
+            Don&rsquo;t see your dream destination here?
           </h2>
           <p className="mx-auto mt-2 max-w-lg text-muted-foreground">
             This is just a taste of the magic we can help you plan — wherever
-            your family&apos;s next adventure takes you, we&apos;d love to
-            hear about it. Tell us your travel wishes and we&apos;ll send you
+            your family&rsquo;s next adventure takes you, we&rsquo;d love to
+            hear about it. Tell us your travel wishes and we&rsquo;ll send you
             a free, no-obligation quote.
           </p>
           <div className="mt-6">

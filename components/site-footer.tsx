@@ -30,7 +30,7 @@ export function SiteFooter() {
           <div className="flex items-center gap-4">
             <Image
               src="/images/logos/logo-white.png"
-              alt="Parks Ports and Paradise"
+              alt="Parks Ports & Paradise"
               width={80}
               height={100}
               className="h-14 w-auto"
@@ -121,6 +121,20 @@ export function SiteFooter() {
               {CONTACT.email}
             </a>
           </div>
+        </div>
+
+        <div className="mt-6 flex items-center justify-center gap-2 border-t border-border pt-6">
+          <Image
+            src="/favicon.png"
+            alt=""
+            aria-hidden
+            width={20}
+            height={20}
+            className="h-5 w-5"
+          />
+          <p className="font-heading text-sm italic text-muted-foreground">
+            Less planning. More magic.
+          </p>
         </div>
       </div>
     </footer>
