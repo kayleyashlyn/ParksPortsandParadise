@@ -32,9 +32,10 @@ export default function WorkWithUsPage() {
         </h1>
         <p className="mt-4 text-pretty text-muted-foreground">
           Whether you&rsquo;re an experienced advisor with an established book of
-          business or just starting out in the industry, we&rsquo;d love to hear
-          from you. We offer real training, established supplier relationships,
-          and a small team that actually enjoys the work.
+          business or just getting started in the industry, we&rsquo;d love to
+          hear from you. You&rsquo;ll get real training, established supplier
+          relationships, and a close-knit team that&rsquo;s invested in your
+          success.
         </p>
       </header>
 
@@ -44,17 +45,34 @@ export default function WorkWithUsPage() {
         </h2>
         <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
           {[
-            "Onboarding, training, and ongoing mentorship — no one is left to figure it out alone.",
-            "Established relationships with cruise lines, resorts, and theme-park partners.",
-            "You keep your clients and your book of business.",
-            "A supportive, low-drama team that shares supplier knowledge freely.",
-          ].map((point) => (
-            <li key={point} className="flex gap-2.5">
+            {
+              lead: "You’re never on your own.",
+              rest: "Onboarding, live training, and ongoing mentorship from advisors who have already done it.",
+            },
+            {
+              lead: "Doors already open.",
+              rest: "Established relationships with cruise lines, resorts, and theme-park partners.",
+            },
+            {
+              lead: "Your business stays yours.",
+              rest: "You keep your clients and your book of business, full stop.",
+            },
+            {
+              lead: "We rise together.",
+              rest: "Advisors here cheer each other on, trading tips, tricks, and advice that help everyone’s business grow.",
+            },
+          ].map(({ lead, rest }) => (
+            <li key={lead} className="flex gap-2.5">
               <Check
                 aria-hidden
                 className="mt-0.5 h-4 w-4 shrink-0 text-primary"
               />
-              <span>{point}</span>
+              <span>
+                <strong className="font-semibold text-foreground">
+                  {lead}
+                </strong>{" "}
+                {rest}
+              </span>
             </li>
           ))}
         </ul>
