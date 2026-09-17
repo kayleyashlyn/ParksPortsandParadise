@@ -1,10 +1,18 @@
-import { DestinationFamilyCard } from "@/components/destination-family-card";
+import { DestinationFamilyBentoCard } from "@/components/destination-family-bento-card";
 import type { DestinationFamily } from "@/lib/sanity.queries";
 
 /**
  * Homepage curated destination-family grid (IMPLEMENTATION_PLAN.md §4 / §9).
  * Server Component — data is fetched by the page and passed in. Each card is a
  * single link (no competing CTA); links use the live CMS slug.
+ *
+ * Bento layout: slot 1 is a tall card spanning both rows, slot 2 is a wide
+ * card across the top of the remaining space, slots 3–4 sit side by side
+ * beneath it. Families keep whatever order `getDestinationFamilies()`
+ * returns (CMS `order` field) — this only changes each slot's on-screen
+ * size/shape, not which family appears where relative to the others.
+ * Designed for exactly 4 families (today's live count); a 5th+ family would
+ * just fall out of the bento pattern into a plain row, rather than break.
  */
 export function DestinationFamilyGrid({
   families,
@@ -12,6 +20,8 @@ export function DestinationFamilyGrid({
   families: DestinationFamily[];
 }) {
   if (families.length === 0) return null;
+
+  const [tall, wide, ...rest] = families;
 
   return (
     // Full-bleed, very light Blush wash — part of the homepage's alternating
@@ -21,14 +31,7 @@ export function DestinationFamilyGrid({
         aria-labelledby="destinations-heading"
         className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6 lg:px-8"
       >
-        {/* Sand Gold kicker — a dot accent rather than gold text, since the
-            raw brand.secondary swatch is far too light to clear WCAG AA as
-            text on this background; text stays muted-foreground. */}
-        <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brand-secondary" />
-          Where we go
-        </p>
-        <h2 id="destinations-heading" className="mt-2 text-3xl sm:text-4xl">
+        <h2 id="destinations-heading" className="text-3xl sm:text-4xl">
           Where to next?
         </h2>
         <p className="mt-3 max-w-prose text-muted-foreground">
@@ -36,16 +39,49 @@ export function DestinationFamilyGrid({
           around you.
         </p>
 
-        <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {families.map((family) => (
-            <li key={family._id}>
-              <DestinationFamilyCard
-                family={family}
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+        {!tall || !wide ? (
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {families.map((family) => (
+              <li key={family._id}>
+                <DestinationFamilyBentoCard
+                  family={family}
+                  aspect={4 / 3}
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+            <div className="sm:row-span-2">
+              <DestinationFamilyBentoCard
+                family={tall}
+                aspect={3 / 4}
+                sizes="(min-width: 640px) 50vw, 100vw"
               />
-            </li>
-          ))}
-        </ul>
+            </div>
+            <div>
+              <DestinationFamilyBentoCard
+                family={wide}
+                aspect={16 / 9}
+                sizes="(min-width: 640px) 50vw, 100vw"
+              />
+            </div>
+            {rest.length > 0 ? (
+              <div className="grid grid-cols-2 gap-6">
+                {rest.map((family) => (
+                  <DestinationFamilyBentoCard
+                    key={family._id}
+                    family={family}
+                    aspect={1}
+                    size="sm"
+                    sizes="(min-width: 640px) 25vw, 50vw"
+                  />
+                ))}
+              </div>
+            ) : null}
+          </div>
+        )}
       </section>
     </div>
   );
