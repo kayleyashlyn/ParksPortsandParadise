@@ -298,3 +298,36 @@ export function getPostBySlug(slug: string): Promise<Post | null> {
 export function getPostSlugs(): Promise<string[]> {
   return client.fetch<string[]>(postSlugsQuery);
 }
+
+/* ------------------------------------------------------------------ */
+/* testimonial                                                         */
+/* ------------------------------------------------------------------ */
+
+export type Testimonial = {
+  _id: string;
+  _type: "testimonial";
+  quote: string;
+  clientName: string;
+  /** Short context, e.g. "First Cruise". */
+  tripLabel: string | null;
+  /** Which PPP advisor handled the trip, if named in the quote. */
+  advisorName: string | null;
+  order: number;
+};
+
+const testimonialsQuery = groq`
+  *[_type == "testimonial"] | order(order asc) {
+    _id,
+    _type,
+    quote,
+    clientName,
+    tripLabel,
+    advisorName,
+    order
+  }
+`;
+
+/** All testimonials, ordered by `order`. */
+export function getTestimonials(): Promise<Testimonial[]> {
+  return client.fetch<Testimonial[]>(testimonialsQuery);
+}

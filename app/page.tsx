@@ -3,11 +3,13 @@ import type { Metadata } from "next";
 import { DestinationFamilyGrid } from "@/components/destination-family-grid";
 import { Hero } from "@/components/hero";
 import { InstagramFeed } from "@/components/instagram-feed";
+import { Testimonials } from "@/components/testimonials";
 import { TrustBar } from "@/components/trust-bar";
 import {
   getAccreditationBadges,
   getDestinationFamilies,
   getSiteSettings,
+  getTestimonials,
 } from "@/lib/sanity.queries";
 import { pageMetadata } from "@/lib/seo";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
@@ -22,10 +24,11 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function Home() {
-  const [families, badges, settings] = await Promise.all([
+  const [families, badges, settings, testimonials] = await Promise.all([
     getDestinationFamilies(),
     getAccreditationBadges(),
     getSiteSettings(),
+    getTestimonials(),
   ]);
 
   return (
@@ -38,10 +41,10 @@ export default async function Home() {
       <TrustBar badges={badges} />
       <DestinationFamilyGrid families={families} />
       <InstagramFeed settings={settings} />
+      <Testimonials testimonials={testimonials} />
 
       {/*
-        TODO(ui-agent): testimonials (needs content) and a newsletter section —
-        per IMPLEMENTATION_PLAN.md §9.
+        TODO(ui-agent): newsletter section — per IMPLEMENTATION_PLAN.md §9.
       */}
     </>
   );

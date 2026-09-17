@@ -181,6 +181,34 @@ Read-only from an editor's perspective — Studio shows the list, nobody creates
 one by hand. Not a general-purpose email-marketing schema; real campaign/segment
 features belong to a dedicated ESP later (see `BACKLOG.md`), not more fields here.
 
+**Testimonial (Sanity document, added 2026-09-14).** Powers the homepage
+revolving testimonials section (`app/page.tsx`, between the destination-family
+grid / Instagram feed and the newsletter section — see the TODO marker that was
+already there). Individually-attributed per §3's "Lilly Attar — Travel Advisor"
+principle, not generic quotes; kept flat per the CMS-editor-is-non-technical rule:
+
+```
+Testimonial (Sanity document)
+ ├─ quote          (text, required — the client's words, unedited)
+ ├─ clientName     (string, required — initialValue "Verified PPP client" so a
+ │                   new doc isn't blank; Paige/Ashley overwrite with the
+ │                   client's real name/initials once they have permission to
+ │                   use it)
+ ├─ tripLabel       (string, optional — short context, e.g. "First Cruise")
+ ├─ advisorName     (string, optional — which PPP advisor handled the trip;
+ │                   renders as a secondary attribution line when present)
+ └─ order           (number, required — display order in the rotation, same
+                      pattern as `accreditationBadge.order`)
+```
+
+No rating/star field and no featured/active toggle — not requested, and an
+editor can just delete a document to pull it from rotation. Five real client
+quotes were confirmed 2026-09-14 (client-provided text, `clientName` left as
+the "Verified PPP client" placeholder for all five since no client gave
+permission to use their name yet; `advisorName` set to "Ashley" / "Paige" only
+on the two quotes that name an advisor in the text) — see the schema file's
+seed-content comment for the exact text to enter in Studio.
+
 ---
 
 ## 6. Booking & Inquiry Workflow
