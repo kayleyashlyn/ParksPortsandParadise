@@ -106,6 +106,9 @@ const config: Config = {
           "Georgia",
           "serif",
         ],
+        // Script accent — Alex Brush. Flourish moments only (e.g. the footer
+        // tagline); never headings/body copy.
+        script: ["var(--font-script)", '"Alex Brush"', "cursive"],
       },
       borderRadius: {
         lg: "var(--radius)",

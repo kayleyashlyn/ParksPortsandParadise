@@ -96,46 +96,47 @@ export function SiteFooter() {
           </ul>
         </div>
 
-        <div className="mt-8 border-t border-border pt-6">
-          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs text-muted-foreground">
-              © {year} Parks Ports &amp; Paradise Travel Company. All rights
-              reserved.
-            </p>
-            <div className="flex items-center gap-4">
-              <CookieSettingsLink />
-              <a
-                href={CONTACT.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <Instagram aria-hidden className="h-5 w-5" />
-                <span className="sr-only">
-                  Parks Ports &amp; Paradise on Instagram
-                </span>
-              </a>
-              <a
-                href={`mailto:${CONTACT.email}`}
-                className="text-xs text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
-              >
-                {CONTACT.email}
-              </a>
-            </div>
+        <div className="mt-8 flex flex-col items-start gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-muted-foreground">
+            © {year} Parks Ports &amp; Paradise Travel Company. All rights
+            reserved.
+          </p>
+          <div className="flex items-center gap-4">
+            <CookieSettingsLink />
+            <a
+              href={CONTACT.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Instagram aria-hidden className="h-5 w-5" />
+              <span className="sr-only">
+                Parks Ports &amp; Paradise on Instagram
+              </span>
+            </a>
+            <a
+              href={`mailto:${CONTACT.email}`}
+              className="text-xs text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
+            >
+              {CONTACT.email}
+            </a>
           </div>
+        </div>
 
-          <div className="mt-6 flex items-center justify-center gap-2">
-            <Image
-              src="/favicon.png"
-              alt=""
-              width={20}
-              height={20}
-              className="h-5 w-5"
-            />
-            <p className="font-heading text-sm italic text-muted-foreground">
-              Less planning. More magic.
-            </p>
-          </div>
+        {/* Closing brand moment — deliberately its own prominent section
+            (full seal + large script tagline), not folded into the
+            copyright row above: this is a statement, not fine print. */}
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 border-t border-border pt-10 text-center sm:flex-row sm:gap-4">
+          <Image
+            src="/images/logos/logo-white.png"
+            alt=""
+            width={80}
+            height={100}
+            className="h-16 w-auto sm:h-20"
+          />
+          <p className="font-script text-4xl leading-none text-primary sm:text-5xl">
+            Less planning. More magic.
+          </p>
         </div>
       </div>
     </footer>

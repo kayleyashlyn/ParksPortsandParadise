@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Alex_Brush, Inter, Playfair_Display } from "next/font/google";
 
 import { Analytics } from "@/components/analytics";
 import { CookieConsent } from "@/components/cookie-consent";
@@ -29,6 +29,15 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-heading",
+});
+
+// Script accent — Alex Brush, for flourish moments only (e.g. the footer
+// tagline), never headings/body. Single weight (400), per BRAND_KIT.md.
+const alexBrush = Alex_Brush({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-script",
 });
 
 export const metadata: Metadata = {
@@ -71,7 +80,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${playfair.variable} ${alexBrush.variable}`}
+    >
       <body className="flex min-h-dvh flex-col antialiased">
         <JsonLd data={siteJsonLd()} />
         <SiteHeader />

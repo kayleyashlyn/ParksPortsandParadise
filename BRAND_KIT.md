@@ -28,6 +28,10 @@ decorative use where contrast rules don't apply.
 ## 🔤 Typography
 - **Headings Font:** `Playfair Display` (Serif font family)
 - **Body Font:** `Inter` (Sans-serif font family)
+- **Script Accent Font:** `Alex Brush` (cursive) — added 2026-09-17 for the
+  footer closing tagline ("Less planning. More magic."). Flourish moments
+  only, never headings/body copy. `font-script` in Tailwind, `--font-script`
+  CSS variable set in `app/layout.tsx`.
 
 ## 📐 Styling Guidelines
 - **Border Radius:** `0.5rem` (Rounded corners for cards, buttons, inputs)
