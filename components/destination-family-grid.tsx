@@ -11,8 +11,9 @@ import type { DestinationFamily } from "@/lib/sanity.queries";
  * beneath it. Families keep whatever order `getDestinationFamilies()`
  * returns (CMS `order` field) — this only changes each slot's on-screen
  * size/shape, not which family appears where relative to the others.
- * Designed for exactly 4 families (today's live count); a 5th+ family would
- * just fall out of the bento pattern into a plain row, rather than break.
+ * The bento shape only fits exactly 4 families (today's live count) —
+ * any other count (an editor unpublishes or adds one) falls back to the
+ * plain equal-width grid instead of rendering a lopsided bento.
  */
 export function DestinationFamilyGrid({
   families,
@@ -39,7 +40,7 @@ export function DestinationFamilyGrid({
           around you.
         </p>
 
-        {!tall || !wide ? (
+        {families.length !== 4 ? (
           <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {families.map((family) => (
               <li key={family._id}>
@@ -52,35 +53,36 @@ export function DestinationFamilyGrid({
             ))}
           </ul>
         ) : (
-          <div className="mt-10 grid gap-6 sm:grid-cols-2">
-            <div className="sm:row-span-2">
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2">
+            <li className="sm:row-span-2">
               <DestinationFamilyBentoCard
                 family={tall}
                 aspect={3 / 4}
                 sizes="(min-width: 640px) 50vw, 100vw"
               />
-            </div>
-            <div>
+            </li>
+            <li>
               <DestinationFamilyBentoCard
                 family={wide}
                 aspect={16 / 9}
                 sizes="(min-width: 640px) 50vw, 100vw"
               />
-            </div>
-            {rest.length > 0 ? (
-              <div className="grid grid-cols-2 gap-6">
+            </li>
+            <li>
+              <ul className="grid grid-cols-2 gap-6">
                 {rest.map((family) => (
-                  <DestinationFamilyBentoCard
-                    key={family._id}
-                    family={family}
-                    aspect={1}
-                    size="sm"
-                    sizes="(min-width: 640px) 25vw, 50vw"
-                  />
+                  <li key={family._id}>
+                    <DestinationFamilyBentoCard
+                      family={family}
+                      aspect={1}
+                      size="sm"
+                      sizes="(min-width: 640px) 25vw, 50vw"
+                    />
+                  </li>
                 ))}
-              </div>
-            ) : null}
-          </div>
+              </ul>
+            </li>
+          </ul>
         )}
       </section>
     </div>

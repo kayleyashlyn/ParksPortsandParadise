@@ -19,6 +19,7 @@ export function DestinationFamilyBentoCard({
   sizes,
   aspect,
   size = "lg",
+  headingLevel = "h3",
 }: {
   family: DestinationFamily;
   sizes: string;
@@ -32,7 +33,11 @@ export function DestinationFamilyBentoCard({
    * that a 2-line title pushed its top line above the card).
    */
   size?: "lg" | "sm";
+  /** `h3` under the grid's `h2` (default, matches `DestinationFamilyCard`'s convention). */
+  headingLevel?: "h2" | "h3";
 }) {
+  const Heading = headingLevel;
+
   return (
     <Link
       href={`/destinations/${family.slug}`}
@@ -54,7 +59,7 @@ export function DestinationFamilyBentoCard({
         className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 via-40% to-transparent"
       />
       <div className={size === "sm" ? "absolute inset-x-0 bottom-0 p-4" : "absolute inset-x-0 bottom-0 p-5"}>
-        <p
+        <Heading
           className={
             size === "sm"
               ? "font-heading text-lg italic leading-tight text-white underline decoration-brand-secondary decoration-2 underline-offset-4 [text-shadow:0_1px_3px_rgb(0_0_0/0.5)]"
@@ -62,7 +67,7 @@ export function DestinationFamilyBentoCard({
           }
         >
           {family.title}
-        </p>
+        </Heading>
         {family.shortDescription ? (
           <p
             className={
