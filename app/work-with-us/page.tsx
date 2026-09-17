@@ -104,7 +104,7 @@ export default function WorkWithUsPage() {
               },
               {
                 q: "What is the agency culture like?",
-                a: "Small, supportive, and genuinely enthusiastic about travel. We share supplier knowledge, celebrate each other's bookings, and keep the pressure on the trips — not on each other.",
+                a: "Small, supportive, and genuinely enthusiastic about travel. We share supplier knowledge, celebrate each other’s bookings, and keep the pressure on the trips — not on each other.",
               },
               {
                 q: "How quickly can I start selling after onboarding?",

@@ -57,7 +57,7 @@ export const DISCOUNT_OPTIONS = [
   "CA Resident",
   "Military",
   "Disney+ Subscriber",
-  "Disney Chase Visa cardholder",
+  "Disney Chase Visa Cardholder",
   "Annual Passholder",
 ] as const;
 

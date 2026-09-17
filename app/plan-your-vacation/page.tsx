@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "Plan Your Vacation",
   description:
-    "Tell us about your trip — destinations, dates, budget, and who's coming — and a Parks Ports & Paradise advisor will build a custom quote. Free, no obligation.",
+    "Tell us about your trip — destinations, dates, budget, and who’s coming — and a Parks Ports & Paradise advisor will build a custom quote. Free, no obligation.",
   path: "/plan-your-vacation",
 });
 
@@ -23,7 +23,7 @@ export default async function PlanYourVacationPage({
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:py-20">
       <header>
-        <h1 className="text-balance text-4xl sm:text-5xl">Plan your vacation</h1>
+        <h1 className="text-balance text-4xl sm:text-5xl">Plan Your Vacation</h1>
         <p className="mt-4 text-pretty text-muted-foreground">
           A few quick questions so we can match you with the right advisor and
           start building your quote. Takes about two minutes — no payment, no
