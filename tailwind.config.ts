@@ -14,7 +14,9 @@ import typography from "@tailwindcss/typography";
  * - `colors.brand.*` exposes the exact hex values for cases that need them
  *   directly.
  * - `fontFamily` reads the next/font CSS variables set in app/layout.tsx
- *   (--font-heading = Playfair Display, --font-body = Inter).
+ *   (--font-heading = Playfair Display, --font-body = Inter, --font-script =
+ *   Alex Brush — script accent for flourish moments only, e.g. the footer
+ *   tagline; never headings/body).
  *
  * Still outstanding from the brand kit: brand photography / photography direction.
  * BRAND_KIT.md is the source of truth for hex / type / radius values.

@@ -33,11 +33,15 @@ const playfair = Playfair_Display({
 
 // Script accent — Alex Brush, for flourish moments only (e.g. the footer
 // tagline), never headings/body. Single weight (400), per BRAND_KIT.md.
+// `preload: false`: unlike Inter/Playfair (used above the fold on every
+// page), this font's only consumer is the below-the-fold footer tagline, so
+// it shouldn't cost every page load an eager font preload.
 const alexBrush = Alex_Brush({
   subsets: ["latin"],
   weight: "400",
   display: "swap",
   variable: "--font-script",
+  preload: false,
 });
 
 export const metadata: Metadata = {

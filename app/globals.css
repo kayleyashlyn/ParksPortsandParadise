@@ -12,8 +12,9 @@
  *   --background/... -> #ffffff White
  * --muted is a light warm tint of Warm Taupe; --foreground stays a near-neutral
  * dark for legibility (the client palette specifies no text colour). Fonts:
- * Playfair Display (headings) + Inter (body) via next/font in app/layout.tsx,
- * exposed as --font-heading / --font-body.
+ * Playfair Display (headings) + Inter (body) + Alex Brush (script accent,
+ * flourish moments only) via next/font in app/layout.tsx, exposed as
+ * --font-heading / --font-body / --font-script.
  */
 @layer base {
   :root {
